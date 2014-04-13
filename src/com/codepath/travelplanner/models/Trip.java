@@ -12,6 +12,8 @@ public class Trip {
 	
 	private String timeStamp;
 	
+	private long tripId;
+	
 	private String tripName;
 	
 	private String createdBy;
@@ -22,6 +24,27 @@ public class Trip {
 	
 	private ArrayList<TripLocation> places;
 
+	/** Default constructor*/
+	public Trip() {
+		this.places = new ArrayList<TripLocation>();
+	}
+
+
+	/**
+	 * Constructor
+	 * @param name	Name of the trip
+	 */
+	public Trip(String name) {
+		this.tripName = name;
+	}
+	
+	/**
+	 * @return Trip unique Id
+	 */
+	public long getTripId() {
+		return tripId;
+	}
+	
 	/**
 	 * @return TimeStamp
 	 */
