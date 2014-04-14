@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">TravelPlanner</string>
-	<string name="hello_world">Hello World</string>
     <string name="new_trip_hint">Enter Location</string>
 	<string name="new_trip_button_description">Add Itinerary</string>
     <string name="action_settings">Settings</string>
