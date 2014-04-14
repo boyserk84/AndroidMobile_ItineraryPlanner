@@ -72,7 +72,8 @@ public class GoogleParser extends XMLParser implements Parser {
 				//Set the length of this segment in metres
 				final int length = step.getJSONObject("distance").getInt("value");
 				distance += length;
-				segment.setLength(length);
+				final String lengthAsText = step.getJSONObject("distance").getString("text");
+				segment.setLength(lengthAsText);
 				segment.setDistance(distance/1000);
 				//Strip html from google directions and set as turn instruction
 				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));

@@ -11,9 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.codepath.travelplanner.R;
-import com.codepath.travelplanner.R.drawable;
-import com.codepath.travelplanner.R.id;
-import com.codepath.travelplanner.R.layout;
 import com.codepath.travelplanner.directions.Routing;
 import com.codepath.travelplanner.directions.RoutingListener;
 import com.codepath.travelplanner.directions.Segment;
@@ -31,7 +28,7 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
 	protected GoogleMap map;
     protected LatLng start;
     protected LatLng end;
-    protected ArrayList<Segment> segments;
+    public static ArrayList<Segment> segments;
     
     public static final String SEGMENTS = "segments";
 
@@ -77,7 +74,7 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
 	public void onDetails(View v) {
 		if(segments != null) {
 			Intent i = new Intent(MainActivity.this, DetailsActivity.class);
-			i.putExtra(SEGMENTS, segments);
+			//i.putExtra(SEGMENTS, segments); //this isnt serializing so commenting out for now
 			startActivity(i);
 		}
 	}
@@ -116,6 +113,6 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
       options.snippet("Games are made here. 3.5 stars");
       map.addMarker(options);
       
-      this.segments = new ArrayList<Segment>(segments);
+      MainActivity.segments = new ArrayList<Segment>(segments);
     }
 }

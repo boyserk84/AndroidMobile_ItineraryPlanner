@@ -14,8 +14,8 @@ public class Segment implements Serializable {
 	private LatLng start;
 	/** Turn instruction to reach next segment. **/
 	private String instruction;
-	/** Length of segment. **/
-	private int length;
+	/** Length of segment in string form. **/
+	private String length;
 	/** Distance covered. **/
 	private double distance;
 	
@@ -73,14 +73,14 @@ public class Segment implements Serializable {
 	/**
 	 * @param length the length to set
 	 */
-	public void setLength(final int length) {
+	public void setLength(final String length) {
 		this.length = length;
 	}
 	
 	/**
 	 * @return the length
 	 */
-	public int getLength() {
+	public String getLength() {
 		return length;
 	}
 
