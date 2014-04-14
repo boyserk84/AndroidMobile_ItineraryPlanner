@@ -1,4 +1,4 @@
-package com.codepath.travelplanner;
+package com.codepath.travelplanner.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
