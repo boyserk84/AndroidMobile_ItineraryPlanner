@@ -1,8 +1,15 @@
 package com.codepath.travelplanner.directions;
 
+import java.io.Serializable;
+
 import com.google.android.gms.maps.model.LatLng;
 
-public class Segment {
+public class Segment implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8583502942809850300L;
+	
 	/** Points in this segment. **/
 	private LatLng start;
 	/** Turn instruction to reach next segment. **/

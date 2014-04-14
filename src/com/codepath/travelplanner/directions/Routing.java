@@ -1,6 +1,7 @@
 package com.codepath.travelplanner.directions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.os.AsyncTask;
 
@@ -50,9 +51,9 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 		}
 	}
 
-	protected void dispatchOnSuccess(PolylineOptions mOptions) {
+	protected void dispatchOnSuccess(PolylineOptions mOptions, List<Segment> segments) {
 		for (RoutingListener mListener: _aListeners) {
-			mListener.onRoutingSuccess(mOptions);
+			mListener.onRoutingSuccess(mOptions, segments);
 		}
 	}
 
@@ -107,7 +108,7 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 			for (LatLng point : result.getPoints()) {
 				mOptions.add(point);
 			}
-			dispatchOnSuccess(mOptions);
+			dispatchOnSuccess(mOptions, result.getSegments());
 		}
 	}
 }

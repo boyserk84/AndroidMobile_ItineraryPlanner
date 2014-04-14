@@ -3,12 +3,12 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.travelplanner.MainActivity"
+    tools:context="com.codepath.travelplanner.activities.MainActivity"
     tools:ignore="MergeRootFrame" >
     
  <fragment
      android:id="@+id/map"
-     android:name="com.codepath.travelplanner.MyMapFragment"
+     android:name="com.codepath.travelplanner.fragments.MyMapFragment"
      android:layout_width="match_parent"
      android:layout_height="match_parent"
      android:layout_above="@+id/button1"
@@ -24,6 +24,16 @@
      android:layout_marginLeft="22dp"
      android:onClick="onNewTrip"
      android:text="+" />
+
+ <Button
+     android:id="@+id/button2"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_alignParentBottom="true"
+     android:layout_alignParentRight="true"
+     android:layout_marginRight="22dp"
+     android:onClick="onDetails"
+     android:text="Directions" />
  
  </RelativeLayout>
 

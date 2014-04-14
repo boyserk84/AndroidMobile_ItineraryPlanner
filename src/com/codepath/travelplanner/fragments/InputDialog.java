@@ -1,4 +1,9 @@
-package com.codepath.travelplanner;
+package com.codepath.travelplanner.fragments;
+
+import com.codepath.travelplanner.R;
+import com.codepath.travelplanner.R.id;
+import com.codepath.travelplanner.R.layout;
+import com.codepath.travelplanner.R.string;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

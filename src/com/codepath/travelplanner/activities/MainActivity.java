@@ -1,13 +1,24 @@
-package com.codepath.travelplanner;
+package com.codepath.travelplanner.activities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.codepath.travelplanner.R;
+import com.codepath.travelplanner.R.drawable;
+import com.codepath.travelplanner.R.id;
+import com.codepath.travelplanner.R.layout;
 import com.codepath.travelplanner.directions.Routing;
 import com.codepath.travelplanner.directions.RoutingListener;
+import com.codepath.travelplanner.directions.Segment;
+import com.codepath.travelplanner.fragments.InputDialog;
+import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +31,9 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
 	protected GoogleMap map;
     protected LatLng start;
     protected LatLng end;
+    protected ArrayList<Segment> segments;
+    
+    public static final String SEGMENTS = "segments";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,14 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
 		DialogFragment newFragment = new InputDialog();
 	    newFragment.show(getFragmentManager(), "new_trip");
 	}
+	
+	public void onDetails(View v) {
+		if(segments != null) {
+			Intent i = new Intent(MainActivity.this, DetailsActivity.class);
+			i.putExtra(SEGMENTS, segments);
+			startActivity(i);
+		}
+	}
 
 	@Override
     public void onRoutingFailure() {
@@ -71,7 +93,7 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
     }
 
     @Override
-    public void onRoutingSuccess(PolylineOptions mPolyOptions) {
+    public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
       PolylineOptions polyoptions = new PolylineOptions();
       polyoptions.color(Color.BLUE);
       polyoptions.width(10);
@@ -93,5 +115,7 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
       options.title("Zynga HQ");
       options.snippet("Games are made here. 3.5 stars");
       map.addMarker(options);
+      
+      this.segments = new ArrayList<Segment>(segments);
     }
 }
