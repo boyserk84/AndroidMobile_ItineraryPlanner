@@ -2,9 +2,26 @@
 <resources>
 
     <string name="app_name">TravelPlanner</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="new_trip_hint">Enter Location</string>
+	<string name="new_trip_button_description">Add Itinerary</string>
     <string name="action_settings">Settings</string>
     <string name="next">Next</string>
+	<string name="done">Done</string>
     <string name="cancel">Cancel</string>
+	<string name="back">Back</string>
+	<string name="filters_title">What do you want?</string>
+	<string name="activity">Activity:</string>
+	<string name="activity_hint">food, tourist, museum</string>
+	<string name="distance">Distance:</string>
+	<string name="price">Price:</string>
+	<string name="suggested_title">Choose a Destination</string>
+	<string name="summary_title">Summary</string>
+	<string name="start">Start:</string>
+	<string name="destination">Destination:</string>
+	<string name="trip_name">Trip Name:</string>
+	<string name="dist">Dist:</string>
+	<string name="miles">mi</string>
+	<string name="num_out_of">/5</string>
+	<string name="rating">Rating:</string>
 
 </resources>

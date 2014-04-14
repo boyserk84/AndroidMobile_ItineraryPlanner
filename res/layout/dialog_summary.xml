@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/summary_title"
+			android:id="@+id/tvSummaryTitle"
+			android:textSize="25sp"
+			android:layout_centerHorizontal="true"
+			android:layout_alignParentTop="true"/>
+
+	<ImageView
+			android:layout_width="fill_parent"
+			android:layout_height="1dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:id="@+id/ivDivider"
+			android:src="@drawable/divider_gray"
+			android:layout_centerHorizontal="true"
+			android:layout_below="@+id/tvSummaryTitle"/>
+
+	<TableLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:paddingTop="10dp"
+			android:paddingLeft="10dp"
+			android:layout_below="@id/ivDivider"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:id="@+id/tlSummary">
+		<TableRow
+				android:layout_width="match_parent"
+				android:layout_height="fill_parent">
+			<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:text="@string/start"/>
+
+			<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:id="@+id/tvSummStart"/>
+		</TableRow>
+
+		<TableRow
+				android:layout_width="match_parent"
+				android:layout_height="fill_parent"
+				android:paddingTop="7dp">
+			<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:text="@string/destination"/>
+
+			<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:id="@+id/tvSummEnd"/>
+		</TableRow>
+
+		<TableRow
+				android:layout_width="match_parent"
+				android:layout_height="fill_parent">
+			<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:text="@string/trip_name"/>
+
+			<EditText
+					android:layout_height="wrap_content"
+					android:layout_width="fill_parent"
+					android:hint="some pre-generated trip name"
+					android:textSize="14sp"
+					android:id="@+id/etSummTripName"/>
+		</TableRow>
+	</TableLayout>
+
+</RelativeLayout>
