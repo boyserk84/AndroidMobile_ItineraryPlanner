@@ -28,7 +28,6 @@ public class TripLocation {
 	
 	private double fromLatitude;
 	
-	
 	private ArrayList<String> directions;
 	
 	/**
