@@ -39,7 +39,7 @@ public class TripLocation {
 	
 	private String snippetImageUrl;
 	
-	private String address;// TODO: Strongly typed object
+	private LocationAddress address;
 	
 	
 	/**
@@ -99,17 +99,50 @@ public class TripLocation {
 	}
 	
 	/**
+	 * @return Get image URL of this location.
+	 */
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	/**
+	 * @return Mobile URL to place's website
+	 */
+	public String getMobileUrl() {
+		return mobileUrl;
+	}
+
+	/**
+	 * @return snippet Text of this location
+	 */
+	public String getSnippetText() {
+		return snippetText;
+	}
+
+	/**
+	 * @return snippet Image Url of this location
+	 */
+	public String getSnippetImageUrl() {
+		return snippetImageUrl;
+	}
+	
+	/**
+	 * @return Address object of this location.
+	 */
+	public LocationAddress getAddress() {
+		return address;
+	}
+	
+	/**
 	 * Helper function to convert JSONObject to strongly-typed data
-	 * @param object
-	 * @return
+	 * @param object	JSON Object (raw data)
+	 * @return TripLocation Object. Otherwise, null is returned.
 	 */
 	public static TripLocation fromJSON( JSONObject object ){
 		TripLocation tripLoc = new TripLocation();
 		
 		// TODO: make sure we get the correct key
 		try {
-			tripLoc.distance = object.getDouble("distance");
-			tripLoc.rating = object.getDouble("rating");
 			//tripLoc.longitude = object.getDouble("longitude");
 			//tripLoc.latitude = object.getDouble("latitude");
 			
@@ -121,8 +154,8 @@ public class TripLocation {
 			tripLoc.snippetText = object.getString("snippet_text");
 			tripLoc.snippetImageUrl = object.getString("snippet_image_url");
 			tripLoc.distance = object.getDouble("distance");
-		
-			
+			tripLoc.address = LocationAddress.fromJSON( object.getJSONObject("location"));
+
 			// TODO: Add more
 		} catch (JSONException e) {
 			tripLoc = null;
@@ -130,7 +163,12 @@ public class TripLocation {
 		
 		return tripLoc;
 	}
-	
+
+	/**
+	 * Helper function convert JSONArray to strong-typed data array.
+	 * @param arr		JSONArray (raw data)
+	 * @return ArrayList of TripLocation data. Otherwise, empty array is returned.
+	 */
 	public static ArrayList<TripLocation> fromJSONArray( JSONArray arr ) {
 		ArrayList<TripLocation> list = new ArrayList<TripLocation>();
 		
@@ -146,6 +184,7 @@ public class TripLocation {
 		return list;
 		
 	}
+
 
 
 
