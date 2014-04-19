@@ -2,6 +2,7 @@ package com.codepath.travelplanner.models;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,8 +28,19 @@ public class TripLocation {
 	private double fromLongitude;
 	
 	private double fromLatitude;
-	
+		
 	private ArrayList<String> directions;
+	
+	private String imageUrl;
+	
+	private String mobileUrl;
+	
+	private String snippetText;
+	
+	private String snippetImageUrl;
+	
+	private String address;// TODO: Strongly typed object
+	
 	
 	/**
 	 * @return Array of instruction how to get to this location from the starting location.
@@ -98,14 +110,41 @@ public class TripLocation {
 		try {
 			tripLoc.distance = object.getDouble("distance");
 			tripLoc.rating = object.getDouble("rating");
-			tripLoc.longitude = object.getDouble("longitude");
-			tripLoc.latitude = object.getDouble("latitude");
+			//tripLoc.longitude = object.getDouble("longitude");
+			//tripLoc.latitude = object.getDouble("latitude");
+			
+			// From Yelp Api
+			tripLoc.locationName = object.getString("name");
+			tripLoc.rating = object.getDouble("rating");
+			tripLoc.imageUrl = object.getString("image_url");
+			tripLoc.mobileUrl = object.getString("mobile_url");
+			tripLoc.snippetText = object.getString("snippet_text");
+			tripLoc.snippetImageUrl = object.getString("snippet_image_url");
+			tripLoc.distance = object.getDouble("distance");
+		
+			
 			// TODO: Add more
 		} catch (JSONException e) {
 			tripLoc = null;
 		}
 		
 		return tripLoc;
+	}
+	
+	public static ArrayList<TripLocation> fromJSONArray( JSONArray arr ) {
+		ArrayList<TripLocation> list = new ArrayList<TripLocation>();
+		
+		for (int i = 0; i < arr.length(); ++i ) {
+			try {
+				list.add( TripLocation.fromJSON( arr.getJSONObject( i ) ) );
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+		
 	}
 
 
