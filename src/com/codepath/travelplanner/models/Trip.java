@@ -86,5 +86,12 @@ public class Trip {
 	public ArrayList<TripLocation> getPlaces() {
 		return places;
 	}
+	
+	/**
+	 * @return Array of places/locations user is planning to visit for this trip.
+	 */
+	public void setPlaces(ArrayList<TripLocation> places) {
+		this.places = places;
+	}
 
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * TripLocation.java
  * 
@@ -14,19 +16,15 @@ import org.json.JSONObject;
  */
 public class TripLocation {
 	
-	private double longitude;
-	
-	private double latitude;
+	private LatLng latLng;
 	
 	private String locationName;
+	
+	private String description;
 	
 	private double rating;
 	
 	private double distance;
-	
-	private double fromLongitude;
-	
-	private double fromLatitude;
 	
 	
 	private ArrayList<String> directions;
@@ -39,17 +37,17 @@ public class TripLocation {
 	}
 
 	/**
-	 * @return Longitude of the current location
+	 * @return LatLng of the current location
 	 */
-	public double getLongitude() {
-		return longitude;
+	public LatLng getLatLng() {
+		return latLng;
 	}
-
+	
 	/**
-	 * @return Latitude of the current location
+	 * @param LatLng of the current location
 	 */
-	public double getLatitude() {
-		return latitude;
+	public void setLatLng(LatLng latLng) {
+		this.latLng = latLng;
 	}
 
 	/**
@@ -58,12 +56,44 @@ public class TripLocation {
 	public String getLocationName() {
 		return locationName;
 	}
+	
+	/**
+	 * @param Location or place name
+	 */
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 
+	/**
+	 * @return Description of place
+	 */
+	public String getDescription() {
+		return description;
+	}
+	
+	/**
+	 * @param Description of place
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	/**
 	 * @return Yelp rating score
 	 */
 	public double getRating() {
 		return rating;
+	}
+	
+	/**
+	 * @param Yelp rating score
+	 */
+	public void setRating(double rating) {
+		this.rating = rating;
+	}
+	
+	public String getMarkerDescription() {
+		return description + " " + rating + " stars.";
 	}
 
 	/**
@@ -71,20 +101,6 @@ public class TripLocation {
 	 */
 	public double getDistance() {
 		return distance;
-	}
-
-	/**
-	 * @return Longitude of starting location to this location.
-	 */
-	public double getFromLongitude() {
-		return fromLongitude;
-	}
-
-	/**
-	 * @return Latitude of starting location to this location.
-	 */
-	public double getFromLatitude() {
-		return fromLatitude;
 	}
 	
 	/**
@@ -99,8 +115,6 @@ public class TripLocation {
 		try {
 			tripLoc.distance = object.getDouble("distance");
 			tripLoc.rating = object.getDouble("rating");
-			tripLoc.longitude = object.getDouble("longitude");
-			tripLoc.latitude = object.getDouble("latitude");
 			// TODO: Add more
 		} catch (JSONException e) {
 			tripLoc = null;
@@ -110,6 +124,6 @@ public class TripLocation {
 	}
 
 
-
+	
 
 }
