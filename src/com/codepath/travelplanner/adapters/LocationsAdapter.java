@@ -7,17 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import com.codepath.travelplanner.R;
+import com.codepath.travelplanner.models.TripLocation;
 
 import java.util.List;
 
 /**
  * LocationsAdapter - adapter for locations
- * TODO: change "Parcelable" item to location item
  */
-public class LocationsAdapter extends ArrayAdapter<Parcelable>{
+public class LocationsAdapter extends ArrayAdapter<TripLocation>{
 
 	/** constructor */
-	public LocationsAdapter(Context context, List<Parcelable> locs) {
+	public LocationsAdapter(Context context, List<TripLocation> locs) {
 			super(context, 0, locs);
 	}
 

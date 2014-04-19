@@ -1,6 +1,5 @@
 package com.codepath.travelplanner.dialogs;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -9,25 +8,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import com.codepath.travelplanner.R;
-import com.codepath.travelplanner.helpers.OnPositiveListener;
+import com.codepath.travelplanner.models.Trip;
 
 /**
- * BaseWizardDialog - base dialog for the create-a-new-itinerary "wizard" dialogs
+ * BaseTripWizardDialog - base dialog for the create-a-new-trip "wizard" dialogs
  */
-public abstract class BaseWizardDialog extends DialogFragment {
-	/** listener for when positive button is clicked */
-	protected OnPositiveListener listener;
+public abstract class BaseTripWizardDialog extends DialogFragment {
+	/** start place extra */
+	protected static final String START_EXTRA = "start";
+	/** name of trip in the bundle */
+	protected static final String TRIP_EXTRA = "trip";
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		if (activity instanceof OnPositiveListener) {
-			listener = (OnPositiveListener) activity;
-		} else {
-			throw new ClassCastException(activity.toString()
-					+ " must implement OnPositiveListener");
-		}
-	}
+	/** trip object that the wizard is making */
+	protected Trip newTrip = new Trip();
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {

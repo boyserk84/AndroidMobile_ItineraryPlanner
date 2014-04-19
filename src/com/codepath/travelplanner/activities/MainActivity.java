@@ -3,7 +3,6 @@ package com.codepath.travelplanner.activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
 import android.view.*;
 import android.view.inputmethod.EditorInfo;
@@ -11,15 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.codepath.travelplanner.R;
-import com.codepath.travelplanner.apis.SimpleYelpClient;
-import com.codepath.travelplanner.dialogs.FiltersDialog;
-import com.codepath.travelplanner.dialogs.SuggestedPlacesDialog;
-import com.codepath.travelplanner.dialogs.SummaryDialog;
+import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
 import com.codepath.travelplanner.directions.Routing;
 import com.codepath.travelplanner.directions.RoutingListener;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
-import com.codepath.travelplanner.helpers.OnPositiveListener;
 import com.codepath.travelplanner.models.TripLocation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,10 +30,9 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import natemobiles.app.simpleyelpapiforandroid.configs.SimpleYelpClientConfig;
 import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
 
-public class MainActivity extends FragmentActivity implements RoutingListener,OnPositiveListener, IRequestListener {
+public class MainActivity extends FragmentActivity implements RoutingListener, IRequestListener {
 	/** views */
 	ImageButton ibtnNewTrip;
 	EditText etNewTrip;
@@ -162,34 +156,9 @@ public class MainActivity extends FragmentActivity implements RoutingListener,On
 		});
 	}
 
-	@Override
-	public void onFilterPositive() {
-		// TODO: make query for destination results
-		
-		// Hack: Test query to yelp API
-		Double latitude = start.latitude;
-		Double longitude = start.longitude;
-		SimpleYelpClient.getRestClient().search("restaurant", latitude, longitude, this);
-		// End of Hack
-		
-		// TODO: Can't this array be Serializable
-		
-		SuggestedPlacesDialog.newInstance(new ArrayList<Parcelable>()).show(getFragmentManager(), "destinations");
-	}
-
-	@Override
-	public void onSuggestedPlacesPositive() {
-		SummaryDialog.newInstance(null).show(getFragmentManager(), "summary");
-	}
-
 	/** callback when new trip button is clicked */
 	public void onNewTrip() {
-		FiltersDialog.newInstance().show(getFragmentManager(), "filters");
-	}
-
-	@Override
-	public void onSummaryPositive() {
-		// TODO: map out the route
+		FiltersDialogTrip.newInstance(etNewTrip.getText().toString()).show(getFragmentManager(), "filters");
 	}
 
 

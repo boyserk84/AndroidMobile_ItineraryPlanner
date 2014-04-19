@@ -6,29 +6,22 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.codepath.travelplanner.R;
-
-import java.io.Serializable;
+import com.codepath.travelplanner.models.Trip;
 
 /**
- * SummaryDialog - dialog showing the summary of the itinerary the wizard will create
+ * SummaryDialogTrip - dialog showing the summary of the itinerary the wizard will create
  */
-public class SummaryDialog extends BaseWizardDialog {
-	/** name of itinerary in the bundle */
-	private static final String ITINERARY_EXTRA = "itinerary";
-
+public class SummaryDialogTrip extends BaseTripWizardDialog {
 	/** views */
 	private TextView tvSummStart;
 	private TextView tvSummEnd;
 	private EditText etSummTripName;
 
-	/** summary of itinerary to show */
-	private Serializable itinerary; // TODO: change to actual model
-
 	/** static function that creates a new filters dialog */
-	public static SummaryDialog newInstance(Serializable it) {
-		SummaryDialog dialog = new SummaryDialog();
+	public static SummaryDialogTrip newInstance(Trip trip) {
+		SummaryDialogTrip dialog = new SummaryDialogTrip();
 		Bundle args = new Bundle();
-		args.putSerializable(ITINERARY_EXTRA, it);
+		args.putSerializable(TRIP_EXTRA, trip);
 		dialog.setArguments(args);
 		return dialog;
 	}
@@ -41,7 +34,7 @@ public class SummaryDialog extends BaseWizardDialog {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		itinerary = getArguments().getSerializable(ITINERARY_EXTRA);
+		newTrip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
 	}
 
 	@Override
@@ -56,7 +49,7 @@ public class SummaryDialog extends BaseWizardDialog {
 
 	@Override
 	protected void onPositiveClick() {
-		listener.onSummaryPositive(); // TODO: send back itinerary data
+		//listener.onSummaryPositive(); // TODO: send back itinerary data
 	}
 
 	@Override

@@ -1,39 +1,42 @@
 package com.codepath.travelplanner.dialogs;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ListView;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.adapters.LocationsAdapter;
+import com.codepath.travelplanner.models.Trip;
+import com.codepath.travelplanner.models.TripLocation;
 
 import java.util.ArrayList;
 
 /**
- * SuggestedPlacesDialog - dialog containing the destinations results from the query
+ * SuggestedPlacesDialogTrip - dialog containing the destinations results from the query
  */
-public class SuggestedPlacesDialog extends BaseWizardDialog {
-	/** name of places argument in the bundle */
-	private static final String PLACES_EXTRA = "places";
-
+public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog {
 	/** views */
 	private ListView lvSuggPlaces;
 	private LocationsAdapter adapter;
-	private ArrayList<Parcelable> suggPlacesList = new ArrayList<Parcelable>();
+	private ArrayList<TripLocation> suggPlacesList = new ArrayList<TripLocation>();
 
 	/** static function that creates a new suggested places dialog */
-	public static SuggestedPlacesDialog newInstance(ArrayList<Parcelable> places) {
-		SuggestedPlacesDialog dialog = new SuggestedPlacesDialog();
+	public static SuggestedPlacesDialogTrip newInstance(Trip trip) {
+		SuggestedPlacesDialogTrip dialog = new SuggestedPlacesDialogTrip();
 		Bundle args = new Bundle();
-		args.putParcelableArrayList(PLACES_EXTRA, places);
+		args.putSerializable(TRIP_EXTRA, trip);
 		dialog.setArguments(args);
 		return dialog;
 	}
 
 	@Override
+	protected int getPositiveBtnTextId() {
+		return R.string.done;
+	};
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		suggPlacesList = getArguments().getParcelableArrayList(PLACES_EXTRA);
+		newTrip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
 	}
 
 	@Override
@@ -50,6 +53,6 @@ public class SuggestedPlacesDialog extends BaseWizardDialog {
 
 	@Override
 	protected void onPositiveClick() {
-		listener.onSuggestedPlacesPositive(); // TODO: pass data back
+		SummaryDialogTrip.newInstance(null).show(getFragmentManager(), "summary");
 	}
 }

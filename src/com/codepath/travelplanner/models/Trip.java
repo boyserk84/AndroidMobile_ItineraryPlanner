@@ -1,5 +1,6 @@
 package com.codepath.travelplanner.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * @author nkemavaha
  *
  */
-public class Trip {
+public class Trip implements Serializable{
 	
 	private String timeStamp;
 	
@@ -85,6 +86,13 @@ public class Trip {
 	 */
 	public ArrayList<TripLocation> getPlaces() {
 		return places;
+	}
+
+	/**
+	 * Adds a place to the end of the places list
+	 */
+	public void addPlace(TripLocation place) {
+		places.add(place);
 	}
 
 }

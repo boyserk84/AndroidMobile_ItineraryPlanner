@@ -1,5 +1,6 @@
 package com.codepath.travelplanner.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -13,7 +14,7 @@ import org.json.JSONObject;
  * @author nkemavaha
  *
  */
-public class TripLocation {
+public class TripLocation implements Serializable{
 	
 	private double longitude;
 	
