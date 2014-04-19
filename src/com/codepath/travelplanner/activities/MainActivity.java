@@ -2,6 +2,11 @@ package com.codepath.travelplanner.activities;
 
 import java.util.ArrayList;
 
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -24,23 +29,11 @@ import com.codepath.travelplanner.dialogs.SummaryDialog;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.codepath.travelplanner.helpers.OnPositiveListener;
+import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import natemobiles.app.simpleyelpapiforandroid.configs.SimpleYelpClientConfig;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-
-public class MainActivity extends FragmentActivity implements RoutingListener,OnPositiveListener, IRequestListener {
+public class MainActivity extends FragmentActivity implements OnPositiveListener, IRequestListener {
 	/** views */
 	ImageButton ibtnNewTrip;
 	EditText etNewTrip;
@@ -59,10 +52,8 @@ public class MainActivity extends FragmentActivity implements RoutingListener,On
 				.findFragmentById(R.id.map));
 		
 		Trip t = generateDummyTrip();
-		
 		map.newRoute(t);
-		
-		map.createCircle(new LatLng(37.765240, -122.409432), 1000);
+		//map.createCircle(new LatLng(37.765240, -122.409432), 1000);
 	}
 	
 	protected Trip generateDummyTrip() {
@@ -135,8 +126,8 @@ public class MainActivity extends FragmentActivity implements RoutingListener,On
 		// TODO: make query for destination results
 		
 		// Hack: Test query to yelp API
-		Double latitude = start.latitude;
-		Double longitude = start.longitude;
+		Double latitude = 37.765240;
+		Double longitude = -122.409432;
 		SimpleYelpClient.getRestClient().search("restaurant", latitude, longitude, this);
 		// End of Hack
 		
