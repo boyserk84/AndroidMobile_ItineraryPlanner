@@ -78,15 +78,15 @@ public class GoogleParser extends XMLParser implements Parser {
 				//Strip html from google directions and set as turn instruction
 				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
 				 //TODO: Add drawable to segment
-		        if(i == 0) {
-		        	segment.setIcon(R.drawable.start_blue);
-		        }
-		        else if(i == numSteps - 1) {
-		        	segment.setIcon(R.drawable.end_green);
-		        }
-		        else {
-		        	segment.setIcon(R.drawable.ic_launcher);
-		        }
+				if(i == 0) {
+					segment.setIcon(R.drawable.start_blue);
+				}
+				else if(i == numSteps - 1) {
+					segment.setIcon(R.drawable.end_green);
+				}
+				else {
+					segment.setIcon(R.drawable.ic_launcher);
+				}
 				//Retrieve & decode this segment's polyline and add it to the route.
 				route.addPoints(decodePolyLine(step.getJSONObject("polyline").getString("points")));
 				//Push a copy of the segment to the route
