@@ -2,8 +2,6 @@ package com.codepath.travelplanner.directions;
 
 import java.io.Serializable;
 
-import com.google.android.gms.maps.model.LatLng;
-
 public class Segment implements Serializable {
 	/**
 	 * 
@@ -11,13 +9,17 @@ public class Segment implements Serializable {
 	private static final long serialVersionUID = 8583502942809850300L;
 	
 	/** Points in this segment. **/
-	private LatLng start;
+	private double lat;
+	/** Points in this segment. **/
+	private double lng;
 	/** Turn instruction to reach next segment. **/
 	private String instruction;
 	/** Length of segment in string form. **/
 	private String length;
 	/** Distance covered. **/
 	private double distance;
+	/** Icon **/
+	private int icon;
 	
 	/**
 	 * Create an empty segment.
@@ -43,19 +45,51 @@ public class Segment implements Serializable {
 	}
 	
 	/**
-	 * Add a point to this segment.
-	 * @param point GeoPoint to add.
+	 * Add the starting latitude to this segment.
+	 * @param point lat to add.
 	 */
-	public void setPoint(final LatLng point) {
-		start = point;
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 	
-	/** Get the starting point of this 
+	/** Get the starting latitude of this 
 	 * segment.
-	 * @return a GeoPoint
+	 * @return lat
 	 */
-	public LatLng startPoint() {
-		return start;
+	public double getLat() {
+		return lat;
+	}
+	
+	/**
+	 * Add the starting longitude to this segment.
+	 * @param lng to add.
+	 */
+	public void setLng(double lng) {
+		this.lng = lng;
+	}
+	
+	/** Get the starting longitude of this 
+	 * segment.
+	 * @return lng
+	 */
+	public double getLng() {
+		return lng;
+	}
+	
+	/**
+	 * Add the icon used for this segment.
+	 * @param resource id of icon.
+	 */
+	public void setIcon(int icon) {
+		this.icon = icon;
+	}
+	
+	/** Get the icon used by this 
+	 * segment.
+	 * @return resource id of icon
+	 */
+	public int getIcon() {
+		return icon;
 	}
 
 	/** Creates a segment which is a copy of this one.
@@ -63,10 +97,12 @@ public class Segment implements Serializable {
 	 */
 	public Segment copy() {
 		final Segment copy = new Segment();
-		copy.start = start;
+		copy.lat = lat;
+		copy.lng = lng;
 		copy.instruction = instruction;
 		copy.length = length;
 		copy.distance = distance;
+		copy.icon = icon;
 		return copy;
 	}
 	

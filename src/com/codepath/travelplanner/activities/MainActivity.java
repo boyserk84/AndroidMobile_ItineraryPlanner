@@ -94,7 +94,7 @@ public class MainActivity extends FragmentActivity implements OnPositiveListener
 	public void onDetails(View v) {
 		if(segments != null) {
 			Intent i = new Intent(MainActivity.this, DetailsActivity.class);
-			//i.putExtra(SEGMENTS, segments); //this isnt serializing so commenting out for now
+			i.putExtra(SEGMENTS, segments); //this isnt serializing so commenting out for now
 			startActivity(i);
 		}
 	}

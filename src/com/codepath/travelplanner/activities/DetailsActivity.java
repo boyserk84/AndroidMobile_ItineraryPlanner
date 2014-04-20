@@ -3,6 +3,7 @@ package com.codepath.travelplanner.activities;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -21,10 +22,9 @@ public class DetailsActivity extends Activity {
 		
 		lvSegments = (ListView) findViewById(R.id.lvSegements);
 		
-		//Intent i = getIntent();
-		//ArrayList<Segment> segments = (ArrayList<Segment>) i.getSerializableExtra(MainActivity.SEGMENTS);
+		Intent i = getIntent();
+		ArrayList<Segment> segments = (ArrayList<Segment>) i.getSerializableExtra(MainActivity.SEGMENTS);
 		
-		ArrayList<Segment> segments = MainActivity.segments;
 		adapterSegments = new SegmentsAdapter(this, segments);
 		lvSegments.setAdapter(adapterSegments);
 	}

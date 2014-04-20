@@ -37,14 +37,7 @@ public class SegmentsAdapter extends ArrayAdapter<Segment> {
         // Populate the data into the template view using the data object
         tvDirection.setText(segment.getInstruction());
         tvDistance.setText(segment.getLength());
-        
-        //TODO: Add drawable to segment
-        if(position == 0) {
-        	ivDirection.setImageResource(R.drawable.start_blue);
-        }
-        else if(position == getCount() - 1) {
-        	ivDirection.setImageResource(R.drawable.end_green);
-        }
+        ivDirection.setImageResource(segment.getIcon());
         
         // Return the completed view to render on screen
         return convertView;
