@@ -40,8 +40,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
     
 	protected TripLocation start;
 	protected TripLocation end;
-	
-	protected int i = 0;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,7 +152,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 
 	@Override
 	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
-    	createPolyline(mPolyOptions);
+		createPolyline(mPolyOptions);
     	createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
     	createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
       
