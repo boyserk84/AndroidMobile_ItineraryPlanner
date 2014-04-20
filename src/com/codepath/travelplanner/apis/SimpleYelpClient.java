@@ -89,12 +89,12 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 	 */
 	public void search(String query, double latitude, double longitude, IRequestListener... handlers) {
 		if ( handlers != null && handlers.length > 0) {
-    		for (IRequestListener handler:handlers) {
-    			if ( handler != null ) {
-    				listeners.add( handler );
-    			}
-    		}
-    	}
+			for (IRequestListener handler:handlers) {
+				if ( handler != null ) {
+					listeners.add( handler );
+				}
+			}
+		}
 		YelpFilterRequest yelpRequest = new YelpFilterRequest();
 		yelpRequest.term = query;
 		yelpRequest.latitude = latitude;
@@ -109,12 +109,12 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 	 */
 	public void search(YelpFilterRequest filter, IRequestListener... handlers) {
 		if ( handlers != null && handlers.length > 0) {
-    		for (IRequestListener handler:handlers) {
-    			if ( handler != null ) {
-    				listeners.add( handler );
-    			}
-    		}
-    	}
+			for (IRequestListener handler:handlers) {
+				if ( handler != null ) {
+					listeners.add( handler );
+				}
+			}
+		}
 		runSearch( filter );
 	}
 	
@@ -123,14 +123,18 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 	 * @param filter
 	 */
 	private void runSearch( YelpFilterRequest filter ) {	
-		execute( filter.term, 
-				Double.toString( filter.latitude ), 
-				Double.toString( filter.longitude), 
-				Integer.toString( filter.limit ), 
-				Integer.toString( filter.sortType ), 
-				Double.toString( filter.radius ),
-				filter.categoryFilter
-				);
+		if ( filter != null ) {
+			execute( filter.term, 
+					Double.toString( filter.latitude ), 
+					Double.toString( filter.longitude), 
+					Integer.toString( filter.limit ), 
+					Integer.toString( filter.sortType ), 
+					Double.toString( filter.radius ),
+					filter.categoryFilter
+					);
+		} else {
+			throw new NullPointerException("YelpFilterRequest is null before search is run!");
+		}
 	}
 
     ///////////////////////////////
