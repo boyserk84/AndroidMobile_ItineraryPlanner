@@ -114,7 +114,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 		ArrayList<TripLocation> locations = trip.getPlaces();
 		
 		if(locations.size() > 1) {
-			Routing routing = new Routing(Routing.TravelMode.WALKING);
+			Routing routing = new Routing(Routing.TravelMode.TRANSIT);
 			routing.registerListener(this);
 			start = locations.get(0);
 			end = locations.get(1);
@@ -162,7 +162,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
     	getMap().moveCamera(zoom);
     	getMap().moveCamera(center);
       
-		//TODO: store this is in the trip object later
+		//TODO: Jeff: store this is in the trip object later
 		MainActivity.segments = new ArrayList<Segment>(segments);
 	}
 }

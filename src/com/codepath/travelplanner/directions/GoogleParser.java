@@ -77,7 +77,6 @@ public class GoogleParser extends XMLParser implements Parser {
 				segment.setDistance(distance/1000);
 				//Strip html from google directions and set as turn instruction
 				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
-				 //TODO: Add drawable to segment
 				if(i == 0) {
 					segment.setIcon(R.drawable.start_blue);
 				}
