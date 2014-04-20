@@ -26,10 +26,6 @@ public class TripLocation {
 	private double rating;
 	
 	private double distance;
-	
-	private double fromLongitude;
-	
-	private double fromLatitude;
 		
 	private ArrayList<String> directions;
 	

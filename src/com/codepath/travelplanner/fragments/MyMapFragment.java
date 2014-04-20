@@ -1,9 +1,13 @@
 package com.codepath.travelplanner.fragments;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +23,7 @@ import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
@@ -35,6 +40,8 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
     
 	protected TripLocation start;
 	protected TripLocation end;
+	
+	protected int i = 0;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,13 +57,17 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 		getMap().getUiSettings().setRotateGesturesEnabled(false);
 		getMap().getUiSettings().setZoomControlsEnabled(false);
 		getMap().setMyLocationEnabled(true);
-		
-		CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(37.765240,-122.409432));
-		CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+		getMap().setOnMyLocationChangeListener(new OnMyLocationChangeListener() {
+			@Override
+			public void onMyLocationChange(Location location) {
+				CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));
+				CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
 
-		getMap().moveCamera(center);
-		getMap().animateCamera(zoom);
-
+				getMap().moveCamera(zoom);
+				getMap().moveCamera(center);
+				getMap().setOnMyLocationChangeListener(null);
+			}
+		});
 		return mapView;
 	}
 	
@@ -113,29 +124,47 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 		}
 	}
 	
-	/** Convert an address into a LatLng object */
+	/** Convert an address into a LatLng object, ****if you have an exact address use that, if not send the name of the place along with city and state**** */
 	public LatLng getLatLngFromAddress(String address) {
-		return null;
+		double latitude = 0;
+		double longtitude = 0;
+		Geocoder geoCoder = new Geocoder(getActivity());
+		try {
+			List<Address> addresses = geoCoder.getFromLocationName(address, 1); 
+			if (addresses.size() >  0) {
+				latitude = addresses.get(0).getLatitude();
+				longtitude = addresses.get(0).getLongitude();
+			}
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new LatLng(latitude, longtitude);
 	}
 	
 	@Override
-    public void onRoutingFailure() {
-      // The Routing request failed
-    }
+	public void onRoutingFailure() {
+		// The Routing request failed
+	}
 
-    @Override
-    public void onRoutingStart() {
-      // The Routing Request starts
-    }
+	@Override
+	public void onRoutingStart() {
+    	// The Routing Request starts
+	}
 
-    @Override
-    public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
-      createPolyline(mPolyOptions);
-      createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
-      createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
+	@Override
+	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
+    	createPolyline(mPolyOptions);
+    	createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
+    	createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
       
-      //store this is in the trip object later
-      MainActivity.segments = new ArrayList<Segment>(segments);
-    }
+    	CameraUpdate center = CameraUpdateFactory.newLatLng(start.getLatLng());
+    	CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
 
+    	getMap().moveCamera(zoom);
+    	getMap().moveCamera(center);
+      
+		//TODO: store this is in the trip object later
+		MainActivity.segments = new ArrayList<Segment>(segments);
+	}
 }

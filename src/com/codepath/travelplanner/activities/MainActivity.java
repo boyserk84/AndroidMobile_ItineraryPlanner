@@ -31,7 +31,6 @@ import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.codepath.travelplanner.helpers.OnPositiveListener;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
-import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends FragmentActivity implements OnPositiveListener, IRequestListener {
 	/** views */
@@ -61,17 +60,17 @@ public class MainActivity extends FragmentActivity implements OnPositiveListener
 		ArrayList<TripLocation> tlList = new ArrayList<TripLocation>();
 		
 		TripLocation tl = new TripLocation();
-		tl.setLatLng(new LatLng(37.765240, -122.409432));
-		tl.setLocationName("Franklin Square");
-		tl.setDescription("Pretty cool place to hangout.");
-		tl.setRating(4);
-		tlList.add(tl);
-		
-		tl = new TripLocation();
-		tl.setLatLng(new LatLng(37.770379, -122.404110));
+		tl.setLatLng(map.getLatLngFromAddress("699 8th Street, San Francisco, CA"));
 		tl.setLocationName("Zynga HQ");
 		tl.setDescription("Games are made here");
 		tl.setRating(3.5);
+		tlList.add(tl);
+		
+		tl = new TripLocation();
+		tl.setLatLng(map.getLatLngFromAddress("Golden Gate Bridge, San Francisco, CA"));
+		tl.setLocationName("Golden Gate Bridge");
+		tl.setDescription("It's a bridge!!!");
+		tl.setRating(4.5);
 		tlList.add(tl);
 		
 		t.setPlaces(tlList);

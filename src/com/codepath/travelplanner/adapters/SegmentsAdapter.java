@@ -3,7 +3,6 @@ package com.codepath.travelplanner.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.text.InputFilter.LengthFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +38,7 @@ public class SegmentsAdapter extends ArrayAdapter<Segment> {
         tvDirection.setText(segment.getInstruction());
         tvDistance.setText(segment.getLength());
         
+        //TODO: Add drawable to segment
         if(position == 0) {
         	ivDirection.setImageResource(R.drawable.start_blue);
         }
