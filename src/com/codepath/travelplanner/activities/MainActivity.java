@@ -31,6 +31,7 @@ import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.codepath.travelplanner.helpers.OnPositiveListener;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
+import com.codepath.travelplanner.models.YelpFilterRequest;
 
 public class MainActivity extends FragmentActivity implements OnPositiveListener, IRequestListener {
 	/** views */
@@ -125,13 +126,16 @@ public class MainActivity extends FragmentActivity implements OnPositiveListener
 		// TODO: make query for destination results
 		
 		// Hack: Test query to yelp API
-		Double latitude = 37.765240;
-		Double longitude = -122.409432;
-		SimpleYelpClient.getRestClient().search("restaurant", latitude, longitude, this);
+		YelpFilterRequest request = new YelpFilterRequest();
+		request.term = "restaurant";
+		request.latitude = 37.765240;
+		request.longitude = -122.409432;
+		SimpleYelpClient.getRestClient().search( request, this);
 		// End of Hack
 		
 		// TODO: Can't this array be Serializable
 		
+		// TODO: Move this to OnSuccess to populate data
 		SuggestedPlacesDialog.newInstance(new ArrayList<Parcelable>()).show(getFragmentManager(), "destinations");
 	}
 
