@@ -125,7 +125,7 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 			execute( filter.term, 
 					Double.toString( filter.latitude ), 
 					Double.toString( filter.longitude), 
-					Integer.toString( filter.limit ), 
+					Integer.toString( (filter.limit <= 20) ? filter.limit: 20 ), 
 					Integer.toString( filter.sortType ), 
 					Double.toString( filter.radius ),
 					filter.categoryFilter
