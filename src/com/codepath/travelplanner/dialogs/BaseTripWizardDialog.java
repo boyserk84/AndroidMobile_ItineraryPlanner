@@ -16,8 +16,14 @@ import com.codepath.travelplanner.models.Trip;
 public abstract class BaseTripWizardDialog extends DialogFragment {
 	/** start place extra */
 	protected static final String START_EXTRA = "start";
+	/** latitude place extra */
+	protected static final String LATITUDE_EXTRA = "latitude";
+	/** longitude place extra */
+	protected static final String LONGITUDE_EXTRA = "longitude";
 	/** name of trip in the bundle */
 	protected static final String TRIP_EXTRA = "trip";
+	/** name of location filter in the bundle */
+	protected static final String FILTER_EXTRA = "filter";
 
 	/** trip object that the wizard is making */
 	protected Trip newTrip = new Trip();
@@ -30,16 +36,10 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 		setupViews(v);
 
 		builder.setView(v);
-		builder.setPositiveButton(getPositiveBtnTextId(), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				onPositiveClick();
-			}
-		});
-
+		setPositiveButton(builder);
 		builder.setNegativeButton(getNegativeBtnTextId(), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				getDialog().cancel();
+				onNegativeClick();
 			}
 		});
 
@@ -48,6 +48,16 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 
 	/** get the resource id of the layout associated with this dialog */
 	protected abstract int getDialogResourceId();
+
+	/** sets up the positive button */
+	protected void setPositiveButton(AlertDialog.Builder builder) {
+		builder.setPositiveButton(getPositiveBtnTextId(), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				onPositiveClick();
+			}
+		});
+	}
 
 	/** get text id for the positive button */
 	protected int getPositiveBtnTextId() {
@@ -64,4 +74,7 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 
 	/** callback for when the positive button is clicked */
 	protected abstract void onPositiveClick();
+
+	/** callback for when the negative button is clicked */
+	protected abstract void onNegativeClick();
 }

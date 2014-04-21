@@ -41,6 +41,8 @@ public class TripLocation implements Serializable{
 	private String snippetImageUrl;
 	
 	private LocationAddress address;
+
+	public TripLocation() {}
 	
 	
 	/**
@@ -48,6 +50,14 @@ public class TripLocation implements Serializable{
 	 */
 	public ArrayList<String> getDirections() {
 		return directions;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
 	/**
@@ -185,9 +195,4 @@ public class TripLocation implements Serializable{
 		return list;
 		
 	}
-
-
-
-
-
 }

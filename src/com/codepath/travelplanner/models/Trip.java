@@ -89,6 +89,28 @@ public class Trip implements Serializable{
 	}
 
 	/**
+	 * @return the start triplocation
+	 */
+	public TripLocation getStart() {
+		if (places.size() > 0) {
+			return places.get(0);
+		} else {
+			return new TripLocation();
+		}
+	}
+
+	/**
+	 * @return the end triplocation
+	 */
+	public TripLocation getEnd() {
+		if (places.size() > 0) {
+			return places.get(places.size()-1);
+		} else {
+			return new TripLocation();
+		}
+	}
+
+	/**
 	 * Adds a place to the end of the places list
 	 */
 	public void addPlace(TripLocation place) {

@@ -5,22 +5,33 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import com.codepath.travelplanner.R;
+import com.codepath.travelplanner.apis.SimpleYelpClient;
+import com.codepath.travelplanner.models.LocationFilter;
 import com.codepath.travelplanner.models.TripLocation;
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * FiltersDialogTrip - dialog containing the filters (eg. activity, distance, price, etc)
  */
-public class FiltersDialogTrip extends BaseTripWizardDialog {
-	/** views */
+public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestListener{
+	/** edit text containing the activity type user wants to search for (eg. food, museum, etc) */
 	private EditText etActivity;
+	/** spinner containing distances to filter by */
 	private Spinner spDistances;
+	/** spinner containing prices to filter by */
 	private Spinner spPrices;
 
 	/** static function that creates a new filters dialog */
-	public static FiltersDialogTrip newInstance(String start) {
+	public static FiltersDialogTrip newInstance(String start, double latitude, double longitude) {
 		FiltersDialogTrip dialog = new FiltersDialogTrip();
 		Bundle bundle = new Bundle();
 		bundle.putString(START_EXTRA, start);
+		bundle.putDouble(LATITUDE_EXTRA, latitude);
+		bundle.putDouble(LONGITUDE_EXTRA, longitude);
 		dialog.setArguments(bundle);
 		return dialog;
 	}
@@ -28,9 +39,18 @@ public class FiltersDialogTrip extends BaseTripWizardDialog {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		TripLocation tripStart = new TripLocation();
-
-		//newTrip. = getArguments().getParcelableArrayList(START_EXTRA);
+		String startQueryStr = getArguments().getString(START_EXTRA);
+		// TODO: search for start position instead of using current position
+		startQueryStr = "";
+		if (startQueryStr.length() > 0) {
+			SimpleYelpClient.getRestClient().search(getArguments().getString(START_EXTRA),
+					getArguments().getDouble(LATITUDE_EXTRA), getArguments().getDouble(LONGITUDE_EXTRA), this);
+		} else {
+			TripLocation loc = new TripLocation();
+			loc.setLatitude(getArguments().getDouble(LATITUDE_EXTRA));
+			loc.setLongitude(getArguments().getDouble(LONGITUDE_EXTRA));
+			newTrip.addPlace(loc);
+		}
 	}
 
 	@Override
@@ -52,16 +72,37 @@ public class FiltersDialogTrip extends BaseTripWizardDialog {
 
 	@Override
 	protected void onPositiveClick() {
-		// TODO: make query for destination results
+		LocationFilter filter = new LocationFilter(etActivity.getText().toString()); // TODO: add pricing and rating to filter
+		SuggestedPlacesDialogTrip.newInstance(newTrip, filter).show(getFragmentManager(), "destinations");
+	}
 
-		// Hack: Test query to yelp API
-//		Double latitude = start.latitude;
-//		Double longitude = start.longitude;
-//		SimpleYelpClient.getRestClient().search("restaurant", latitude, longitude, this);
-		// End of Hack
+	@Override
+	protected void onNegativeClick() {
+		getDialog().cancel();
+	}
 
-		// TODO: Can't this array be Serializable
+	//////////////////////////////////
+	/// Callback from Yelp Api calls
+	//////////////////////////////////
 
-		SuggestedPlacesDialogTrip.newInstance(newTrip).show(getFragmentManager(), "destinations");
+	@Override
+	public void onSuccess(JSONObject successResult) {
+		try {
+			ArrayList<TripLocation> places = TripLocation.fromJSONArray( successResult.getJSONArray("businesses") );
+			if (places.size() > 0) {
+				newTrip.addPlace(places.get(0));
+			} else {
+				// TODO handle case when we couldn't find a start destination
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public void onFailure(JSONObject failureResult) {
+		// TODO Auto-generated method stub
 	}
 }

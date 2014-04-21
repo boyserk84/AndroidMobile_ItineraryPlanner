@@ -2,6 +2,7 @@ package com.codepath.travelplanner.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.*;
@@ -15,7 +16,6 @@ import com.codepath.travelplanner.directions.Routing;
 import com.codepath.travelplanner.directions.RoutingListener;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
-import com.codepath.travelplanner.models.TripLocation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,12 +27,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-
-public class MainActivity extends FragmentActivity implements RoutingListener, IRequestListener {
+public class MainActivity extends FragmentActivity implements RoutingListener {
 	/** views */
 	ImageButton ibtnNewTrip;
 	EditText etNewTrip;
@@ -158,28 +153,7 @@ public class MainActivity extends FragmentActivity implements RoutingListener, I
 
 	/** callback when new trip button is clicked */
 	public void onNewTrip() {
-		FiltersDialogTrip.newInstance(etNewTrip.getText().toString()).show(getFragmentManager(), "filters");
-	}
-
-
-	//////////////////////////////////
-	/// Callback from Yelp Api calls
-	//////////////////////////////////
-	
-	@Override
-	public void onSuccess(JSONObject successResult) {
-		try {
-			TripLocation.fromJSONArray( successResult.getJSONArray("businesses") );
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
-	@Override
-	public void onFailure(JSONObject failureResult) {
-		// TODO Auto-generated method stub
-		
+		Location myLoc = map.getMyLocation();
+		FiltersDialogTrip.newInstance(etNewTrip.getText().toString(), myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
 	}
 }

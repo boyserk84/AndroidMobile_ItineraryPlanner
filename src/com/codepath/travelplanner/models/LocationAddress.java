@@ -4,13 +4,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * LocationAddress.java
  * Strongly typed data class for storing address info.
  * @author nkemavaha
  *
  */
-public class LocationAddress {
+public class LocationAddress implements Serializable{
 	
 	private String mainAddress;
 	
@@ -19,6 +21,8 @@ public class LocationAddress {
 	private String state;
 	
 	private String zip;
+
+	public LocationAddress() {};
 	
 	public String getMainAddress() {
 		return mainAddress;

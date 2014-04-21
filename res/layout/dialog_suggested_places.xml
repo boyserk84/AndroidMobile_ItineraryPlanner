@@ -23,9 +23,18 @@
 			android:layout_centerHorizontal="true"
 			android:layout_below="@+id/tvSuggestedTitle"/>
 
+	<ProgressBar
+			style="@android:style/Widget.ProgressBar.Small.Inverse"
+			android:indeterminate="true"
+			android:id="@+id/pbSuggLoading"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:layout_centerHorizontal="true" />
+
 	<ListView
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:id="@+id/lvSuggPlaces"
 			android:layout_below="@+id/ivDivider"
 			android:layout_centerHorizontal="true"
