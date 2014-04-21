@@ -11,6 +11,8 @@ import java.io.Serializable;
  *
  */
 public class YelpFilterRequest implements Serializable {
+	private static final long serialVersionUID = 1587982519033411932L;
+	
 	public static final int SORT_BY_DISTANCE = 1;
 	public static final double DEFAULT_ONE_MILE_RADIUS_IN_METER = 1609.34;
 	
@@ -18,16 +20,16 @@ public class YelpFilterRequest implements Serializable {
 	
 	public double latitude;
 	
-	public String term;
+	public String term = "";
 	
 	public double radius = DEFAULT_ONE_MILE_RADIUS_IN_METER;	// 1 mile radius
 	
 	public int sortType = SORT_BY_DISTANCE;	// by distance
 	
-	public int limit = 50;	// Limit returning result
+	public int limit = 20;	// Limit returning result
 	
 	/** see http://www.yelp.com/developers/documentation/category_list */
-	public String categoryFilter;
+	public String categoryFilter = "";
 
 	/** constructor */
 	public YelpFilterRequest() {};
