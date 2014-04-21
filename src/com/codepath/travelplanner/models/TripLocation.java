@@ -1,5 +1,8 @@
 package com.codepath.travelplanner.models;
 
+import android.util.Log;
+import android.widget.Toast;
+import com.codepath.travelplanner.helpers.Util;
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -161,13 +164,12 @@ public class TripLocation implements Serializable{
 		
 		// TODO: make sure we get the correct key
 		try {
-			//tripLoc.longitude = object.getDouble("longitude");
-			//tripLoc.latitude = object.getDouble("latitude");
-			
 			// From Yelp Api
 			tripLoc.locationName = object.getString("name");
 			tripLoc.rating = object.getDouble("rating");
-			tripLoc.imageUrl = object.getString("image_url");
+			if (object.has("image_url")) {
+				tripLoc.imageUrl = object.getString("image_url");
+			}
 			tripLoc.mobileUrl = object.getString("mobile_url");
 			tripLoc.snippetText = object.getString("snippet_text");
 			tripLoc.snippetImageUrl = object.getString("snippet_image_url");
@@ -176,7 +178,8 @@ public class TripLocation implements Serializable{
 
 			// TODO: Add more
 		} catch (JSONException e) {
-			tripLoc = null;
+			Log.d("travelIt", "TripLocation.fromJSON error - " + tripLoc.locationName + " :: " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		return tripLoc;

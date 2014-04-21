@@ -1,20 +1,18 @@
 package com.codepath.travelplanner.directions;
 
+import android.util.Log;
+import com.codepath.travelplanner.R;
+import com.google.android.gms.maps.model.LatLng;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.util.Log;
-
-import com.codepath.travelplanner.R;
-import com.google.android.gms.maps.model.LatLng;
 
 public class GoogleParser extends XMLParser implements Parser {
 	/** Distance covered. **/

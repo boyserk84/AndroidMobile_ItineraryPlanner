@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.adapters.LocationsAdapter;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
-import com.codepath.travelplanner.models.LocationFilter;
+import com.codepath.travelplanner.helpers.Util;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
@@ -84,7 +84,9 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 				// add the selected item to the trip's places list
-				newTrip.addPlace((TripLocation) adapterView.getItemAtPosition(i));
+				TripLocation tripLocation = (TripLocation) adapterView.getItemAtPosition(i);
+				tripLocation.setLatLng(Util.getLatLngFromAddress(tripLocation.getAddress().toString(), getActivity()));
+				newTrip.addPlace(tripLocation);
 				// go to next page
 				dismiss();
 				SummaryDialogTrip.newInstance(newTrip, filter).show(getFragmentManager(), "summary");

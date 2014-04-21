@@ -1,12 +1,11 @@
 package com.codepath.travelplanner.directions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.AsyncTask;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Routing extends AsyncTask<LatLng, Void, Route> {
 	protected ArrayList<RoutingListener> _aListeners;
@@ -72,6 +71,11 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 		return new GoogleParser(constructURL(aPoints)).parse();
 	}
 
+	/**
+	 * Constructs a URL that queries for directions from a path of points
+	 * @param points	list of points in the route
+	 * @return		URL for the query
+	 */
 	protected String constructURL(LatLng... points) {
 		LatLng start = points[0];
 		LatLng dest = points[1];

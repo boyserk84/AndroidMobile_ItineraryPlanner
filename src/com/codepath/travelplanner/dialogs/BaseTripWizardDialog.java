@@ -28,6 +28,14 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 	/** trip object that the wizard is making */
 	protected Trip newTrip = new Trip();
 
+	/**
+	 * OnNewTripListener - Interface for listening to events related to making a new trip
+	 */
+	public interface OnNewTripListener {
+		/** called when we want to route the new trip */
+		public void onRouteListener(Trip trip);
+	}
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

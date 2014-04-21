@@ -1,6 +1,7 @@
 package com.codepath.travelplanner.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class LocationsAdapter extends ArrayAdapter<TripLocation>{
 			TextView tvDistNum = (TextView) v.findViewById(R.id.tvDistNum);
 			df = new DecimalFormat("#0.00");
 			tvDistNum.setText(df.format(tripLoc.getDistance()/NUM_METERS_PER_MILE));
+		} else {
+			Log.d("travelIt", "LocationsAdapter.getView error -- triplocation is null, pos = " + position);
 		}
 		return v;
 	}

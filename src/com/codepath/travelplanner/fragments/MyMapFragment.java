@@ -1,19 +1,12 @@
 package com.codepath.travelplanner.fragments;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.activities.MainActivity;
 import com.codepath.travelplanner.directions.Routing;
@@ -25,15 +18,14 @@ import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * MyMapFragment - custom map fragment
+ */
 public class MyMapFragment extends MapFragment implements RoutingListener {
 	protected Circle circle;
 	protected Polyline polyline;
@@ -112,32 +104,13 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 	/** Generate new directions */
 	public void newRoute(Trip trip) {
 		ArrayList<TripLocation> locations = trip.getPlaces();
-		
-		if(locations.size() > 1) {
+		if (locations.size() > 1) {
+			start = trip.getStart();
+			end = trip.getEnd();
 			Routing routing = new Routing(Routing.TravelMode.TRANSIT);
 			routing.registerListener(this);
-			start = locations.get(0);
-			end = locations.get(1);
 			routing.execute(start.getLatLng(), end.getLatLng());
 		}
-	}
-	
-	/** Convert an address into a LatLng object, ****if you have an exact address use that, if not send the name of the place along with city and state**** */
-	public LatLng getLatLngFromAddress(String address) {
-		double latitude = 0;
-		double longtitude = 0;
-		Geocoder geoCoder = new Geocoder(getActivity());
-		try {
-			List<Address> addresses = geoCoder.getFromLocationName(address, 1); 
-			if (addresses.size() >  0) {
-				latitude = addresses.get(0).getLatitude();
-				longtitude = addresses.get(0).getLongitude();
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return new LatLng(latitude, longtitude);
 	}
 	
 	@Override
@@ -152,17 +125,19 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 
 	@Override
 	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
-		createPolyline(mPolyOptions);
-    	createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
-    	createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
-      
-    	CameraUpdate center = CameraUpdateFactory.newLatLng(start.getLatLng());
-    	CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+		if (start != null && end != null) {
+			createPolyline(mPolyOptions);
+			createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
+			createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
 
-    	getMap().moveCamera(zoom);
-    	getMap().moveCamera(center);
-      
-		//TODO: Jeff: store this is in the trip object later
-		MainActivity.segments = new ArrayList<Segment>(segments);
+			CameraUpdate center = CameraUpdateFactory.newLatLng(start.getLatLng());
+			CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+
+			getMap().moveCamera(zoom);
+			getMap().moveCamera(center);
+
+			//TODO: Jeff: store this is in the trip object later
+			MainActivity.segments = new ArrayList<Segment>(segments);
+		}
 	}
 }

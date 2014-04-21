@@ -28,7 +28,6 @@ public class LocationAddress implements Serializable{
 		return mainAddress;
 	}
 
-
 	public String getCity() {
 		return city;
 	}
@@ -41,7 +40,9 @@ public class LocationAddress implements Serializable{
 		return zip;
 	}
 
-
+	public String toString() {
+		return mainAddress + ", " + getZip();
+	}
 	
 	public static LocationAddress fromJSON( JSONObject object ) {
 		LocationAddress loc = new LocationAddress();

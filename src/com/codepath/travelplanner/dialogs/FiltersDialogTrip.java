@@ -6,7 +6,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
-import com.codepath.travelplanner.models.LocationFilter;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;

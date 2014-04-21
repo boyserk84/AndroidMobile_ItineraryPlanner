@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.codepath.travelplanner.R;
-import com.codepath.travelplanner.models.LocationFilter;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 
@@ -58,7 +57,9 @@ public class SummaryDialogTrip extends BaseTripWizardDialog {
 
 	@Override
 	protected void onPositiveClick() {
-		//listener.onSummaryPositive(); // TODO: send back itinerary data
+		// route
+		OnNewTripListener listener = (OnNewTripListener) getActivity();
+		listener.onRouteListener(newTrip);
 	}
 
 	@Override

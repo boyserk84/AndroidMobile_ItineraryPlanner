@@ -2,6 +2,9 @@ package com.codepath.travelplanner.directions;
 
 import java.io.Serializable;
 
+/**
+ * Segment - segment of a path in a route
+ */
 public class Segment implements Serializable {
 	/**
 	 * 
