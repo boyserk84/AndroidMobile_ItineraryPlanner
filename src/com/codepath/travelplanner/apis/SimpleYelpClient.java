@@ -195,8 +195,6 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 		request.addQuerystringParameter("ll", latitude + "," + longitude);
 		request.addQuerystringParameter("sort", sortType);
 		request.addQuerystringParameter("radius_filter", radius);
-		
-		// TODO: If crashed, let me, Nate K, know!!!
 		request.addQuerystringParameter("limit", formatQueryString( limit ) ); 
 		request.addQuerystringParameter("category_filter", formatQueryString( categoryFilter ) ); 
 		
