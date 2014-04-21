@@ -20,7 +20,7 @@ public class YelpFilterRequest implements Serializable {
 	
 	public double latitude;
 	
-	public String term;
+	public String term = "";
 	
 	public double radius = DEFAULT_ONE_MILE_RADIUS_IN_METER;	// 1 mile radius
 	

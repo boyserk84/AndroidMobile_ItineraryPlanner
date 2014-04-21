@@ -191,16 +191,31 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 		// Create a GET request
 		OAuthRequest request = new OAuthRequest(Verb.GET, SimpleYelpClientConfig.REST_URL_SEARCH_API_BASE );
 		
-		request.addQuerystringParameter("term", searchTerm);
+		request.addQuerystringParameter("term", formatQueryString( searchTerm ) );
 		request.addQuerystringParameter("ll", latitude + "," + longitude);
 		request.addQuerystringParameter("sort", sortType);
 		request.addQuerystringParameter("radius_filter", radius);
-//		request.addQuerystringParameter("limit", limit); // TODO: causes query to hang -- figure out why
-//		request.addQuerystringParameter("category_filter", categoryFilter ); // TODO: causes app to crash -- figure out why
+		
+		// TODO: If crashed, let me, Nate K, know!!!
+		request.addQuerystringParameter("limit", formatQueryString( limit ) ); 
+		request.addQuerystringParameter("category_filter", formatQueryString( categoryFilter ) ); 
 		
 		// Sign a request with access token.
 		this.service.signRequest( accessToken, request);
 		Response response = request.send();
 		return response.getBody();
+	}
+	
+	/**
+	 * Helper function to format the given string to appropriate query string
+	 * NOTE: This is for sanity check because OAuthRequest.addQueryStringParameter() will crash if string value is null.
+	 * @param str		String
+	 * @return String. Otherwise, if pass in null, it will return empty string.
+	 */
+	private String formatQueryString(String str) {
+		if ( str != null ) {
+			return str;
+		}
+		return "";
 	}
 }
