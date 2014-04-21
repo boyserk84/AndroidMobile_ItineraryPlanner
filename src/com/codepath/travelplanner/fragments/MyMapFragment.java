@@ -86,7 +86,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 	}
 	
 	/** Creates a circle on the map */
-	public Circle createCircle(LatLng center, int radiusInMeters) {
+	public Circle createCircle(LatLng center, double radiusInMeters) {
 		//only allow one circle on the map
 		if(circle != null) {
 			circle.remove();

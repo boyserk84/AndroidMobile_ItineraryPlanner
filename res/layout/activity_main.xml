@@ -21,6 +21,7 @@
      android:layout_alignParentBottom="true"
      android:layout_alignParentLeft="true"
      android:layout_marginRight="22dp"
+	 android:visibility="invisible"
      android:onClick="onDetails"
      android:text="Directions" />
  

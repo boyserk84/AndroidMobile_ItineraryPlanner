@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.TripLocation;
+import com.codepath.travelplanner.models.YelpFilterRequest;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -16,9 +17,7 @@ import java.util.List;
 /**
  * LocationsAdapter - adapter for list of trip locations
  */
-public class LocationsAdapter extends ArrayAdapter<TripLocation>{
-	/** number of meters in one mile */
-	private static final double NUM_METERS_PER_MILE = 1609.34;
+public class LocationsAdapter extends ArrayAdapter<TripLocation> {
 
 	/** constructor */
 	public LocationsAdapter(Context context, List<TripLocation> locs) {
@@ -42,7 +41,7 @@ public class LocationsAdapter extends ArrayAdapter<TripLocation>{
 			tvRatingNum.setText(df.format(tripLoc.getRating()));
 			TextView tvDistNum = (TextView) v.findViewById(R.id.tvDistNum);
 			df = new DecimalFormat("#0.00");
-			tvDistNum.setText(df.format(tripLoc.getDistance()/NUM_METERS_PER_MILE));
+			tvDistNum.setText(df.format(tripLoc.getDistance()/YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER));
 		} else {
 			Log.d("travelIt", "LocationsAdapter.getView error -- triplocation is null, pos = " + position);
 		}
