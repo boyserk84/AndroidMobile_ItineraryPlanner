@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.LocationFilter;
 import com.codepath.travelplanner.models.Trip;
+import com.codepath.travelplanner.models.YelpFilterRequest;
 
 /**
  * SummaryDialogTrip - dialog showing the summary of the itinerary the wizard will create
@@ -21,10 +22,10 @@ public class SummaryDialogTrip extends BaseTripWizardDialog {
 	private EditText etSummTripName;
 
 	/** search filter to pass to the previous dialog if we go back */
-	private LocationFilter filter;
+	private YelpFilterRequest filter;
 
 	/** static function that creates a new filters dialog */
-	public static SummaryDialogTrip newInstance(Trip trip, LocationFilter filter) {
+	public static SummaryDialogTrip newInstance(Trip trip, YelpFilterRequest filter) {
 		SummaryDialogTrip dialog = new SummaryDialogTrip();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(TRIP_EXTRA, trip);
@@ -42,7 +43,7 @@ public class SummaryDialogTrip extends BaseTripWizardDialog {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		newTrip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
-		filter = (LocationFilter) getArguments().getSerializable(FILTER_EXTRA);
+		filter = (YelpFilterRequest) getArguments().getSerializable(FILTER_EXTRA);
 	}
 
 	@Override

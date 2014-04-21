@@ -1,11 +1,12 @@
 package com.codepath.travelplanner.models;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
+import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * TripLocation.java
@@ -16,19 +17,15 @@ import org.json.JSONObject;
  */
 public class TripLocation implements Serializable{
 	
-	private double longitude;
-	
-	private double latitude;
+	private LatLng latLng;
 	
 	private String locationName;
+	
+	private String description;
 	
 	private double rating;
 	
 	private double distance;
-	
-	private double fromLongitude;
-	
-	private double fromLatitude;
 		
 	private ArrayList<String> directions;
 	
@@ -42,8 +39,8 @@ public class TripLocation implements Serializable{
 	
 	private LocationAddress address;
 
+	/** empty constructor */
 	public TripLocation() {}
-	
 	
 	/**
 	 * @return Array of instruction how to get to this location from the starting location.
@@ -52,26 +49,18 @@ public class TripLocation implements Serializable{
 		return directions;
 	}
 
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
-	}
-
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-
 	/**
-	 * @return Longitude of the current location
+	 * @return LatLng of the current location
 	 */
-	public double getLongitude() {
-		return longitude;
+	public LatLng getLatLng() {
+		return latLng;
 	}
-
+	
 	/**
-	 * @return Latitude of the current location
+	 * @param LatLng of the current location
 	 */
-	public double getLatitude() {
-		return latitude;
+	public void setLatLng(LatLng latLng) {
+		this.latLng = latLng;
 	}
 
 	/**
@@ -80,12 +69,44 @@ public class TripLocation implements Serializable{
 	public String getLocationName() {
 		return locationName;
 	}
+	
+	/**
+	 * @param Location or place name
+	 */
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 
+	/**
+	 * @return Description of place
+	 */
+	public String getDescription() {
+		return description;
+	}
+	
+	/**
+	 * @param Description of place
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 	/**
 	 * @return Yelp rating score
 	 */
 	public double getRating() {
 		return rating;
+	}
+	
+	/**
+	 * @param Yelp rating score
+	 */
+	public void setRating(double rating) {
+		this.rating = rating;
+	}
+	
+	public String getMarkerDescription() {
+		return description + " " + rating + " stars.";
 	}
 
 	/**
@@ -93,20 +114,6 @@ public class TripLocation implements Serializable{
 	 */
 	public double getDistance() {
 		return distance;
-	}
-
-	/**
-	 * @return Longitude of starting location to this location.
-	 */
-	public double getFromLongitude() {
-		return fromLongitude;
-	}
-
-	/**
-	 * @return Latitude of starting location to this location.
-	 */
-	public double getFromLatitude() {
-		return fromLatitude;
 	}
 	
 	/**

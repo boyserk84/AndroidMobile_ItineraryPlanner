@@ -13,6 +13,7 @@ import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.models.LocationFilter;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
+import com.codepath.travelplanner.models.YelpFilterRequest;
 import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,10 +34,10 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	private ProgressBar pbSuggLoading;
 
 	/** search filter when searching for suggested places */
-	private LocationFilter filter;
+	private YelpFilterRequest filter;
 
 	/** static function that creates a new suggested places dialog */
-	public static SuggestedPlacesDialogTrip newInstance(Trip trip, LocationFilter filter) {
+	public static SuggestedPlacesDialogTrip newInstance(Trip trip, YelpFilterRequest filter) {
 		SuggestedPlacesDialogTrip dialog = new SuggestedPlacesDialogTrip();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(TRIP_EXTRA, trip);
@@ -59,13 +60,12 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		newTrip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
-		filter = (LocationFilter) getArguments().getSerializable(FILTER_EXTRA);
+		filter = (YelpFilterRequest) getArguments().getSerializable(FILTER_EXTRA);
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		TripLocation start = newTrip.getStart();
-		SimpleYelpClient.getRestClient().search(filter.getActivity(), start.getLatitude(), start.getLongitude(), this);
+		SimpleYelpClient.getRestClient().search(filter, this);
 		return super.onCreateDialog(savedInstanceState);
 	}
 
@@ -102,7 +102,7 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	@Override
 	protected void onNegativeClick() {
 		TripLocation loc = newTrip.getStart();
-		FiltersDialogTrip.newInstance("", loc.getLatitude(), loc.getLongitude()).show(getFragmentManager(), "filters");
+		FiltersDialogTrip.newInstance("", loc.getLatLng().latitude, loc.getLatLng().longitude).show(getFragmentManager(), "filters");
 	}
 
 	@Override

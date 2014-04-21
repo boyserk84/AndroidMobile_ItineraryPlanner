@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+import com.codepath.travelplanner.R;
 import com.google.android.gms.maps.model.LatLng;
 
 public class GoogleParser extends XMLParser implements Parser {
@@ -66,9 +67,8 @@ public class GoogleParser extends XMLParser implements Parser {
 				final JSONObject step = steps.getJSONObject(i);
 				//Get the start position for this step and set it on the segment
 				final JSONObject start = step.getJSONObject("start_location");
-				final LatLng position = new LatLng(start.getDouble("lat"),
-				        start.getDouble("lng"));
-				segment.setPoint(position);
+				segment.setLat(start.getDouble("lat"));
+				segment.setLng(start.getDouble("lng"));
 				//Set the length of this segment in metres
 				final int length = step.getJSONObject("distance").getInt("value");
 				distance += length;
@@ -77,6 +77,15 @@ public class GoogleParser extends XMLParser implements Parser {
 				segment.setDistance(distance/1000);
 				//Strip html from google directions and set as turn instruction
 				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
+				if(i == 0) {
+					segment.setIcon(R.drawable.start_blue);
+				}
+				else if(i == numSteps - 1) {
+					segment.setIcon(R.drawable.end_green);
+				}
+				else {
+					segment.setIcon(R.drawable.ic_launcher);
+				}
 				//Retrieve & decode this segment's polyline and add it to the route.
 				route.addPoints(decodePolyLine(step.getJSONObject("polyline").getString("points")));
 				//Push a copy of the segment to the route

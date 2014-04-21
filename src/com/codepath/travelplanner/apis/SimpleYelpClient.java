@@ -1,7 +1,10 @@
 package com.codepath.travelplanner.apis;
 
-import java.util.ArrayList;
-
+import android.os.AsyncTask;
+import com.codepath.travelplanner.models.YelpFilterRequest;
+import natemobiles.app.simpleyelpapiforandroid.configs.SimpleYelpClientConfig;
+import natemobiles.app.simpleyelpapiforandroid.configs.YelpApiV2;
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.builder.ServiceBuilder;
@@ -11,10 +14,7 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
-import natemobiles.app.simpleyelpapiforandroid.configs.SimpleYelpClientConfig;
-import natemobiles.app.simpleyelpapiforandroid.configs.YelpApiV2;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-import android.os.AsyncTask;
+import java.util.ArrayList;
 
 /**
  * SimpleYelpClient
@@ -87,13 +87,52 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 	 */
 	public void search(String query, double latitude, double longitude, IRequestListener... handlers) {
 		if ( handlers != null && handlers.length > 0) {
-    		for (IRequestListener handler:handlers) {
-    			if ( handler != null ) {
-    				listeners.add( handler );
-    			}
-    		}
-    	}
-		execute( query, Double.toString( latitude ), Double.toString( longitude ) );
+			for (IRequestListener handler:handlers) {
+				if ( handler != null ) {
+					listeners.add( handler );
+				}
+			}
+		}
+		YelpFilterRequest yelpRequest = new YelpFilterRequest();
+		yelpRequest.term = query;
+		yelpRequest.latitude = latitude;
+		yelpRequest.longitude = longitude;
+		runSearch( yelpRequest );
+	}
+	
+	/**
+	 * Request a search request to Yelp API by Filter Object
+	 * @param filter		Yelp filter object
+	 * @param handlers		callbacks/handler when response is received.
+	 */
+	public void search(YelpFilterRequest filter, IRequestListener... handlers) {
+		if ( handlers != null && handlers.length > 0) {
+			for (IRequestListener handler:handlers) {
+				if ( handler != null ) {
+					listeners.add( handler );
+				}
+			}
+		}
+		runSearch( filter );
+	}
+	
+	/**
+	 * Run a search query based on the given YelpFilterRequest object
+	 * @param filter
+	 */
+	private void runSearch( YelpFilterRequest filter ) {	
+		if ( filter != null ) {
+			execute( filter.term, 
+					Double.toString( filter.latitude ), 
+					Double.toString( filter.longitude), 
+					Integer.toString( filter.limit ), 
+					Integer.toString( filter.sortType ), 
+					Double.toString( filter.radius ),
+					filter.categoryFilter
+					);
+		} else {
+			throw new NullPointerException("YelpFilterRequest is null before search is run!");
+		}
 	}
 
     ///////////////////////////////
@@ -144,17 +183,20 @@ public class SimpleYelpClient extends AsyncTask<String, Void, String> {
 		String searchTerm = params[0];
 		String latitude = params[1];
 		String longitude = params[2];
+		String limit = params[3];
+		String sortType = params[4];
+		String radius = params[5];
+		String categoryFilter = params[6];
 
 		// Create a GET request
 		OAuthRequest request = new OAuthRequest(Verb.GET, SimpleYelpClientConfig.REST_URL_SEARCH_API_BASE );
 		
-		// TODO: make this more robust and support multiple parameters
-		// TODO: Create a request object
-		
-		// Add parameters
 		request.addQuerystringParameter("term", searchTerm);
 		request.addQuerystringParameter("ll", latitude + "," + longitude);
-		request.addQuerystringParameter("sort", "1");	// sort by distance
+		request.addQuerystringParameter("sort", sortType);
+		request.addQuerystringParameter("radius_filter", radius);
+//		request.addQuerystringParameter("limit", limit); // TODO: causes query to hang -- figure out why
+//		request.addQuerystringParameter("category_filter", categoryFilter ); // TODO: causes app to crash -- figure out why
 		
 		// Sign a request with access token.
 		this.service.signRequest( accessToken, request);

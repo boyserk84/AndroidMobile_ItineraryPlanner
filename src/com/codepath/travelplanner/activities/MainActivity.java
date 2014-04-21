@@ -1,7 +1,6 @@
 package com.codepath.travelplanner.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -12,32 +11,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
-import com.codepath.travelplanner.directions.Routing;
-import com.codepath.travelplanner.directions.RoutingListener;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.codepath.travelplanner.models.Trip;
+import com.codepath.travelplanner.models.TripLocation;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends FragmentActivity implements RoutingListener {
+public class MainActivity extends FragmentActivity{
 	/** views */
 	ImageButton ibtnNewTrip;
 	EditText etNewTrip;
 
-	protected GoogleMap map;
-    protected LatLng start;
-    protected LatLng end;
-    public static ArrayList<Segment> segments;
+	protected MyMapFragment map;
+	public static ArrayList<Segment> segments;
     
-    public static final String SEGMENTS = "segments";
+	public static final String SEGMENTS = "segments";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,32 +34,34 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
 		setContentView(R.layout.activity_main);
 		
 		map = ((MyMapFragment) getFragmentManager()
-                .findFragmentById(R.id.map)).getMap();
+				.findFragmentById(R.id.map));
 		
-		map.getUiSettings().setRotateGesturesEnabled(false);
-		map.getUiSettings().setZoomControlsEnabled(false);
-		map.setMyLocationEnabled(true);
-                
-        /*LatLng sydney = new LatLng(-33.867, 151.206);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
-
-        map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));*/
+		Trip t = generateDummyTrip();
+		map.newRoute(t);
+		//map.createCircle(new LatLng(37.765240, -122.409432), 1000);
+	}
+	
+	protected Trip generateDummyTrip() {
+		Trip t = new Trip();
+		ArrayList<TripLocation> tlList = new ArrayList<TripLocation>();
 		
-		CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(37.765240,-122.409432));
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-
-        map.moveCamera(center);
-        map.animateCamera(zoom);
-
-        start = new LatLng(37.765240, -122.409432);
-        end = new LatLng(37.770379, -122.404110);
-
-        Routing routing = new Routing(Routing.TravelMode.WALKING);
-        routing.registerListener(this);
-        routing.execute(start, end);
+		TripLocation tl = new TripLocation();
+		tl.setLatLng(map.getLatLngFromAddress("699 8th Street, San Francisco, CA"));
+		tl.setLocationName("Zynga HQ");
+		tl.setDescription("Games are made here");
+		tl.setRating(3.5);
+		tlList.add(tl);
+		
+		tl = new TripLocation();
+		tl.setLatLng(map.getLatLngFromAddress("Golden Gate Bridge, San Francisco, CA"));
+		tl.setLocationName("Golden Gate Bridge");
+		tl.setDescription("It's a bridge!!!");
+		tl.setRating(4.5);
+		tlList.add(tl);
+		
+		t.setPlaces(tlList);
+		
+		return t;
 	}
 
 	@Override
@@ -85,50 +76,14 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
 		return true;
 	}
 	
+	/** Display directions */
 	public void onDetails(View v) {
 		if(segments != null) {
 			Intent i = new Intent(MainActivity.this, DetailsActivity.class);
-			//i.putExtra(SEGMENTS, segments); //this isnt serializing so commenting out for now
+			i.putExtra(SEGMENTS, segments); //this isnt serializing so commenting out for now
 			startActivity(i);
 		}
 	}
-
-	@Override
-    public void onRoutingFailure() {
-      // The Routing request failed
-    }
-
-    @Override
-    public void onRoutingStart() {
-      // The Routing Request starts
-    }
-
-    @Override
-    public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
-      PolylineOptions polyoptions = new PolylineOptions();
-      polyoptions.color(Color.BLUE);
-      polyoptions.width(10);
-      polyoptions.addAll(mPolyOptions.getPoints());
-      map.addPolyline(polyoptions);
-
-      // Start marker
-      MarkerOptions options = new MarkerOptions();
-      options.position(start);
-      options.icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue));
-      options.title("Franklin Square");
-      options.snippet("Pretty cool place to hangout. 4 stars");
-      map.addMarker(options);
-
-      // End marker
-      options = new MarkerOptions();
-      options.position(end);
-      options.icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green));
-      options.title("Zynga HQ");
-      options.snippet("Games are made here. 3.5 stars");
-      map.addMarker(options);
-      
-      MainActivity.segments = new ArrayList<Segment>(segments);
-    }
 
 	/** setup listeners for the menu item */
 	private void setupMenuItemListeners() {
@@ -153,7 +108,7 @@ public class MainActivity extends FragmentActivity implements RoutingListener {
 
 	/** callback when new trip button is clicked */
 	public void onNewTrip() {
-		Location myLoc = map.getMyLocation();
+		Location myLoc = map.getMap().getMyLocation();
 		FiltersDialogTrip.newInstance(etNewTrip.getText().toString(), myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
 	}
 }

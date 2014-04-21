@@ -8,6 +8,8 @@ import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.models.LocationFilter;
 import com.codepath.travelplanner.models.TripLocation;
+import com.codepath.travelplanner.models.YelpFilterRequest;
+import com.google.android.gms.maps.model.LatLng;
 import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,12 +45,15 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 		// TODO: search for start position instead of using current position
 		startQueryStr = "";
 		if (startQueryStr.length() > 0) {
-			SimpleYelpClient.getRestClient().search(getArguments().getString(START_EXTRA),
-					getArguments().getDouble(LATITUDE_EXTRA), getArguments().getDouble(LONGITUDE_EXTRA), this);
+			YelpFilterRequest filter = new YelpFilterRequest();
+			filter.term = getArguments().getString(START_EXTRA);
+			filter.latitude = getArguments().getDouble(LATITUDE_EXTRA);
+			filter.longitude = getArguments().getDouble(LONGITUDE_EXTRA);
+			SimpleYelpClient.getRestClient().search(filter, this);
 		} else {
 			TripLocation loc = new TripLocation();
-			loc.setLatitude(getArguments().getDouble(LATITUDE_EXTRA));
-			loc.setLongitude(getArguments().getDouble(LONGITUDE_EXTRA));
+			LatLng latLng = new LatLng(getArguments().getDouble(LATITUDE_EXTRA), getArguments().getDouble(LONGITUDE_EXTRA));
+			loc.setLatLng(latLng);
 			newTrip.addPlace(loc);
 		}
 	}
@@ -72,7 +77,11 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 
 	@Override
 	protected void onPositiveClick() {
-		LocationFilter filter = new LocationFilter(etActivity.getText().toString()); // TODO: add pricing and rating to filter
+		YelpFilterRequest filter = new YelpFilterRequest();
+		filter.term = etActivity.getText().toString();
+		filter.latitude = newTrip.getStart().getLatLng().latitude;
+		filter.longitude = newTrip.getStart().getLatLng().longitude;
+		// TODO: add other filters
 		SuggestedPlacesDialogTrip.newInstance(newTrip, filter).show(getFragmentManager(), "destinations");
 	}
 
