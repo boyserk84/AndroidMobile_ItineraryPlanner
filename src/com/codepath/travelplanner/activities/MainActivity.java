@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.*;
-import android.view.inputmethod.EditorInfo;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
 import com.codepath.travelplanner.directions.Segment;
@@ -19,9 +20,6 @@ import com.codepath.travelplanner.models.TripLocation;
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity{
-	/** views */
-	ImageButton ibtnNewTrip;
-	EditText etNewTrip;
 
 	protected MyMapFragment map;
 	public static ArrayList<Segment> segments;
@@ -68,11 +66,6 @@ public class MainActivity extends FragmentActivity{
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main, menu);
-		MenuItem mi = menu.findItem(R.id.miNewTrip);
-		View v = mi.getActionView();
-		ibtnNewTrip = (ImageButton) v.findViewById(R.id.ibtnNewTrip);
-		etNewTrip = (EditText) v.findViewById(R.id.etNewTrip);
-		setupMenuItemListeners();
 		return true;
 	}
 	
@@ -85,30 +78,9 @@ public class MainActivity extends FragmentActivity{
 		}
 	}
 
-	/** setup listeners for the menu item */
-	private void setupMenuItemListeners() {
-		etNewTrip.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-					// make query after "search" button clicked on keyboard
-					onNewTrip();
-					return true;
-				}
-				return false;
-			}
-		});
-		ibtnNewTrip.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				onNewTrip();
-			}
-		});
-	}
-
 	/** callback when new trip button is clicked */
-	public void onNewTrip() {
+	public void onNewTrip(MenuItem mi) {
 		Location myLoc = map.getMap().getMyLocation();
-		FiltersDialogTrip.newInstance(etNewTrip.getText().toString(), myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
+		FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
 	}
 }

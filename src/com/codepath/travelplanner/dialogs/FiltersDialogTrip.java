@@ -42,11 +42,10 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		String startQueryStr = getArguments().getString(START_EXTRA);
-		// TODO: search for start position instead of using current position
+		// TODO: search for "start" instead of using current position
 		startQueryStr = "";
 		if (startQueryStr.length() > 0) {
 			YelpFilterRequest filter = new YelpFilterRequest();
-			filter.term = getArguments().getString(START_EXTRA);
 			filter.latitude = getArguments().getDouble(LATITUDE_EXTRA);
 			filter.longitude = getArguments().getDouble(LONGITUDE_EXTRA);
 			SimpleYelpClient.getRestClient().search(filter, this);
