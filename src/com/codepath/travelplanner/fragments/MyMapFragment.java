@@ -22,6 +22,7 @@ import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
@@ -122,6 +123,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 	public void newRoute(Trip trip) {
 		ArrayList<TripLocation> locations = trip.getPlaces();
 		if (locations.size() > 1) {
+			getMap().setOnMapClickListener(null);
 			start = trip.getStart();
 			end = trip.getEnd();
 			Routing routing = new Routing(Routing.TravelMode.TRANSIT);
@@ -158,6 +160,14 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 
 			getMap().moveCamera(zoom);
 			getMap().moveCamera(center);
+			
+			getMap().setOnMapClickListener(new OnMapClickListener() {
+	            @Override
+	            public void onMapClick(LatLng point) {
+	            	OnNewTripListener listener = (OnNewTripListener) getActivity();
+					listener.openAddDialog(point);
+	            }
+	        });
 
 			//TODO: Jeff: store this is in the trip object later
 			MainActivity.segments = new ArrayList<Segment>(segments);
@@ -177,16 +187,15 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 			getMap().addMarker(options);
 		}
 		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker selected) {
-                int index = Integer.parseInt(selected.getTitle());
-                TripLocation tripLocation = suggPlacesList.get(index);
+			@Override
+			public boolean onMarkerClick(Marker selected) {
+				int index = Integer.parseInt(selected.getTitle());
+				TripLocation tripLocation = suggPlacesList.get(index);
 				OnNewTripListener listener = (OnNewTripListener) getActivity();
 				listener.openConfirmDialog(tripLocation, newTrip);
-                return true;
-            }
-
-        });
+				return true;
+			}
+		});
 		
 		CameraUpdate zoom = CameraUpdateFactory.zoomTo(12);
 		getMap().animateCamera(zoom);

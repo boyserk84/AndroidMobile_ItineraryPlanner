@@ -1,19 +1,22 @@
 package com.codepath.travelplanner.dialogs;
 
+import java.util.ArrayList;
+
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * FiltersDialogTrip - dialog containing the filters (eg. activity, distance, price, etc)

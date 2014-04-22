@@ -12,6 +12,7 @@ import android.view.View;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * BaseTripWizardDialog - base dialog for the create-a-new-trip "wizard" dialogs
@@ -41,6 +42,7 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 		public void onRouteListener(Trip trip);
 		public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip newTrip);
 		public void openConfirmDialog(TripLocation destination, Trip newTrip);
+		public void openAddDialog(LatLng location);
 	}
 
 	@Override

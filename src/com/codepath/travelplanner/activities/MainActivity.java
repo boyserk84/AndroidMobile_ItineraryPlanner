@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
 import com.codepath.travelplanner.dialogs.ConfirmDestinationDialog;
@@ -36,6 +38,8 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 	protected MyMapFragment map;
 	/** list of segments in the route */
 	public static ArrayList<Segment> segments;
+	/** current trip */
+	public static Trip trip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,5 +91,11 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 	@Override
 	public void openConfirmDialog(TripLocation destination, Trip newTrip) {
 		ConfirmDestinationDialog.newInstance(newTrip, destination).show(getFragmentManager(), "confirm");
+	}
+	
+	@Override
+	public void openAddDialog(LatLng location) {
+		Toast.makeText(this, "V2 support coming soon", Toast.LENGTH_LONG).show();
+		//FiltersDialogTrip.newInstance("", location.latitude, location.longitude).show(getFragmentManager(), "filters");
 	}
 }

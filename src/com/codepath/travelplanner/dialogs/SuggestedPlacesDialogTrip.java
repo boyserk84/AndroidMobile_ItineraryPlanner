@@ -1,5 +1,12 @@
 package com.codepath.travelplanner.dialogs;
 
+import java.util.ArrayList;
+
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,19 +15,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.adapters.LocationsAdapter;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
-import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
 import com.codepath.travelplanner.helpers.Util;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * SuggestedPlacesDialogTrip - dialog containing the destinations results from the query
