@@ -32,6 +32,9 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
     
 	protected TripLocation start;
 	protected TripLocation end;
+	
+	protected Marker startMarker;
+	protected Marker endMarker;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -127,8 +130,14 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
 		if (start != null && end != null) {
 			createPolyline(mPolyOptions);
-			createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
-			createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
+			if(startMarker != null) {
+				startMarker.remove();
+			}
+			if(endMarker != null) {
+				endMarker.remove();
+			}
+			startMarker = createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
+			endMarker = createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
 
 			CameraUpdate center = CameraUpdateFactory.newLatLng(start.getLatLng());
 			CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);

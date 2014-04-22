@@ -71,6 +71,8 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 	/** callback when new trip button is clicked */
 	public void onNewTrip(MenuItem mi) {
 		Location myLoc = map.getMap().getMyLocation();
-		FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
+		if(myLoc != null) {
+			FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
+		}
 	}
 }

@@ -109,6 +109,12 @@ public class GoogleParser extends XMLParser implements Parser {
 			else {
 				segment.setIcon(R.drawable.ic_launcher);
 			}
+			
+			//Get the transit info
+			final JSONObject transit = step.getJSONObject("transit_details").getJSONObject("line");
+			//transit_details.line.name or transit_deatils.line.short_name is the bus, cat "Take the ..." to the front of segment.instruction 
+			//transit_details.line.vehicle.icon has a url to an icon we can use for the segment icon
+			//transit_details.arrival_stop has the latlng and location of the exit < (we can add a dot or something at these coords) < we will need to create a segment using this info
 		}
 		catch (JSONException e) {
 			Log.e("Step Error",e.getMessage());

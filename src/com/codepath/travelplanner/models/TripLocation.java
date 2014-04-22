@@ -109,7 +109,7 @@ public class TripLocation implements Serializable{
 	}
 	
 	public String getMarkerDescription() {
-		return description + " " + rating + " stars.";
+		return (description != null ? description + " " : "") + rating + " stars.";
 	}
 
 	/**
