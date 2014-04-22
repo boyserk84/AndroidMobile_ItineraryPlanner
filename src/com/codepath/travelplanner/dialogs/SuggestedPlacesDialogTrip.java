@@ -107,7 +107,7 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	protected void onPositiveClick() {
 		//go to map view
 		OnNewTripListener listener = (OnNewTripListener) getActivity();
-		listener.enterMapView(suggPlacesList);
+		listener.enterMapView(suggPlacesList, newTrip);
 	}
 
 	@Override

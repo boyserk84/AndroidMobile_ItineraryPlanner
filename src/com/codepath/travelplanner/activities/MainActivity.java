@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
+import com.codepath.travelplanner.dialogs.ConfirmDestinationDialog;
 import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
@@ -47,6 +48,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 
 	@Override
 	public void onRouteListener(Trip trip) {
+		map.exitMapSelectionMode();
 		map.newRoute(trip);
 		map.createCircle(new LatLng(trip.getEnd().getLatLng().latitude,
 				trip.getEnd().getLatLng().longitude), YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER/2);
@@ -78,7 +80,12 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 	}
 
 	@Override
-	public void enterMapView(ArrayList<TripLocation> suggPlacesList) {
-		// TODO Auto-generated method stub
+	public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip newTrip) {
+		map.enterMapSelectionMode(suggPlacesList, newTrip);
+	}
+
+	@Override
+	public void openConfirmDialog(TripLocation destination, Trip newTrip) {
+		ConfirmDestinationDialog.newInstance(newTrip, destination).show(getFragmentManager(), "confirm");
 	}
 }
