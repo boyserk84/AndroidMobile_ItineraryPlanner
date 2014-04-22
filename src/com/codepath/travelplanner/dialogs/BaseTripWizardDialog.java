@@ -1,5 +1,7 @@
 package com.codepath.travelplanner.dialogs;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.Trip;
+import com.codepath.travelplanner.models.TripLocation;
 
 /**
  * BaseTripWizardDialog - base dialog for the create-a-new-trip "wizard" dialogs
@@ -34,6 +37,7 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 	public interface OnNewTripListener {
 		/** called when we want to route the new trip */
 		public void onRouteListener(Trip trip);
+		public void enterMapView(ArrayList<TripLocation> suggPlacesList);
 	}
 
 	@Override

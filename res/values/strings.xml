@@ -25,5 +25,6 @@
 	<string name="miles">mi</string>
 	<string name="num_out_of">/5</string>
 	<string name="rating">Rating:</string>
+	<string name="map_view">Map View</string>
 
 </resources>

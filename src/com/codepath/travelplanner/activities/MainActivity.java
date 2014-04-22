@@ -15,6 +15,7 @@ import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.codepath.travelplanner.models.Trip;
+import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -74,5 +75,10 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 		if(myLoc != null) {
 			FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
 		}
+	}
+
+	@Override
+	public void enterMapView(ArrayList<TripLocation> suggPlacesList) {
+		// TODO Auto-generated method stub
 	}
 }
