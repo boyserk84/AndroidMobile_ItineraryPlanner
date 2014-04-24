@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.Trip;
 
@@ -41,6 +43,7 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View v = inflater.inflate(getDialogResourceId(), null);
+		// TODO: Shouldn't this be called in onCreateView(), otherwise,we may get a race condition.
 		setupViews(v);
 
 		builder.setView(v);
