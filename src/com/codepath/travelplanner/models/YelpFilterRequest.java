@@ -18,6 +18,7 @@ public class YelpFilterRequest implements Serializable {
 	public static final int SORT_BY_HIGHEST_RATE = 2;
 	
 	public static final double DEFAULT_ONE_MILE_RADIUS_IN_METER = 1609.34;
+	public static final double DEFAULT_SEARCH_RADIUS_IN_METER = 1609.34 * 20;
 	
 	public double longitude;
 	
@@ -25,7 +26,7 @@ public class YelpFilterRequest implements Serializable {
 	
 	public String term = "";
 	
-	public double radius = DEFAULT_ONE_MILE_RADIUS_IN_METER;	// 1 mile radius
+	public double radius = DEFAULT_SEARCH_RADIUS_IN_METER;	// 25 mile radius
 	
 	public int sortType = SORT_BY_BEST_MATCH;	// by BestMatch
 	

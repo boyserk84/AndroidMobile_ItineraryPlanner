@@ -1,12 +1,21 @@
 package com.codepath.travelplanner.dialogs;
 
+import java.util.ArrayList;
+
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.adapters.LocationsAdapter;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
@@ -14,11 +23,6 @@ import com.codepath.travelplanner.helpers.Util;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * SuggestedPlacesDialogTrip - dialog containing the destinations results from the query
@@ -48,12 +52,17 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 
 	@Override
 	protected void setPositiveButton(AlertDialog.Builder builder) {
-		// do nothing, this dialog does not want a positive button
+		builder.setPositiveButton(getPositiveBtnTextId(), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int id) {
+				onPositiveClick();
+			}
+		});
 	}
 
 	@Override
 	protected int getPositiveBtnTextId() {
-		return R.string.next;
+		return R.string.map_view;
 	};
 
 	@Override
@@ -87,9 +96,9 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 				TripLocation tripLocation = (TripLocation) adapterView.getItemAtPosition(i);
 				tripLocation.setLatLng(Util.getLatLngFromAddress(tripLocation.getAddress().toString(), getActivity()));
 				newTrip.addPlace(tripLocation);
-				// go to next page
+				OnNewTripListener listener = (OnNewTripListener) getActivity();
+				listener.onRouteListener(newTrip);
 				dismiss();
-				SummaryDialogTrip.newInstance(newTrip, filter).show(getFragmentManager(), "summary");
 			}
 		});
 		pbSuggLoading.setVisibility(View.VISIBLE);
@@ -98,7 +107,9 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 
 	@Override
 	protected void onPositiveClick() {
-		// do nothing, this dialog does not have a positive button
+		//go to map view
+		OnNewTripListener listener = (OnNewTripListener) getActivity();
+		listener.enterMapView(suggPlacesList, newTrip);
 	}
 
 	@Override

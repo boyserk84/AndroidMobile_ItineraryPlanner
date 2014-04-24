@@ -1,5 +1,8 @@
 package com.codepath.travelplanner.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -7,21 +10,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.activities.MainActivity;
+import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
 import com.codepath.travelplanner.directions.Routing;
 import com.codepath.travelplanner.directions.RoutingListener;
 import com.codepath.travelplanner.directions.Segment;
+import com.codepath.travelplanner.helpers.Util;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 /**
  * MyMapFragment - custom map fragment
@@ -32,6 +44,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
     
 	protected TripLocation start;
 	protected TripLocation end;
+	
+	protected Marker startMarker;
+	protected Marker endMarker;
+	
+	protected ArrayList<TripLocation> suggPlacesList;
+	protected Trip newTrip;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,6 +123,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 	public void newRoute(Trip trip) {
 		ArrayList<TripLocation> locations = trip.getPlaces();
 		if (locations.size() > 1) {
+			getMap().setOnMapClickListener(null);
 			start = trip.getStart();
 			end = trip.getEnd();
 			Routing routing = new Routing(Routing.TravelMode.TRANSIT);
@@ -127,17 +146,65 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
 		if (start != null && end != null) {
 			createPolyline(mPolyOptions);
-			createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
-			createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
+			if(startMarker != null) {
+				startMarker.remove();
+			}
+			if(endMarker != null) {
+				endMarker.remove();
+			}
+			startMarker = createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
+			endMarker = createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
 
 			CameraUpdate center = CameraUpdateFactory.newLatLng(start.getLatLng());
 			CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
 
 			getMap().moveCamera(zoom);
 			getMap().moveCamera(center);
+			
+			getMap().setOnMapClickListener(new OnMapClickListener() {
+	            @Override
+	            public void onMapClick(LatLng point) {
+	            	OnNewTripListener listener = (OnNewTripListener) getActivity();
+					listener.openAddDialog(point);
+	            }
+	        });
 
 			//TODO: Jeff: store this is in the trip object later
 			MainActivity.segments = new ArrayList<Segment>(segments);
 		}
+	}
+	
+	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, Trip newTripIn) {
+		suggPlacesList = suggPlaces;
+		newTrip = newTripIn;
+		getMap().clear();
+		for(int i = 0; i < suggPlacesList.size(); i++) {
+			TripLocation toAdd = suggPlacesList.get(i);
+			toAdd.setLatLng(Util.getLatLngFromAddress(toAdd.getAddress().toString(), getActivity()));
+			MarkerOptions options = new MarkerOptions();
+			options.position(suggPlacesList.get(i).getLatLng());
+			options.title(Integer.toString(i));
+			getMap().addMarker(options);
+		}
+		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
+			@Override
+			public boolean onMarkerClick(Marker selected) {
+				int index = Integer.parseInt(selected.getTitle());
+				TripLocation tripLocation = suggPlacesList.get(index);
+				OnNewTripListener listener = (OnNewTripListener) getActivity();
+				listener.openConfirmDialog(tripLocation, newTrip);
+				return true;
+			}
+		});
+		
+		CameraUpdate zoom = CameraUpdateFactory.zoomTo(12);
+		getMap().animateCamera(zoom);
+	}
+	
+	public void exitMapSelectionMode() {
+		newTrip = null;
+		suggPlacesList = null;
+		getMap().clear();
+		getMap().setOnMarkerClickListener(null);
 	}
 }

@@ -29,5 +29,6 @@
 	<string name="food">Food</string>
 	<string name="tourist">Tourist</string>
 	<string name="nightlife">Nightlife</string>
+	<string name="map_view">Map View</string>
 
 </resources>

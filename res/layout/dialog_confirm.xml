@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/tvSuggPlaceName"
+			android:text="Some Place Name"
+			android:textStyle="bold"
+			android:layout_alignParentLeft="true"
+			android:layout_marginLeft="10dp"
+			android:layout_alignParentTop="true"
+			android:layout_marginTop="10dp"/>
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/rating"
+			android:id="@+id/tvRatingTitle"
+			android:layout_marginRight="3dp"
+			android:layout_marginLeft="10dp"
+			android:layout_alignParentLeft="true"
+			android:layout_below="@+id/tvSuggPlaceName"/>
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="3"
+			android:id="@+id/tvRatingNum"
+			android:layout_toRightOf="@+id/tvRatingTitle"
+			android:layout_below="@+id/tvSuggPlaceName"/>
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/num_out_of"
+			android:id="@+id/tvRatingOutOf"
+			android:layout_toRightOf="@+id/tvRatingNum"
+			android:layout_below="@+id/tvSuggPlaceName"/>
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/miles"
+			android:id="@+id/tvDistType"
+			android:layout_marginRight="10dp"
+			android:layout_alignParentRight="true"
+			android:layout_below="@+id/tvSuggPlaceName"/>
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="0.2"
+			android:id="@+id/tvDistNum"
+			android:layout_toLeftOf="@+id/tvDistType"
+			android:layout_below="@+id/tvSuggPlaceName"/>
+
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/dist"
+			android:id="@+id/tvDistTitle"
+			android:layout_marginRight="3dp"
+			android:layout_toLeftOf="@+id/tvDistNum"
+			android:layout_below="@+id/tvSuggPlaceName"/>
+</RelativeLayout>

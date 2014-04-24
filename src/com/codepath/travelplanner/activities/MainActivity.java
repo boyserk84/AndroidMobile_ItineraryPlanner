@@ -9,12 +9,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
+import com.codepath.travelplanner.dialogs.ConfirmDestinationDialog;
 import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.codepath.travelplanner.models.Trip;
+import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -34,6 +38,8 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 	protected MyMapFragment map;
 	/** list of segments in the route */
 	public static ArrayList<Segment> segments;
+	/** current trip */
+	public static Trip trip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 
 	@Override
 	public void onRouteListener(Trip trip) {
+		map.exitMapSelectionMode();
 		map.newRoute(trip);
 		map.createCircle(new LatLng(trip.getEnd().getLatLng().latitude,
 				trip.getEnd().getLatLng().longitude), YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER/2);
@@ -65,12 +72,31 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 			Intent i = new Intent(MainActivity.this, DetailsActivity.class);
 			i.putExtra(SEGMENTS, segments);
 			startActivity(i);
+			overridePendingTransition(R.anim.right_in, R.anim.left_out);
 		}
 	}
 
 	/** callback when new trip button is clicked */
 	public void onNewTrip(MenuItem mi) {
 		Location myLoc = map.getMap().getMyLocation();
-		FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
+		if(myLoc != null) {
+			FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
+		}
+	}
+
+	@Override
+	public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip newTrip) {
+		map.enterMapSelectionMode(suggPlacesList, newTrip);
+	}
+
+	@Override
+	public void openConfirmDialog(TripLocation destination, Trip newTrip) {
+		ConfirmDestinationDialog.newInstance(newTrip, destination).show(getFragmentManager(), "confirm");
+	}
+	
+	@Override
+	public void openAddDialog(LatLng location) {
+		Toast.makeText(this, "V2 support coming soon", Toast.LENGTH_LONG).show();
+		//FiltersDialogTrip.newInstance("", location.latitude, location.longitude).show(getFragmentManager(), "filters");
 	}
 }
