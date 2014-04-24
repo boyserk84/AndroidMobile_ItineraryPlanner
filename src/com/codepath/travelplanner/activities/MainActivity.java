@@ -72,6 +72,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener 
 			Intent i = new Intent(MainActivity.this, DetailsActivity.class);
 			i.putExtra(SEGMENTS, segments);
 			startActivity(i);
+			overridePendingTransition(R.anim.right_in, R.anim.left_out);
 		}
 	}
 
