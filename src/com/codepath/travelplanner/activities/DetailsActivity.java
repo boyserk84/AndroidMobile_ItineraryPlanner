@@ -29,8 +29,8 @@ public class DetailsActivity extends Activity {
 	}
 	
 	@Override
-    public void onBackPressed() {
+	public void onBackPressed() {
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.right_out);
-    }
+	}
 }

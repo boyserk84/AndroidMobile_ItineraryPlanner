@@ -71,6 +71,13 @@ public class GoogleParser extends XMLParser implements Parser {
 					for(int j = 0; j < subSteps.length(); j++) {
 						final JSONObject subStep = subSteps.getJSONObject(j);
 						parseStep(subStep, segment, i == 0 && j == 0, i == steps.length() - 1 && j == subSteps.length() - 1);
+						if(i != steps.length() - 1 && j == subSteps.length() - 1) {
+							String dest = segment.getInstruction();
+							if(dest.contains("Destination")) {
+								dest = dest.substring(0, dest.indexOf("Destination"));
+							}
+							segment.setInstruction(dest);
+						}
 						route.addSegment(segment.copy());
 					}
 				}
@@ -87,6 +94,7 @@ public class GoogleParser extends XMLParser implements Parser {
     }
 	
 	private void parseStep(JSONObject step, Segment segment, boolean isFirst, boolean isLast) {
+		segment.clear();
 		try {
 			//Get the start position for this step and set it on the segment
 			final JSONObject start = step.getJSONObject("start_location");
@@ -110,11 +118,37 @@ public class GoogleParser extends XMLParser implements Parser {
 				segment.setIcon(R.drawable.ic_launcher);
 			}
 			
-			//Get the transit info
-			final JSONObject transit = step.getJSONObject("transit_details").getJSONObject("line");
-			//transit_details.line.name or transit_deatils.line.short_name is the bus, cat "Take the ..." to the front of segment.instruction 
-			//transit_details.line.vehicle.icon has a url to an icon we can use for the segment icon
-			//transit_details.arrival_stop has the latlng and location of the exit < (we can add a dot or something at these coords) < we will need to create a segment using this info
+			if(!step.isNull("transit_details")) {
+				//Get the transit info
+				final JSONObject transit = step.getJSONObject("transit_details");
+				
+				if(!transit.isNull("line")) {
+					final JSONObject line = transit.getJSONObject("line");
+					
+					//transit_details.line.vehicle.icon has a url to an icon we can use for the segment icon
+					String type = "";
+					if(!line.isNull("vehicle")) {
+						final JSONObject vehicle = line.getJSONObject("vehicle");
+						type = vehicle.getString("name");
+						segment.setIconURL("http:" + vehicle.getString("icon"));
+					}
+					
+					//transit_details.line.name or transit_deatils.line.short_name is the bus, cat "Take the ..." to the front of segment.instruction
+					if(!line.isNull("name")) {
+						segment.setInstruction("Take " + segment.getInstruction().replace(type, line.getString("name") + " " + type));
+					}
+					else if(!line.isNull("short_name")) {
+						segment.setInstruction("Take " + segment.getInstruction().replace(type, line.getString("short_name") + " " + type));
+					}
+				}
+				
+				//transit_details.arrival_stop has the latlng and location of the exit < (we can add a dot or something at these coords) < we will need to create a segment using this info
+				if(!transit.isNull("arrival_stop")) {
+					final JSONObject arrival_stop = transit.getJSONObject("arrival_stop");
+					String name = arrival_stop.getString("name");
+					segment.setInstruction(segment.getInstruction() + ". Get off at " + name);
+				}
+			}
 		}
 		catch (JSONException e) {
 			Log.e("Step Error",e.getMessage());

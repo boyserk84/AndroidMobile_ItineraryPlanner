@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.directions.Segment;
+import com.squareup.picasso.Picasso;
 
 public class SegmentsAdapter extends ArrayAdapter<Segment> {
 	public SegmentsAdapter(Context context, ArrayList<Segment> segments) {
@@ -37,7 +38,12 @@ public class SegmentsAdapter extends ArrayAdapter<Segment> {
 		// Populate the data into the template view using the data object
 		tvDirection.setText(segment.getInstruction());
 		tvDistance.setText(segment.getLength());
-		ivDirection.setImageResource(segment.getIcon());
+		if(segment.getIconURL() != null) {
+			Picasso.with(getContext()).load(segment.getIconURL()).into(ivDirection);
+		}
+		else {
+			ivDirection.setImageResource(segment.getIcon());
+		}
         
 		// Return the completed view to render on screen
 		return convertView;

@@ -23,6 +23,8 @@ public class Segment implements Serializable {
 	private double distance;
 	/** Icon **/
 	private int icon;
+	/** Icon **/
+	private String iconURL;
 	
 	/**
 	 * Create an empty segment.
@@ -94,6 +96,22 @@ public class Segment implements Serializable {
 	public int getIcon() {
 		return icon;
 	}
+	
+	/**
+	 * Add the icon used for this segment.
+	 * @param resource id of icon.
+	 */
+	public void setIconURL(String iconURL) {
+		this.iconURL = iconURL;
+	}
+	
+	/** Get the icon used by this 
+	 * segment.
+	 * @return resource id of icon
+	 */
+	public String getIconURL() {
+		return iconURL;
+	}
 
 	/** Creates a segment which is a copy of this one.
 	 * @return a Segment that is a copy of this one.
@@ -106,7 +124,18 @@ public class Segment implements Serializable {
 		copy.length = length;
 		copy.distance = distance;
 		copy.icon = icon;
+		copy.iconURL = iconURL;
 		return copy;
+	}
+	
+	public void clear() {
+		lat = 0;
+		lng = 0;
+		instruction = "";
+		length = "";
+		distance = 0;
+		icon = 0;
+		iconURL = null;
 	}
 	
 	/**

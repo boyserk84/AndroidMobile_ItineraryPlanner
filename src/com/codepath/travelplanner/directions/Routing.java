@@ -92,7 +92,7 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 		mBuf.append(dest.longitude);
 		mBuf.append("&sensor=true&mode=");
 		mBuf.append(_mTravelMode.getValue());
-		mBuf.append("&departure_time=1343376768");
+		mBuf.append("&departure_time=1343340000");
 
         return mBuf.toString();
 	}
