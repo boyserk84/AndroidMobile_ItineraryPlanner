@@ -165,6 +165,14 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	@Override
 	public void onSuccess(JSONObject successResult) {
 		Trip newTrip = new Trip();
+		Location myLoc = map.getMap().getMyLocation();
+		if(myLoc != null) {
+			TripLocation loc = new TripLocation();
+			LatLng latLng = new LatLng(myLoc.getLatitude(), myLoc.getLongitude());
+			loc.setLatLng(latLng);
+			newTrip.addPlace(loc);
+		}
+		
 		try {
 			this.enterMapView( TripLocation.fromJSONArray(successResult.getJSONArray("businesses")) , newTrip );
 		} catch (JSONException e) {
