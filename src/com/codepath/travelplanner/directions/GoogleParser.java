@@ -109,8 +109,12 @@ public class GoogleParser extends XMLParser implements Parser {
 			final String lengthAsText = step.getJSONObject("distance").getString("text");
 			segment.setLength(lengthAsText);
 			segment.setDistance(distance/1000);
-			//Strip html from google directions and set as turn instruction
-			segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
+			
+			if(!step.isNull("html_instructions")) {
+				//Strip html from google directions and set as turn instruction
+				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
+			}
+			
 			if(isFirst) {
 				segment.setIcon(R.drawable.start_blue);
 			}
@@ -118,7 +122,7 @@ public class GoogleParser extends XMLParser implements Parser {
 				segment.setIcon(R.drawable.end_green);
 			}
 			else {
-				segment.setIcon(R.drawable.ic_launcher);
+				segment.setIcon(R.drawable.ic_walk);
 			}
 			
 			if(!step.isNull("transit_details")) {

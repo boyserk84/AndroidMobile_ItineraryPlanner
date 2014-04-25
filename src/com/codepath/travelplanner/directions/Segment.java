@@ -16,7 +16,7 @@ public class Segment implements Serializable {
 	/** Points in this segment. **/
 	private double lng;
 	/** Turn instruction to reach next segment. **/
-	private String instruction;
+	private String instruction = "";
 	/** Length of segment in string form. **/
 	private String length;
 	/** Distance covered. **/
