@@ -1,11 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.travelplanner.MainActivity" >
-
+   
+    <item
+        android:id="@+id/miQuickRecFood"
+        android:showAsAction="ifRoom"
+        android:title="@string/food"/>
+    <item
+        android:id="@+id/miQuickRecTour"
+        android:showAsAction="ifRoom"
+        android:title="@string/tourist"/>
+    <item
+        android:id="@+id/miQuickRecDrink"
+        android:showAsAction="ifRoom"
+        android:title="@string/nightlife"/>
     <item
         android:id="@+id/miNewTrip"
         android:showAsAction="always"
-		android:onClick="onNewTrip"
         android:title="@string/plan_trip_menu_btn"/>
 
 </menu>
