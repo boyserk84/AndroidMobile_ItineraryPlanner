@@ -114,8 +114,12 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 
 	@Override
 	protected void onNegativeClick() {
-		TripLocation loc = newTrip.getStart();
-		FiltersDialogTrip.newInstance("", loc.getLatLng().latitude, loc.getLatLng().longitude).show(getFragmentManager(), "filters");
+		if ( newTrip != null ) {
+			TripLocation loc = newTrip.getStart();
+			if ( loc.getLatLng() != null ) {
+				FiltersDialogTrip.newInstance("", loc.getLatLng().latitude, loc.getLatLng().longitude).show(getFragmentManager(), "filters");
+			}
+		}
 	}
 
 	@Override

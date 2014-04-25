@@ -1,8 +1,6 @@
 package com.codepath.travelplanner.models;
 
 import android.util.Log;
-import android.widget.Toast;
-import com.codepath.travelplanner.helpers.Util;
 import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +37,8 @@ public class TripLocation implements Serializable{
 	private String snippetText;
 	
 	private String snippetImageUrl;
+	
+	private String ratingSmallImgUrl;
 	
 	private LocationAddress address;
 
@@ -174,6 +174,7 @@ public class TripLocation implements Serializable{
 			tripLoc.snippetText = object.getString("snippet_text");
 			tripLoc.snippetImageUrl = object.getString("snippet_image_url");
 			tripLoc.distance = object.getDouble("distance");
+			tripLoc.ratingSmallImgUrl = object.getString("rating_img_url_small");
 			tripLoc.address = LocationAddress.fromJSON( object.getJSONObject("location"));
 
 			// TODO: Add more
