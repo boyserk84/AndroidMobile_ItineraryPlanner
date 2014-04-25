@@ -128,7 +128,7 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 					break;
 				}
 				updateFilterRequestWithCurrentLocation();
-
+				dismiss();
 				SuggestedPlacesDialogTrip.newInstance(newTrip, filterRequest).show(getFragmentManager(), "destinations");
 
 			}

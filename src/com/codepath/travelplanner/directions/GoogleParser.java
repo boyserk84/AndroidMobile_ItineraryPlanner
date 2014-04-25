@@ -76,6 +76,9 @@ public class GoogleParser extends XMLParser implements Parser {
 							if(dest.contains("Destination")) {
 								dest = dest.substring(0, dest.indexOf("Destination"));
 							}
+							if(dest.equals("")) {
+								dest = step.getString("html_instructions").replaceAll("<(.*?)*>", "");
+							}
 							segment.setInstruction(dest);
 						}
 						route.addSegment(segment.copy());
