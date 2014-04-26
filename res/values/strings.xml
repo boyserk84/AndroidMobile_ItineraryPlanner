@@ -30,5 +30,6 @@
 	<string name="tourist">Tourist</string>
 	<string name="nightlife">Nightlife</string>
 	<string name="map_view">Map View</string>
+	<string name="ratingContentDescription">Rating Image</string>
 
 </resources>
