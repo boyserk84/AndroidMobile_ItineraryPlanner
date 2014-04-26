@@ -17,7 +17,9 @@ import java.util.ArrayList;
  *
  */
 public class TripLocation implements Serializable{
-	
+
+	private static final long serialVersionUID = 3786896511670324501L;
+
 	private LatLng latLng;
 	
 	private String locationName;
@@ -38,7 +40,7 @@ public class TripLocation implements Serializable{
 	
 	private String snippetImageUrl;
 	
-	private String ratingSmallImgUrl;
+	private String ratingImgUrl;
 	
 	private LocationAddress address;
 
@@ -155,6 +157,13 @@ public class TripLocation implements Serializable{
 	}
 	
 	/**
+	 * @return Image of rating of this location corresponding to rating value.
+	 */
+	public String getRatingImgUrl() {
+		return ratingImgUrl;
+	}
+	
+	/**
 	 * Helper function to convert JSONObject to strongly-typed data
 	 * @param object	JSON Object (raw data)
 	 * @return TripLocation Object. Otherwise, null is returned.
@@ -174,7 +183,7 @@ public class TripLocation implements Serializable{
 			tripLoc.snippetText = object.getString("snippet_text");
 			tripLoc.snippetImageUrl = object.getString("snippet_image_url");
 			tripLoc.distance = object.getDouble("distance");
-			tripLoc.ratingSmallImgUrl = object.getString("rating_img_url_small");
+			tripLoc.ratingImgUrl = object.getString("rating_img_url");
 			tripLoc.address = LocationAddress.fromJSON( object.getJSONObject("location"));
 
 			// TODO: Add more

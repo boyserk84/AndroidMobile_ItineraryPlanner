@@ -5,12 +5,14 @@ import java.text.DecimalFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
+import com.squareup.picasso.Picasso;
 
 /**
  * Confirmation Dialog - dialog confirming map view selection
@@ -57,9 +59,9 @@ public class ConfirmDestinationDialog extends BaseTripWizardDialog {
 			DecimalFormat df;
 			TextView tvSuggPlaceName = (TextView) v.findViewById(R.id.tvSuggPlaceName);
 			tvSuggPlaceName.setText(tripLocation.getLocationName());
-			TextView tvRatingNum = (TextView) v.findViewById(R.id.tvRatingNum);
-			df = new DecimalFormat("#.#");
-			tvRatingNum.setText(df.format(tripLocation.getRating()));
+			ImageView ivRating = (ImageView) v.findViewById(R.id.ivConfirmImageRating);
+			Picasso.with( v.getContext() ).load( tripLocation.getRatingImgUrl() ).into( ivRating );
+			
 			TextView tvDistNum = (TextView) v.findViewById(R.id.tvDistNum);
 			df = new DecimalFormat("#0.00");
 			tvDistNum.setText(df.format(tripLocation.getDistance()/YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER));

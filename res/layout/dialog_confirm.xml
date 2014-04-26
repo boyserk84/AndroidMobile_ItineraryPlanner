@@ -25,20 +25,12 @@
 			android:layout_alignParentLeft="true"
 			android:layout_below="@+id/tvSuggPlaceName"/>
 
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="3"
-			android:id="@+id/tvRatingNum"
+	<ImageView
+	    	android:contentDescription="@string/ratingContentDescription"
+			android:layout_width="84dp"
+			android:layout_height="17dp"
+			android:id="@+id/ivConfirmImageRating"
 			android:layout_toRightOf="@+id/tvRatingTitle"
-			android:layout_below="@+id/tvSuggPlaceName"/>
-
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/num_out_of"
-			android:id="@+id/tvRatingOutOf"
-			android:layout_toRightOf="@+id/tvRatingNum"
 			android:layout_below="@+id/tvSuggPlaceName"/>
 
 	<TextView

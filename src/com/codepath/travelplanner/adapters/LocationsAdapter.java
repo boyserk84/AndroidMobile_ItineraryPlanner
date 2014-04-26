@@ -1,18 +1,21 @@
 package com.codepath.travelplanner.adapters;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
-
-import java.text.DecimalFormat;
-import java.util.List;
+import com.squareup.picasso.Picasso;
 
 /**
  * LocationsAdapter - adapter for list of trip locations
@@ -36,9 +39,10 @@ public class LocationsAdapter extends ArrayAdapter<TripLocation> {
 			DecimalFormat df;
 			TextView tvSuggPlaceName = (TextView) v.findViewById(R.id.tvSuggPlaceName);
 			tvSuggPlaceName.setText(tripLoc.getLocationName());
-			TextView tvRatingNum = (TextView) v.findViewById(R.id.tvRatingNum);
-			df = new DecimalFormat("#.#");
-			tvRatingNum.setText(df.format(tripLoc.getRating()));
+			
+			ImageView ivRating = (ImageView)v.findViewById(R.id.ivRating ); 
+			Picasso.with( getContext() ).load( tripLoc.getRatingImgUrl() ).into( ivRating );
+
 			TextView tvDistNum = (TextView) v.findViewById(R.id.tvDistNum);
 			df = new DecimalFormat("#0.00");
 			tvDistNum.setText(df.format(tripLoc.getDistance()/YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER));
