@@ -1,85 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/filters_title"
-			android:id="@+id/tvFiltersTitle"
-			android:textSize="25sp"
-			android:layout_centerHorizontal="true"
-			android:layout_alignParentTop="true"/>
+    <TextView
+        android:id="@+id/tvFiltersTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/filters_title"
+        android:textSize="25sp" />
 
-	<ImageView
-			android:layout_width="fill_parent"
-			android:layout_height="1dp"
-			android:layout_marginTop="5dp"
-			android:layout_marginBottom="5dp"
-			android:id="@+id/ivDivider"
-			android:src="@drawable/divider_gray"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/tvFiltersTitle"/>
+    <ImageView
+        android:id="@+id/ivDivider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvFiltersTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/divider_gray" />
 
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/activity"
-			android:id="@+id/tvActivity"
-			android:textSize="20sp"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/ivDivider"/>
+    <TextView
+        android:id="@+id/tvActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivDivider"
+        android:layout_centerHorizontal="true"
+        android:text="@string/activity"
+        android:textSize="20sp" />
 
-	<EditText
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/etActivity"
-			android:textSize="18sp"
-			android:hint="@string/activity_hint"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/tvActivity"/>
+    <EditText
+        android:id="@+id/etActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvActivity"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/activity_hint"
+        android:textSize="18sp" />
 
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/distance"
-			android:id="@+id/tvDistance"
-			android:layout_marginTop="5dp"
-			android:textSize="20sp"
-			android:layout_marginLeft="10dp"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/etActivity"/>
+    <ImageView
+        android:id="@+id/ivDivider2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/etActivity"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/divider_gray" />
 
-	<Spinner
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/spDistances"
-			android:entries="@array/distances_array"
-			android:layout_marginTop="5dp"
-			android:layout_marginRight="10dp"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/etActivity"/>
+    
+    <TextView
+        android:id="@+id/tvQuickRecommendTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ivDivider2"
+        android:text="@string/quick_recomm_title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <LinearLayout
+        android:id="@+id/llrecommender"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvQuickRecommendTitle"
+        android:layout_centerHorizontal="true"
+        android:gravity="center" >
 
-	<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/price"
-			android:id="@+id/tvPrices"
-			android:layout_marginTop="5dp"
-			android:textSize="20sp"
-			android:layout_marginLeft="10dp"
-			android:layout_alignParentLeft="true"
-			android:layout_below="@+id/spDistances"/>
+        <Button
+            android:id="@+id/btnFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRecommendButtonClick"
+            android:text="@string/food" />
 
-	<Spinner
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/spPrices"
-			android:layout_marginTop="5dp"
-			android:layout_marginRight="10dp"
-			android:entries="@array/prices_array"
-			android:layout_alignParentRight="true"
-			android:layout_below="@+id/spDistances"/>
+        <Button
+            android:id="@+id/btnTour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRecommendButtonClick"
+            android:text="@string/tourist" />
+
+        <Button
+            android:id="@+id/btnNightlife"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRecommendButtonClick"
+            android:text="@string/nightlife" />
+        
+    </LinearLayout>
+
 </RelativeLayout>

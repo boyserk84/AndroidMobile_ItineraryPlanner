@@ -44,8 +44,6 @@ public class GoogleParser extends XMLParser implements Parser {
 			final JSONObject leg = jsonRoute.getJSONArray("legs").getJSONObject(0);
 			//Get the steps for this leg
 			final JSONArray steps = leg.getJSONArray("steps");
-			//Number of steps for use in for loop
-			final int numSteps = steps.length();
 			//Set the name of this route using the start & end addresses
 			route.setName(leg.getString("start_address") + " to " + leg.getString("end_address"));
 			//Get google's copyright notice (tos requirement)
@@ -56,38 +54,39 @@ public class GoogleParser extends XMLParser implements Parser {
 			if (!jsonRoute.getJSONArray("warnings").isNull(0)) {
 				route.setWarning(jsonRoute.getJSONArray("warnings").getString(0));
 			}
+			
 			/* Loop through the steps, creating a segment for each one and
 			 * decoding any polylines found as we go to add to the route object's
 			 * map array. Using an explicit for loop because it is faster!
 			 */
-			for (int i = 0; i < numSteps; i++) {
+			for (int i = 0; i < steps.length(); i++) {
 				//Get the individual step
 				final JSONObject step = steps.getJSONObject(i);
-				//Get the start position for this step and set it on the segment
-				final JSONObject start = step.getJSONObject("start_location");
-				segment.setLat(start.getDouble("lat"));
-				segment.setLng(start.getDouble("lng"));
-				//Set the length of this segment in metres
-				final int length = step.getJSONObject("distance").getInt("value");
-				distance += length;
-				final String lengthAsText = step.getJSONObject("distance").getString("text");
-				segment.setLength(lengthAsText);
-				segment.setDistance(distance/1000);
-				//Strip html from google directions and set as turn instruction
-				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
-				if(i == 0) {
-					segment.setIcon(R.drawable.start_blue);
-				}
-				else if(i == numSteps - 1) {
-					segment.setIcon(R.drawable.end_green);
+				if(step.isNull("steps")) {
+					parseStep(step, segment, i == 0, i == steps.length() - 1);
+					route.addSegment(segment.copy());
 				}
 				else {
-					segment.setIcon(R.drawable.ic_launcher);
+					final JSONArray subSteps = step.getJSONArray("steps");
+					for(int j = 0; j < subSteps.length(); j++) {
+						final JSONObject subStep = subSteps.getJSONObject(j);
+						parseStep(subStep, segment, i == 0 && j == 0, i == steps.length() - 1 && j == subSteps.length() - 1);
+						if(i != steps.length() - 1 && j == subSteps.length() - 1) {
+							String dest = segment.getInstruction();
+							if(dest.contains("Destination")) {
+								dest = dest.substring(0, dest.indexOf("Destination"));
+							}
+							if(dest.equals("")) {
+								dest = step.getString("html_instructions").replaceAll("<(.*?)*>", "");
+							}
+							segment.setInstruction(dest);
+						}
+						route.addSegment(segment.copy());
+					}
 				}
+				
 				//Retrieve & decode this segment's polyline and add it to the route.
 				route.addPoints(decodePolyLine(step.getJSONObject("polyline").getString("points")));
-				//Push a copy of the segment to the route
-				route.addSegment(segment.copy());
 			}
 		}
 		catch (JSONException e) {
@@ -96,6 +95,72 @@ public class GoogleParser extends XMLParser implements Parser {
 		}
 		return route;
     }
+	
+	private void parseStep(JSONObject step, Segment segment, boolean isFirst, boolean isLast) {
+		segment.clear();
+		try {
+			//Get the start position for this step and set it on the segment
+			final JSONObject start = step.getJSONObject("start_location");
+			segment.setLat(start.getDouble("lat"));
+			segment.setLng(start.getDouble("lng"));
+			//Set the length of this segment in meters
+			final int length = step.getJSONObject("distance").getInt("value");
+			distance += length;
+			final String lengthAsText = step.getJSONObject("distance").getString("text");
+			segment.setLength(lengthAsText);
+			segment.setDistance(distance/1000);
+			
+			if(!step.isNull("html_instructions")) {
+				//Strip html from google directions and set as turn instruction
+				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
+			}
+			
+			if(isFirst) {
+				segment.setIcon(R.drawable.start_blue);
+			}
+			else if(isLast) {
+				segment.setIcon(R.drawable.end_green);
+			}
+			else {
+				segment.setIcon(R.drawable.ic_walk);
+			}
+			
+			if(!step.isNull("transit_details")) {
+				//Get the transit info
+				final JSONObject transit = step.getJSONObject("transit_details");
+				
+				if(!transit.isNull("line")) {
+					final JSONObject line = transit.getJSONObject("line");
+					
+					//transit_details.line.vehicle.icon has a url to an icon we can use for the segment icon
+					String type = "";
+					if(!line.isNull("vehicle")) {
+						final JSONObject vehicle = line.getJSONObject("vehicle");
+						type = vehicle.getString("name");
+						segment.setIconURL("http:" + vehicle.getString("icon"));
+					}
+					
+					//transit_details.line.name or transit_deatils.line.short_name is the bus, cat "Take the ..." to the front of segment.instruction
+					if(!line.isNull("name")) {
+						segment.setInstruction("Take " + segment.getInstruction().replace(type, line.getString("name") + " " + type));
+					}
+					else if(!line.isNull("short_name")) {
+						segment.setInstruction("Take " + segment.getInstruction().replace(type, line.getString("short_name") + " " + type));
+					}
+				}
+				
+				//transit_details.arrival_stop has the latlng and location of the exit < (we can add a dot or something at these coords) < we will need to create a segment using this info
+				if(!transit.isNull("arrival_stop")) {
+					final JSONObject arrival_stop = transit.getJSONObject("arrival_stop");
+					String name = arrival_stop.getString("name");
+					segment.setInstruction(segment.getInstruction() + ". Get off at " + name);
+				}
+			}
+		}
+		catch (JSONException e) {
+			Log.e("Step Error",e.getMessage());
+		}
+	}
 
 	/**
 	 * Convert an inputstream to a string.

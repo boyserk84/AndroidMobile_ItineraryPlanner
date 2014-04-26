@@ -1,5 +1,7 @@
 package com.codepath.travelplanner.dialogs;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -7,8 +9,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.Trip;
+import com.codepath.travelplanner.models.TripLocation;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * BaseTripWizardDialog - base dialog for the create-a-new-trip "wizard" dialogs
@@ -16,6 +22,8 @@ import com.codepath.travelplanner.models.Trip;
 public abstract class BaseTripWizardDialog extends DialogFragment {
 	/** start place extra */
 	protected static final String START_EXTRA = "start";
+	/** end place extra */
+	protected static final String DESTINATION_EXTRA = "end";
 	/** latitude place extra */
 	protected static final String LATITUDE_EXTRA = "latitude";
 	/** longitude place extra */
@@ -34,6 +42,9 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 	public interface OnNewTripListener {
 		/** called when we want to route the new trip */
 		public void onRouteListener(Trip trip);
+		public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip newTrip);
+		public void openConfirmDialog(TripLocation destination, Trip newTrip);
+		public void openAddDialog(LatLng location);
 	}
 
 	@Override
@@ -41,6 +52,7 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View v = inflater.inflate(getDialogResourceId(), null);
+		// TODO: Shouldn't this be called in onCreateView(), otherwise,we may get a race condition.
 		setupViews(v);
 
 		builder.setView(v);

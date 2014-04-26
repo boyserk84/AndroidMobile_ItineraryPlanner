@@ -11,9 +11,9 @@
     <string name="cancel">Cancel</string>
     <string name="title_activity_details">DetailsActivity</string>
 	<string name="back">Back</string>
-	<string name="filters_title">What do you want?</string>
+	<string name="filters_title">What would you like to do?</string>
 	<string name="activity">Activity:</string>
-	<string name="activity_hint">food, tourist, museum</string>
+	<string name="activity_hint">Rock climbing, sipping tea, shopping</string>
 	<string name="distance">Distance:</string>
 	<string name="price">Price:</string>
 	<string name="suggested_title">Choose a Destination</string>
@@ -25,5 +25,11 @@
 	<string name="miles">mi</string>
 	<string name="num_out_of">/5</string>
 	<string name="rating">Rating:</string>
+	<string name="quick_recomm_title">Quick recommendation</string>
+	<string name="food">Food</string>
+	<string name="tourist">Tourist</string>
+	<string name="nightlife">Nightlife</string>
+	<string name="map_view">Map View</string>
+	<string name="ratingContentDescription">Rating Image</string>
 
 </resources>

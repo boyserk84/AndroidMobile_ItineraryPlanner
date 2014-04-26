@@ -1,19 +1,24 @@
 package com.codepath.travelplanner.dialogs;
 
+import java.util.ArrayList;
+
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * FiltersDialogTrip - dialog containing the filters (eg. activity, distance, price, etc)
@@ -25,6 +30,26 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	private Spinner spDistances;
 	/** spinner containing prices to filter by */
 	private Spinner spPrices;
+	
+	////////////////////////////
+	/// Quick Recommendation(s)
+	///////////////////////////
+	
+	/** Button for quick recommendation to restaurants */
+	private Button btnFood;
+	
+	/** Button for quick recommendation to tourist area/land mark*/
+	private Button btnTour;
+	
+	/** Button for quick recommendation to nightlife/clubs/getting drunk*/
+	private Button btnNightlife;
+	
+	/////////////////////////
+	// Internal data fields
+	/////////////////////////
+	
+	private YelpFilterRequest filterRequest;
+	
 
 	/** static function that creates a new filters dialog */
 	public static FiltersDialogTrip newInstance(String start, double latitude, double longitude) {
@@ -54,6 +79,9 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 			loc.setLatLng(latLng);
 			newTrip.addPlace(loc);
 		}
+		
+		// Create a dummy YelpFilterRequest
+		filterRequest = new YelpFilterRequest();
 	}
 
 	@Override
@@ -69,23 +97,72 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	@Override
 	protected void setupViews(View v) {
 		etActivity = (EditText) v.findViewById(R.id.etActivity);
-		spDistances = (Spinner) v.findViewById(R.id.spDistances);
-		spPrices = (Spinner) v.findViewById(R.id.spPrices);
+		//spDistances = (Spinner) v.findViewById(R.id.spDistances);
+		//spPrices = (Spinner) v.findViewById(R.id.spPrices);
+		
+		btnFood = (Button) v.findViewById(R.id.btnFood);
+		btnNightlife = (Button) v.findViewById( R.id.btnNightlife );
+		btnTour = (Button) v.findViewById( R.id.btnTour );
+		
+		// Listener for click for quick recommendation
+		OnClickListener clickListener = new OnClickListener() {
+
+			// Provide a quick recommendation
+			@Override
+			public void onClick(View v) {
+				switch ( v.getId() ) {
+				case R.id.btnFood:
+					filterRequest.term = "restaurant";
+					break;
+
+				case R.id.btnNightlife:
+					filterRequest.term = "night club";
+					break;
+
+				case R.id.btnTour:
+					filterRequest.term = "tour";
+					break;
+
+				default:
+
+					break;
+				}
+				updateFilterRequestWithCurrentLocation();
+				dismiss();
+				SuggestedPlacesDialogTrip.newInstance(newTrip, filterRequest).show(getFragmentManager(), "destinations");
+
+			}
+		};
+		
+		btnFood.setOnClickListener( clickListener );
+		btnNightlife.setOnClickListener( clickListener );
+		btnTour.setOnClickListener( clickListener );
 	}
 
 	@Override
 	protected void onPositiveClick() {
-		YelpFilterRequest filter = new YelpFilterRequest();
-		filter.term = etActivity.getText().toString();
-		filter.latitude = newTrip.getStart().getLatLng().latitude;
-		filter.longitude = newTrip.getStart().getLatLng().longitude;
+		filterRequest.term = etActivity.getText().toString();
+		
+		updateFilterRequestWithCurrentLocation();
+		
 		// TODO: add other filters
-		SuggestedPlacesDialogTrip.newInstance(newTrip, filter).show(getFragmentManager(), "destinations");
+		SuggestedPlacesDialogTrip.newInstance(newTrip, filterRequest).show(getFragmentManager(), "destinations");
 	}
 
 	@Override
 	protected void onNegativeClick() {
 		getDialog().cancel();
+	}
+	
+	
+	/**
+	 * Update filter Request object with the current location (long/lat)
+	 */
+	private void updateFilterRequestWithCurrentLocation() {
+		if ( filterRequest != null && newTrip != null ) {
+			filterRequest.latitude = newTrip.getStart().getLatLng().latitude;
+			filterRequest.longitude = newTrip.getStart().getLatLng().longitude;
+		}
 	}
 
 	//////////////////////////////////
