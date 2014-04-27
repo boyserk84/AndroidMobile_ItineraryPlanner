@@ -6,22 +6,12 @@
 
 	<TextView
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_height="40dp"
 			android:text="@string/suggested_title"
 			android:id="@+id/tvSuggestedTitle"
 			android:textSize="25sp"
 			android:layout_centerHorizontal="true"
 			android:layout_alignParentTop="true"/>
-
-	<ImageView
-			android:layout_width="fill_parent"
-			android:layout_height="1dp"
-			android:layout_marginTop="5dp"
-			android:layout_marginBottom="5dp"
-			android:id="@+id/ivDivider"
-			android:src="@drawable/divider_gray"
-			android:layout_centerHorizontal="true"
-			android:layout_below="@+id/tvSuggestedTitle"/>
 
 	<ProgressBar
 			style="@android:style/Widget.ProgressBar.Small.Inverse"
@@ -34,9 +24,8 @@
 
 	<ListView
 			android:layout_width="match_parent"
-			android:layout_height="fill_parent"
+			android:layout_height="match_parent"
 			android:id="@+id/lvSuggPlaces"
-			android:layout_below="@+id/ivDivider"
-			android:layout_centerHorizontal="true"
-			android:layout_centerVertical="true"/>
+			android:layout_below="@+id/tvSuggestedTitle"
+			android:layout_centerHorizontal="true"/>
 </RelativeLayout>
