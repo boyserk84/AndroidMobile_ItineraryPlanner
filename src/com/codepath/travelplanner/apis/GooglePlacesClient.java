@@ -15,10 +15,8 @@ import java.util.ArrayList;
  * GooglePlacesClient - Google Places API client
  */
 public class GooglePlacesClient extends AsyncTask<String, Void, String> {
-	/** mobile api key */
-	private static final String API_KEY = "AIzaSyC2GAzBrr6qcEaQ2AoaZaXw224Dpt5lyTU";
-	/** browser api key */
-	private static final String BROWSER_API_KEY = "AIzaSyAA4HKtHxbBnTUOgeJEmMls4QzbQY_TQP8";
+	/** api key */
+	private static final String API_KEY = "AIzaSyAA4HKtHxbBnTUOgeJEmMls4QzbQY_TQP8";
 	/** rest api url */
 	private static final String REST_URL = "https://maps.googleapis.com/maps/api/place/search/json?";
 
@@ -138,7 +136,7 @@ public class GooglePlacesClient extends AsyncTask<String, Void, String> {
 		mBuf.append("&radius=");
 		mBuf.append(DISTANCE_QUERY_IN_METERS);
 		mBuf.append("&sensor=false&key=");
-		mBuf.append(BROWSER_API_KEY);
+		mBuf.append(API_KEY);
 		return mBuf.toString();
 	}
 }
