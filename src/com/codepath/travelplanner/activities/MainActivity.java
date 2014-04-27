@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
@@ -23,13 +22,11 @@ import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
-
-import java.util.ArrayList;
-
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+import java.util.ArrayList;
 
 /**
  * MainActivity - main screen
@@ -192,6 +189,5 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	public void onFailure(JSONObject failureResult) {
 		// TODO Auto-generated method stub
 		isQueryLoading = false;
-		
 	}
 }
