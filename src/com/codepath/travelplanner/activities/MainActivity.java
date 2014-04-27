@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
@@ -43,13 +42,15 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	
 	/** Flag determining if query is still loading. */
 	protected boolean isQueryLoading = false;
+	
+	protected boolean newTrip = true;
 
 	/** fragment containing map */
 	protected MyMapFragment map;
 	/** list of segments in the route */
 	public static ArrayList<Segment> segments;
 	/** current trip */
-	public static Trip trip;
+	public Trip trip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +64,10 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	}
 
 	@Override
-	public void onRouteListener(Trip trip) {
+	public void onRouteListener(Trip updatedTrip) {
+		trip = updatedTrip;
 		map.exitMapSelectionMode();
 		map.newRoute(trip);
-		map.createCircle(new LatLng(trip.getEnd().getLatLng().latitude,
-				trip.getEnd().getLatLng().longitude), YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER/2);
 		btnDetails.setVisibility(View.VISIBLE);
 	}
 
@@ -110,9 +110,15 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 			
 			isQueryLoading = true;
 			pbQuickFind.setVisibility(View.VISIBLE);
-
+			
+			newTrip = true;
 			SimpleYelpClient.getRestClient().search( filterRequest, this);
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		map.exitMapSelectionMode();
 	}
 
 	@Override
@@ -142,47 +148,60 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	public void onNewTrip(MenuItem mi) {
 		Location myLoc = map.getMap().getMyLocation();
 		if(myLoc != null) {
-			FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude()).show(getFragmentManager(), "filters");
+			FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude(), true).show(getFragmentManager(), "filters");
 		}
 	}
 
 	@Override
-	public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip newTrip) {
+	public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip trip, boolean newTrip) {
+		this.trip = trip;
 		map.enterMapSelectionMode(suggPlacesList, newTrip);
 	}
 
 	@Override
-	public void openConfirmDialog(TripLocation destination, Trip newTrip) {
-		ConfirmDestinationDialog.newInstance(newTrip, destination).show(getFragmentManager(), "confirm");
+	public void openConfirmDialog(TripLocation destination) {
+		ConfirmDestinationDialog.newInstance(trip, destination).show(getFragmentManager(), "confirm");
 	}
 	
 	@Override
 	public void openAddDialog(LatLng location) {
-		Toast.makeText(this, "V2 support coming soon", Toast.LENGTH_LONG).show();
-		//FiltersDialogTrip.newInstance("", location.latitude, location.longitude).show(getFragmentManager(), "filters");
+		if(trip != null && trip.getPlaces() != null && trip.getPlaces().size() > 1) {
+			FiltersDialogTrip.newInstance("", location.latitude, location.longitude, false).show(getFragmentManager(), "filters");
+		}
+	}
+	
+	@Override
+	public void getAddResults(YelpFilterRequest filterRequest) {
+		isQueryLoading = true;
+		pbQuickFind.setVisibility(View.VISIBLE);
+		newTrip = false;
+		SimpleYelpClient.getRestClient().search(filterRequest, this);
 	}
 
 	@Override
 	public void onSuccess(JSONObject successResult) {
-		Trip newTrip = new Trip();
-		Location myLoc = map.getMap().getMyLocation();
-		if(myLoc != null) {
-			TripLocation loc = new TripLocation();
-			LatLng latLng = new LatLng(myLoc.getLatitude(), myLoc.getLongitude());
-			loc.setLatLng(latLng);
-			newTrip.addPlace(loc);
+		if(newTrip) {
+			trip = new Trip();
+			Location myLoc = map.getMap().getMyLocation();
+			if(myLoc != null) {
+				TripLocation loc = new TripLocation();
+				LatLng latLng = new LatLng(myLoc.getLatitude(), myLoc.getLongitude());
+				loc.setLatLng(latLng);
+				trip.addPlace(loc);
+			}
 		}
 		
 		try {
-			this.enterMapView( TripLocation.fromJSONArray(successResult.getJSONArray("businesses")) , newTrip );
+			this.enterMapView( TripLocation.fromJSONArray(successResult.getJSONArray("businesses")) , trip, newTrip);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		isQueryLoading = false;
-		pbQuickFind.setVisibility( View.INVISIBLE );
 		
+		
+		isQueryLoading = false;
+		pbQuickFind.setVisibility( View.INVISIBLE );		
 	}
 
 	@Override

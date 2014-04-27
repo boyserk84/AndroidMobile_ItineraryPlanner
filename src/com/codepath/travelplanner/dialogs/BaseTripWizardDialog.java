@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
+import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -32,19 +33,23 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 	protected static final String TRIP_EXTRA = "trip";
 	/** name of location filter in the bundle */
 	protected static final String FILTER_EXTRA = "filter";
+	/** whether this is an old trip or not in the bundle */
+	protected static final String NEW_TRIP_EXTRA = "adding";
 
 	/** trip object that the wizard is making */
-	protected Trip newTrip = new Trip();
+	protected Trip trip = new Trip();
 
 	/**
 	 * OnNewTripListener - Interface for listening to events related to making a new trip
 	 */
 	public interface OnNewTripListener {
 		/** called when we want to route the new trip */
-		public void onRouteListener(Trip trip);
-		public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip newTrip);
-		public void openConfirmDialog(TripLocation destination, Trip newTrip);
+		public Trip trip = new Trip();
+		public void onRouteListener(Trip updatedTrip);
+		public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip trip, boolean newTrip);
+		public void openConfirmDialog(TripLocation destination);
 		public void openAddDialog(LatLng location);
+		public void getAddResults(YelpFilterRequest filterRequest);
 	}
 
 	@Override

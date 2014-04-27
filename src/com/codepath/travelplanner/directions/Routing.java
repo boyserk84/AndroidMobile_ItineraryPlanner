@@ -1,13 +1,13 @@
 package com.codepath.travelplanner.directions;
 
-import android.os.AsyncTask;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+
+import android.os.AsyncTask;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class Routing extends AsyncTask<LatLng, Void, Route> {
 	protected ArrayList<RoutingListener> _aListeners;

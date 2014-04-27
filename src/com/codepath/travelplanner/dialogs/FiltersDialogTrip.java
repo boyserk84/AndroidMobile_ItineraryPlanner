@@ -49,15 +49,17 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	/////////////////////////
 	
 	private YelpFilterRequest filterRequest;
+	private boolean newTrip;
 	
 
 	/** static function that creates a new filters dialog */
-	public static FiltersDialogTrip newInstance(String start, double latitude, double longitude) {
+	public static FiltersDialogTrip newInstance(String start, double latitude, double longitude, boolean newTrip) {
 		FiltersDialogTrip dialog = new FiltersDialogTrip();
 		Bundle bundle = new Bundle();
 		bundle.putString(START_EXTRA, start);
 		bundle.putDouble(LATITUDE_EXTRA, latitude);
 		bundle.putDouble(LONGITUDE_EXTRA, longitude);
+		bundle.putBoolean(NEW_TRIP_EXTRA, newTrip);
 		dialog.setArguments(bundle);
 		return dialog;
 	}
@@ -66,9 +68,18 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		String startQueryStr = getArguments().getString(START_EXTRA);
+		
+		// Create a dummy YelpFilterRequest
+		filterRequest = new YelpFilterRequest();
+		
+		newTrip = getArguments().getBoolean(NEW_TRIP_EXTRA);
 		// TODO: search for "start" instead of using current position
 		startQueryStr = "";
-		if (startQueryStr.length() > 0) {
+		if(!newTrip) {
+			filterRequest.latitude = getArguments().getDouble(LATITUDE_EXTRA);
+			filterRequest.longitude = getArguments().getDouble(LONGITUDE_EXTRA);
+			filterRequest.radius = YelpFilterRequest.LOCAL_SEARCH_RADIUS_IN_METERS;
+		} else if (startQueryStr.length() > 0) {
 			YelpFilterRequest filter = new YelpFilterRequest();
 			filter.latitude = getArguments().getDouble(LATITUDE_EXTRA);
 			filter.longitude = getArguments().getDouble(LONGITUDE_EXTRA);
@@ -77,11 +88,10 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 			TripLocation loc = new TripLocation();
 			LatLng latLng = new LatLng(getArguments().getDouble(LATITUDE_EXTRA), getArguments().getDouble(LONGITUDE_EXTRA));
 			loc.setLatLng(latLng);
-			newTrip.addPlace(loc);
+			trip.addPlace(loc);
 		}
 		
-		// Create a dummy YelpFilterRequest
-		filterRequest = new YelpFilterRequest();
+		
 	}
 
 	@Override
@@ -127,9 +137,15 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 
 					break;
 				}
-				updateFilterRequestWithCurrentLocation();
 				dismiss();
-				SuggestedPlacesDialogTrip.newInstance(newTrip, filterRequest).show(getFragmentManager(), "destinations");
+				if(newTrip) {
+					updateFilterRequestWithCurrentLocation();
+					SuggestedPlacesDialogTrip.newInstance(trip, filterRequest).show(getFragmentManager(), "destinations");
+				}
+				else {
+					OnNewTripListener listener = (OnNewTripListener) getActivity();
+					listener.getAddResults(filterRequest);
+				}
 
 			}
 		};
@@ -143,10 +159,15 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	protected void onPositiveClick() {
 		filterRequest.term = etActivity.getText().toString();
 		
-		updateFilterRequestWithCurrentLocation();
-		
-		// TODO: add other filters
-		SuggestedPlacesDialogTrip.newInstance(newTrip, filterRequest).show(getFragmentManager(), "destinations");
+		if(newTrip) {
+			updateFilterRequestWithCurrentLocation();
+			// TODO: add other filters
+			SuggestedPlacesDialogTrip.newInstance(trip, filterRequest).show(getFragmentManager(), "destinations");
+		}
+		else {		
+			OnNewTripListener listener = (OnNewTripListener) getActivity();
+			listener.getAddResults(filterRequest);
+		}
 	}
 
 	@Override
@@ -158,9 +179,9 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	 * Update filter Request object with the current location (long/lat)
 	 */
 	private void updateFilterRequestWithCurrentLocation() {
-		if ( filterRequest != null && newTrip != null ) {
-			filterRequest.latitude = newTrip.getStart().getLatLng().latitude;
-			filterRequest.longitude = newTrip.getStart().getLatLng().longitude;
+		if ( filterRequest != null && trip != null ) {
+			filterRequest.latitude = trip.getStart().getLatLng().latitude;
+			filterRequest.longitude = trip.getStart().getLatLng().longitude;
 		}
 	}
 
@@ -173,7 +194,7 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 		try {
 			ArrayList<TripLocation> places = TripLocation.fromJSONArray( successResult.getJSONArray("businesses") );
 			if (places.size() > 0) {
-				newTrip.addPlace(places.get(0));
+				trip.addPlace(places.get(0));
 			} else {
 				// TODO handle case when we couldn't find a start destination
 			}
