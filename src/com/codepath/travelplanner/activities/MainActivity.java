@@ -89,6 +89,9 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		if ( isQueryLoading == false ) {
 			YelpFilterRequest filterRequest = new YelpFilterRequest();
 			Location myLoc = map.getMap().getMyLocation();
+			if(myLoc == null) {
+				return;
+			}
 			filterRequest.latitude = myLoc.getLatitude();
 			filterRequest.longitude = myLoc.getLongitude();
 			switch ( item.getItemId() ) {

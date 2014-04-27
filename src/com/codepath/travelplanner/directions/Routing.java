@@ -5,6 +5,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Routing extends AsyncTask<LatLng, Void, Route> {
@@ -77,6 +79,12 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 	 * @return		URL for the query
 	 */
 	protected String constructURL(LatLng... points) {
+		Calendar c = Calendar.getInstance();
+		int hour = c.get(Calendar.HOUR_OF_DAY);
+		long time = Math.round(c.getTimeInMillis() / 1000);
+		if(hour > 0 && hour < 6) {
+			time = 1343340000;
+		}
 		LatLng start = points[0];
 		LatLng dest = points[1];
 		String sJsonURL = "http://maps.googleapis.com/maps/api/directions/json?";
@@ -92,7 +100,8 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 		mBuf.append(dest.longitude);
 		mBuf.append("&sensor=true&mode=");
 		mBuf.append(_mTravelMode.getValue());
-		mBuf.append("&departure_time=1343340000");
+		mBuf.append("&departure_time=");
+		mBuf.append(time);
 
         return mBuf.toString();
 	}

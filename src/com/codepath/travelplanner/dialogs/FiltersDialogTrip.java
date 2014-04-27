@@ -151,7 +151,6 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 
 	@Override
 	protected void onNegativeClick() {
-		getDialog().cancel();
 	}
 	
 	
