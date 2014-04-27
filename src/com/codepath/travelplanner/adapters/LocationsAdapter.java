@@ -42,6 +42,9 @@ public class LocationsAdapter extends ArrayAdapter<TripLocation> {
 			
 			ImageView ivRating = (ImageView)v.findViewById(R.id.ivRating ); 
 			Picasso.with( getContext() ).load( tripLoc.getRatingImgUrl() ).into( ivRating );
+			
+			ImageView ivLocationImage = (ImageView) v.findViewById( R.id.ivImgLocation );
+			Picasso.with( getContext() ).load( tripLoc.getImageUrl() ).into(ivLocationImage);
 
 			TextView tvDistNum = (TextView) v.findViewById(R.id.tvDistNum);
 			df = new DecimalFormat("#0.00");

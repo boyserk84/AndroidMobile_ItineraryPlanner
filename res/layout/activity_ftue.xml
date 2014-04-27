@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPager"
+        android:layout_width="fill_parent"
+        android:background="#ff88ff"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+    <FrameLayout
+        android:id="@+id/flFtueContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+    </FrameLayout>
+    
+    </android.support.v4.view.ViewPager>
+
+    <Button
+        android:id="@+id/btnSkipFtue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:layout_gravity="center"
+        android:onClick="onSkipPressed"
+        android:text="@string/skip" />
+
+</LinearLayout>
