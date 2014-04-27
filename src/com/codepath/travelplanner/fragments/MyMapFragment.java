@@ -1,5 +1,15 @@
 package com.codepath.travelplanner.fragments;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -7,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.activities.MainActivity;
 import com.codepath.travelplanner.apis.GooglePlacesClient;
@@ -22,19 +33,19 @@ import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.*;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 /**
  * MyMapFragment - custom map fragment
@@ -168,7 +179,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	public void newRoute(Trip trip) {
 		ArrayList<TripLocation> locations = trip.getPlaces();
 		if (locations.size() > 1) {
-			getMap().setOnMapClickListener(null);
+			getMap().setOnMapLongClickListener(null);
 			start = trip.getStart();
 			end = trip.getEnd();
 			Routing routing = new Routing(Routing.TravelMode.TRANSIT);
@@ -206,9 +217,9 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 			getMap().moveCamera(zoom);
 			getMap().moveCamera(center);
 			
-			getMap().setOnMapClickListener(new OnMapClickListener() {
+			getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
 	            @Override
-	            public void onMapClick(LatLng point) {
+	            public void onMapLongClick(LatLng point) {
 	            	OnNewTripListener listener = (OnNewTripListener) getActivity();
 					listener.openAddDialog(point);
 	            }
@@ -222,7 +233,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip) {
 		suggPlacesList = suggPlaces;
 		removeAllMultiCircles();
-		getMap().setOnMapClickListener(null);
+		getMap().setOnMapLongClickListener(null);
 		clearSuggestedPlaces();
 		for(int i = 0; i < suggPlacesList.size(); i++) {
 			TripLocation toAdd = suggPlacesList.get(i);
@@ -265,9 +276,9 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		clearSuggestedPlaces();
 		removeAllMultiCircles();
 		getMap().setOnMarkerClickListener(null);
-		getMap().setOnMapClickListener(new OnMapClickListener() {
+		getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
             @Override
-            public void onMapClick(LatLng point) {
+            public void onMapLongClick(LatLng point) {
             	OnNewTripListener listener = (OnNewTripListener) getActivity();
 				listener.openAddDialog(point);
             }
