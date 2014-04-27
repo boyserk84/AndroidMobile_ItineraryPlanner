@@ -31,6 +31,7 @@
     <string name="nightlife">Nightlife</string>
     <string name="map_view">Map View</string>
     <string name="ratingContentDescription">Rating Image</string>
+    <string name="locationImgContentDescription">Location Image</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="skip">Skip</string>

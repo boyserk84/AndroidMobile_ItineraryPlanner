@@ -62,6 +62,9 @@ public class ConfirmDestinationDialog extends BaseTripWizardDialog {
 			ImageView ivRating = (ImageView) v.findViewById(R.id.ivConfirmImageRating);
 			Picasso.with( v.getContext() ).load( tripLocation.getRatingImgUrl() ).into( ivRating );
 			
+			ImageView ivLocImg = (ImageView) v.findViewById(R.id.ivConfirmImgLocation);
+			Picasso.with( v.getContext() ).load( tripLocation.getImageUrl() ).into( ivLocImg );
+			
 			TextView tvDistNum = (TextView) v.findViewById(R.id.tvDistNum);
 			df = new DecimalFormat("#0.00");
 			tvDistNum.setText(df.format(tripLocation.getDistance()/YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER));
