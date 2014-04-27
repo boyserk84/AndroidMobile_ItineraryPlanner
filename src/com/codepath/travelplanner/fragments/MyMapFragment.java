@@ -44,6 +44,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	private static final String MULTI_CIRCLE_COLOR = "#40E6E600";
 	/** map of long/lat to circle object for the multi circles */
 	protected HashMap<String, Circle> coordToCircles = new HashMap<String, Circle>();
+
 	protected Circle circle;
 	protected Polyline polyline;
     
@@ -81,17 +82,21 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 				getMap().setOnMyLocationChangeListener(null);
 			}
 		});
-
-		getMap().setOnCameraChangeListener(this);
-
 		return mapView;
 	}
 
 	@Override
 	public void onCameraChange(CameraPosition cameraPosition) {
 		// redo the search for subway stations around the area when camera position has changed
-		LatLng currentScreenLoc = getMap().getCameraPosition().target;
-		(new GooglePlacesClient()).search(GooglePlacesClient.SUBWAY_STATION_QUERY, currentScreenLoc.latitude, currentScreenLoc.longitude, this);
+		searchNearbySubwayStations(cameraPosition.target);
+	}
+
+	/**
+	 * Searches the Google Places API for the nearby subway stations at some location
+	 * @param location		location to perform the search
+	 */
+	protected void searchNearbySubwayStations(LatLng location) {
+		(new GooglePlacesClient()).search(GooglePlacesClient.SUBWAY_STATION_QUERY, location.latitude, location.longitude, this);
 	}
 
 	/** Creates a polyline on the map */
@@ -210,6 +215,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, Trip newTripIn) {
 		suggPlacesList = suggPlaces;
 		newTrip = newTripIn;
+		removeAllMultiCircles();
 		getMap().clear();
 		for(int i = 0; i < suggPlacesList.size(); i++) {
 			TripLocation toAdd = suggPlacesList.get(i);
@@ -222,14 +228,20 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
 			@Override
 			public boolean onMarkerClick(Marker selected) {
-				int index = Integer.parseInt(selected.getTitle());
-				TripLocation tripLocation = suggPlacesList.get(index);
-				OnNewTripListener listener = (OnNewTripListener) getActivity();
-				listener.openConfirmDialog(tripLocation, newTrip);
-				return true;
+				try {
+					// try to show confirm route dialog
+					int index = Integer.parseInt(selected.getTitle());
+					TripLocation tripLocation = suggPlacesList.get(index);
+					OnNewTripListener listener = (OnNewTripListener) getActivity();
+					listener.openConfirmDialog(tripLocation, newTrip);
+					return true;
+				} catch (NumberFormatException e) {
+					// do default behavior
+					return false;
+				}
 			}
 		});
-		
+		getMap().setOnCameraChangeListener(this);
 		CameraUpdate zoom = CameraUpdateFactory.zoomTo(12);
 		getMap().animateCamera(zoom);
 	}
@@ -237,6 +249,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	public void exitMapSelectionMode() {
 		newTrip = null;
 		suggPlacesList = null;
+		removeAllMultiCircles();
 		getMap().clear();
 		getMap().setOnMarkerClickListener(null);
 	}
