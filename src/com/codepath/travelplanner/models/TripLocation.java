@@ -184,7 +184,7 @@ public class TripLocation implements Serializable{
 			tripLoc.snippetImageUrl = object.getString("snippet_image_url");
 			tripLoc.distance = object.getDouble("distance");
 			tripLoc.ratingImgUrl = object.getString("rating_img_url");
-			tripLoc.address = LocationAddress.fromJSON( object.getJSONObject("location"));
+			tripLoc.address = LocationAddress.fromJSON( object.getJSONObject("location"), tripLoc.locationName );
 
 			// TODO: Add more
 		} catch (JSONException e) {

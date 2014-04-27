@@ -121,7 +121,12 @@ public class Trip implements Serializable{
 	 * Adds a place to the end of the places list
 	 */
 	public void addPlace(TripLocation place) {
-		places.add(place);
+		if(places.size() > 1) {
+			places.add(places.size() - 1, place);
+		}
+		else {
+			places.add(place);
+		}
 	}
 
 }

@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
  * Confirmation Dialog - dialog confirming map view selection
  */
 public class ConfirmDestinationDialog extends BaseTripWizardDialog {
-	private Trip newTrip;
 	private TripLocation tripLocation;
 
 	/** static function that creates a new filters dialog */
@@ -34,7 +33,7 @@ public class ConfirmDestinationDialog extends BaseTripWizardDialog {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		newTrip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
+		trip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
 		tripLocation = (TripLocation) getArguments().getSerializable(DESTINATION_EXTRA);
 	}
 
@@ -75,9 +74,9 @@ public class ConfirmDestinationDialog extends BaseTripWizardDialog {
 
 	@Override
 	protected void onPositiveClick() {
-		newTrip.addPlace(tripLocation);
+		trip.addPlace(tripLocation);
 		OnNewTripListener listener = (OnNewTripListener) getActivity();
-		listener.onRouteListener(newTrip);
+		listener.onRouteListener(trip);
 	}
 
 	@Override

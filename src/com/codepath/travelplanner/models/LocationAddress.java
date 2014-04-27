@@ -44,13 +44,16 @@ public class LocationAddress implements Serializable{
 		return mainAddress + ", " + getZip();
 	}
 	
-	public static LocationAddress fromJSON( JSONObject object ) {
+	public static LocationAddress fromJSON( JSONObject object, String fallbackName ) {
 		LocationAddress loc = new LocationAddress();
 		
 		JSONArray arr = null;
 		try {
 			arr = object.getJSONArray("address");
 			loc.mainAddress = arr.getString(0);
+			if(loc.mainAddress.contains("&")) {
+				loc.mainAddress = fallbackName;
+			}
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

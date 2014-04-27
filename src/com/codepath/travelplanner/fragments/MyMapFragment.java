@@ -44,7 +44,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	private static final String MULTI_CIRCLE_COLOR = "#40E6E600";
 	/** map of long/lat to circle object for the multi circles */
 	protected HashMap<String, Circle> coordToCircles = new HashMap<String, Circle>();
-
+	protected ArrayList<Marker> suggestedPlaces = new ArrayList<Marker>();
 	protected Circle circle;
 	protected Polyline polyline;
     
@@ -55,7 +55,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	protected Marker endMarker;
 	
 	protected ArrayList<TripLocation> suggPlacesList;
-	protected Trip newTrip;
     
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -157,6 +156,14 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		coordToCircles.clear();
 	}
 	
+	/** Removes all suggested places from the map */
+	public void clearSuggestedPlaces() {
+		for (Marker marker : suggestedPlaces) {
+			marker.remove();
+		}
+		suggestedPlaces.clear();
+	}
+	
 	/** Generate new directions */
 	public void newRoute(Trip trip) {
 		ArrayList<TripLocation> locations = trip.getPlaces();
@@ -212,46 +219,59 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		}
 	}
 	
-	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, Trip newTripIn) {
+	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip) {
 		suggPlacesList = suggPlaces;
-		newTrip = newTripIn;
 		removeAllMultiCircles();
-		getMap().clear();
+		getMap().setOnMapClickListener(null);
+		clearSuggestedPlaces();
 		for(int i = 0; i < suggPlacesList.size(); i++) {
 			TripLocation toAdd = suggPlacesList.get(i);
 			toAdd.setLatLng(Util.getLatLngFromAddress(toAdd.getAddress().toString(), getActivity()));
 			MarkerOptions options = new MarkerOptions();
 			options.position(suggPlacesList.get(i).getLatLng());
 			options.title(Integer.toString(i));
-			getMap().addMarker(options);
+			suggestedPlaces.add(getMap().addMarker(options));
 		}
 		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
 			@Override
 			public boolean onMarkerClick(Marker selected) {
-				try {
+				try{
 					// try to show confirm route dialog
 					int index = Integer.parseInt(selected.getTitle());
 					TripLocation tripLocation = suggPlacesList.get(index);
 					OnNewTripListener listener = (OnNewTripListener) getActivity();
-					listener.openConfirmDialog(tripLocation, newTrip);
+					listener.openConfirmDialog(tripLocation);
 					return true;
-				} catch (NumberFormatException e) {
+				}
+				catch(Exception e) {
 					// do default behavior
 					return false;
 				}
 			}
 		});
+		
+		CameraUpdate zoom;
+		if(newTrip) {
+			zoom = CameraUpdateFactory.zoomTo(12);
+		} else {
+			zoom = CameraUpdateFactory.zoomTo(15);
+		}
 		getMap().setOnCameraChangeListener(this);
-		CameraUpdate zoom = CameraUpdateFactory.zoomTo(12);
 		getMap().animateCamera(zoom);
 	}
 	
 	public void exitMapSelectionMode() {
-		newTrip = null;
 		suggPlacesList = null;
+		clearSuggestedPlaces();
 		removeAllMultiCircles();
-		getMap().clear();
 		getMap().setOnMarkerClickListener(null);
+		getMap().setOnMapClickListener(new OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+            	OnNewTripListener listener = (OnNewTripListener) getActivity();
+				listener.openAddDialog(point);
+            }
+        });
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class SummaryDialogTrip extends BaseTripWizardDialog {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		newTrip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
+		trip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
 		filter = (YelpFilterRequest) getArguments().getSerializable(FILTER_EXTRA);
 	}
 
@@ -59,12 +59,12 @@ public class SummaryDialogTrip extends BaseTripWizardDialog {
 	protected void onPositiveClick() {
 		// route
 		OnNewTripListener listener = (OnNewTripListener) getActivity();
-		listener.onRouteListener(newTrip);
+		listener.onRouteListener(trip);
 	}
 
 	@Override
 	protected void onNegativeClick() {
-		SuggestedPlacesDialogTrip.newInstance(newTrip, filter).show(getFragmentManager(), "destinations");
+		SuggestedPlacesDialogTrip.newInstance(trip, filter).show(getFragmentManager(), "destinations");
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class SummaryDialogTrip extends BaseTripWizardDialog {
 		tvSummEnd = (TextView) v.findViewById(R.id.tvSummEnd);
 		etSummTripName = (EditText) v.findViewById(R.id.etSummTripName);
 		String startLocationName = "Current Location";
-		String endLocationName = newTrip.getEnd().getLocationName();
+		String endLocationName = trip.getEnd().getLocationName();
 		tvSummStart.setText(startLocationName);
 		tvSummEnd.setText(endLocationName);
 		etSummTripName.setHint("Trip to " + endLocationName);

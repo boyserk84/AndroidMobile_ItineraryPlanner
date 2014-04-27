@@ -68,7 +68,7 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		newTrip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
+		trip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
 		filter = (YelpFilterRequest) getArguments().getSerializable(FILTER_EXTRA);
 	}
 
@@ -95,9 +95,9 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 				// add the selected item to the trip's places list
 				TripLocation tripLocation = (TripLocation) adapterView.getItemAtPosition(i);
 				tripLocation.setLatLng(Util.getLatLngFromAddress(tripLocation.getAddress().toString(), getActivity()));
-				newTrip.addPlace(tripLocation);
+				trip.addPlace(tripLocation);
 				OnNewTripListener listener = (OnNewTripListener) getActivity();
-				listener.onRouteListener(newTrip);
+				listener.onRouteListener(trip);
 				dismiss();
 			}
 		});
@@ -109,15 +109,15 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	protected void onPositiveClick() {
 		//go to map view
 		OnNewTripListener listener = (OnNewTripListener) getActivity();
-		listener.enterMapView(suggPlacesList, newTrip);
+		listener.enterMapView(suggPlacesList, trip, true);
 	}
 
 	@Override
 	protected void onNegativeClick() {
-		if ( newTrip != null ) {
-			TripLocation loc = newTrip.getStart();
+		if ( trip != null ) {
+			TripLocation loc = trip.getStart();
 			if ( loc.getLatLng() != null ) {
-				FiltersDialogTrip.newInstance("", loc.getLatLng().latitude, loc.getLatLng().longitude).show(getFragmentManager(), "filters");
+				FiltersDialogTrip.newInstance("", loc.getLatLng().latitude, loc.getLatLng().longitude, true).show(getFragmentManager(), "filters");
 			}
 		}
 	}
