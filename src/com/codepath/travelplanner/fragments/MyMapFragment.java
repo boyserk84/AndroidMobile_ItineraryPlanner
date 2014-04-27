@@ -1,8 +1,5 @@
 package com.codepath.travelplanner.fragments;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,35 +7,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.activities.MainActivity;
+import com.codepath.travelplanner.apis.GooglePlacesClient;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
 import com.codepath.travelplanner.directions.Routing;
 import com.codepath.travelplanner.directions.RoutingListener;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.helpers.Util;
+import com.codepath.travelplanner.models.GooglePlace;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
+import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.*;
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * MyMapFragment - custom map fragment
  */
-public class MyMapFragment extends MapFragment implements RoutingListener {
+public class MyMapFragment extends MapFragment implements RoutingListener, IRequestListener, GoogleMap.OnCameraChangeListener {
+	/** color of the multi circles */
+	private static final String MULTI_CIRCLE_COLOR = "#40E6E600";
+	/** map of long/lat to circle object for the multi circles */
+	protected HashMap<String, Circle> coordToCircles = new HashMap<String, Circle>();
 	protected Circle circle;
 	protected Polyline polyline;
     
@@ -76,10 +81,19 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 				getMap().setOnMyLocationChangeListener(null);
 			}
 		});
+
+		getMap().setOnCameraChangeListener(this);
+
 		return mapView;
 	}
-	
-	
+
+	@Override
+	public void onCameraChange(CameraPosition cameraPosition) {
+		// redo the search for subway stations around the area when camera position has changed
+		LatLng currentScreenLoc = getMap().getCameraPosition().target;
+		(new GooglePlacesClient()).search(GooglePlacesClient.SUBWAY_STATION_QUERY, currentScreenLoc.latitude, currentScreenLoc.longitude, this);
+	}
+
 	/** Creates a polyline on the map */
 	protected void createPolyline(PolylineOptions mPolyOptions) {
 		//only allow one polyline on the map? if we use multiple polylines per a route then we will only allow one set of polylines per a map
@@ -117,6 +131,25 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 		options.fillColor(Color.parseColor("#500084d3"));
 		circle = getMap().addCircle(options);
 		return circle;
+	}
+
+	/** Adds a circle to the map but do not remove previous circles of this type */
+	public void addMultiCircle(LatLng center, double radiusInMeters) {
+		CircleOptions options = new CircleOptions();
+		options.center(center);
+		options.radius(radiusInMeters);
+		options.strokeWidth(2);
+		options.strokeColor(Color.parseColor(MULTI_CIRCLE_COLOR));
+		options.fillColor(Color.parseColor(MULTI_CIRCLE_COLOR));
+		coordToCircles.put(center.latitude+","+center.longitude, getMap().addCircle(options));
+	}
+
+	/** Removes all 'multi' circles on the map */
+	public void removeAllMultiCircles() {
+		for (Circle circle : coordToCircles.values()) {
+			circle.remove();
+		}
+		coordToCircles.clear();
 	}
 	
 	/** Generate new directions */
@@ -206,5 +239,28 @@ public class MyMapFragment extends MapFragment implements RoutingListener {
 		suggPlacesList = null;
 		getMap().clear();
 		getMap().setOnMarkerClickListener(null);
+	}
+
+	@Override
+	public void onSuccess(JSONObject successResult) {
+		try {
+			JSONArray results = successResult.getJSONArray("results");
+			for (int i = 0; i < results.length(); i++) {
+				GooglePlace place = GooglePlace.fromJSONObject((JSONObject) results.get(i));
+				if (coordToCircles.get(place.getLatitude()+","+place.getLongitude()) == null) {
+					// only add circle if it's at a new place
+					LatLng latLng = new LatLng(place.getLatitude(), place.getLongitude());
+					addMultiCircle(latLng, YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER/4);
+					createMarker(latLng, R.drawable.ic_subway, place.getName(), "");
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void onFailure(JSONObject failureResult) {
+		// TODO Auto-generated method stub
 	}
 }
