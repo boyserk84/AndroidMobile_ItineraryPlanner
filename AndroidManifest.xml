@@ -49,7 +49,7 @@
         </activity>
         <activity
             android:name="com.codepath.travelplanner.activities.MainActivity"
-            android:label="@string/title_activity_ftue" >
+            android:label="@string/app_name" >
         </activity>
     </application>
 

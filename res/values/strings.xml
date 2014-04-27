@@ -31,7 +31,16 @@
     <string name="nightlife">Nightlife</string>
     <string name="map_view">Map View</string>
     <string name="ratingContentDescription">Rating Image</string>
-    <string name="title_activity_ftue">FtueActivity</string>
+
     <string name="hello_world">Hello world!</string>
+    <string name="skip">Skip</string>
+    
+    <string name="ftue_page_1">Page 1 Ftue Blahb Blahbfdafdsaf Lbah</string>
+    <string name="ftue_page_2">Page 2 Ftue Blahb Blahb Lbah</string>
+    <string name="ftue_page_3">Page 3 Ftue Blahb Blahb Lbah</string>
+    <string name="ftue_page_4">Page 4 Ftue Blahb Blahbfdsa Lbah</string>
+    <string name="ftue_page_5">Page 5 Ftue Blahb Blahb Lbah</string>
+    <string name="ftue_page_6">Page 6 Ftue Blahb Blahb Lbah</string>
+    <string name="ftue_page_7">Page 7 Ftue Blahb Blahbfdsaf Lbah</string>
 
 </resources>
