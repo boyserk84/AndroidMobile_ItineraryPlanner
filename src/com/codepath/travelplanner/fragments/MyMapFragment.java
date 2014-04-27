@@ -230,11 +230,17 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
 			@Override
 			public boolean onMarkerClick(Marker selected) {
-				int index = Integer.parseInt(selected.getTitle());
-				TripLocation tripLocation = suggPlacesList.get(index);
-				OnNewTripListener listener = (OnNewTripListener) getActivity();
-				listener.openConfirmDialog(tripLocation);
-				return true;
+				try{
+					int index = Integer.parseInt(selected.getTitle());
+					TripLocation tripLocation = suggPlacesList.get(index);
+					OnNewTripListener listener = (OnNewTripListener) getActivity();
+					listener.openConfirmDialog(tripLocation);
+					return true;
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+					return false;
+				}
 			}
 		});
 		
