@@ -1,8 +1,5 @@
 package com.codepath.travelplanner.adapters;
 
-import java.text.DecimalFormat;
-import java.util.List;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.squareup.picasso.Picasso;
+
+import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * LocationsAdapter - adapter for list of trip locations
@@ -32,7 +31,7 @@ public class LocationsAdapter extends ArrayAdapter<TripLocation> {
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
-			v = inflater.inflate(R.layout.location_item, null);
+			v = inflater.inflate(R.layout.item_location, null);
 		}
 		TripLocation tripLoc = getItem(position);
 		if (tripLoc != null) {
