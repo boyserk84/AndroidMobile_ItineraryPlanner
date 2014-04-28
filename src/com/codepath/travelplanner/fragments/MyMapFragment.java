@@ -46,7 +46,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	protected HashMap<String, Circle> coordToCircles = new HashMap<String, Circle>();
 	protected ArrayList<Marker> suggestedPlaces = new ArrayList<Marker>();
 	protected ArrayList<Polyline> polylines = new ArrayList<Polyline>();
-	protected Circle circle;
 	
     protected ArrayList<TripLocation> currentlyRouting;
     protected int currentNode;
