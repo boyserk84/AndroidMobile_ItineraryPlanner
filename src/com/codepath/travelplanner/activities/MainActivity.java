@@ -47,6 +47,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	protected ImageView ivRating;
 	protected ImageView ivLocImg;
 	protected TextView tvDistNum;
+	protected Button btnMarkerRouteGo;
 
 	/** details text view */
 	protected TextView tvDirDetails;
@@ -92,10 +93,12 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		ivRating = (ImageView) llMarkerDetail.findViewById(R.id.ivRating);
 		ivLocImg = (ImageView) llMarkerDetail.findViewById(R.id.ivImgLocation);
 		tvDistNum = (TextView) llMarkerDetail.findViewById(R.id.tvDistNum);
+		btnMarkerRouteGo = (Button) llMarkerDetail.findViewById(R.id.btnMarkerRouteGo);
 	}
 
 	@Override
 	public void onRouteListener(Trip updatedTrip) {
+		pbQuickFind.setVisibility(View.VISIBLE);
 		trip = updatedTrip;
 		map.exitMapSelectionMode();
 		map.newRoute(trip);
@@ -169,6 +172,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 
 	@Override
 	public void onRouted(String durationString) {
+		pbQuickFind.setVisibility(View.INVISIBLE);
 		tvDirDetails.setText(durationString);
 		isRouteActive = true;
 		showDirectionsPreview();
@@ -189,6 +193,11 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 			Picasso.with(llMarkerDetail.getContext()).load( tripLocation.getImageUrl() ).into( ivLocImg );
 			df = new DecimalFormat("#0.00");
 			tvDistNum.setText(df.format(tripLocation.getDistance()/YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER));
+			if (newTrip) {
+				btnMarkerRouteGo.setText("Go!");
+			} else {
+				btnMarkerRouteGo.setText("Add Midpoint");
+			}
 			showMarkerDetails();
 		} else {
 			Log.d("travelIt", "location is null in confirm dialog???");
@@ -241,11 +250,11 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	}
 
 	/** Callback for when the Route button is clicked from the marker details layout */
-	public void onRouteClick(View v) {
+	public void onMapViewRouteClick(View v) {
 		if (markerTripLocation != null) {
 			trip.addPlace(markerTripLocation);
-			onRouteListener(trip);
 			hideMarkerDetails();
+			onRouteListener(trip);
 		}
 	}
 
@@ -307,9 +316,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
 		isQueryLoading = false;
 		pbQuickFind.setVisibility( View.INVISIBLE );		
 	}
