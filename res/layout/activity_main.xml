@@ -14,16 +14,29 @@
      android:layout_alignParentLeft="true"
      android:layout_alignParentTop="true" />
 
- <Button
-     android:id="@+id/btnDetails"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:layout_alignParentBottom="true"
-     android:layout_alignParentLeft="true"
-     android:layout_marginRight="22dp"
-	 android:visibility="invisible"
-     android:onClick="onDetails"
-     android:text="Directions" />
+ <RelativeLayout
+		 android:id="@+id/rlDirDetails"
+		 android:background="@drawable/white_rectangle"
+		 android:layout_width="match_parent"
+		 android:layout_height="wrap_content"
+		 android:onClick="onDetails"
+		 android:padding="15dp"
+		 android:visibility="gone"
+		 android:layout_centerHorizontal="true"
+		 android:layout_alignParentBottom="true">
+	 <TextView
+			 android:id="@+id/tvDirDetails"
+			 android:layout_width="wrap_content"
+			 android:layout_height="wrap_content"
+			 android:layout_alignParentLeft="true"
+			 android:textSize="25sp"/>
+	 <ImageView
+			 android:layout_width="wrap_content"
+			 android:layout_height="wrap_content"
+			 android:id="@+id/ivDirDetails"
+			 android:src="@drawable/ic_list"
+			 android:layout_alignParentRight="true"/>
+ </RelativeLayout>
 
  <ProgressBar
      android:id="@+id/pbQuickFindLoad"
@@ -32,6 +45,6 @@
      android:layout_height="wrap_content"
      android:layout_centerHorizontal="true"
      android:layout_centerVertical="true" />
- 
- </RelativeLayout>
+
+</RelativeLayout>
 

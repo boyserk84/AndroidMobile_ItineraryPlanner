@@ -46,6 +46,8 @@ public class GoogleParser extends XMLParser implements Parser {
 			final JSONArray steps = leg.getJSONArray("steps");
 			//Set the name of this route using the start & end addresses
 			route.setName(leg.getString("start_address") + " to " + leg.getString("end_address"));
+			//Set the duration of the route
+			route.setDuration(leg.getJSONObject("duration").getInt("value"));
 			//Get google's copyright notice (tos requirement)
 			route.setCopyright(jsonRoute.getString("copyrights"));
 			//Get the total length of the route.

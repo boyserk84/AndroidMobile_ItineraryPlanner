@@ -3,6 +3,7 @@ package com.codepath.travelplanner.directions;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.codepath.travelplanner.helpers.Util;
 import com.google.android.gms.maps.model.LatLng;
 
 public class Route {
@@ -13,6 +14,7 @@ public class Route {
 	private String warning;
 	private String country;
 	private int length;
+	private int duration;
 	private String polyline;
 
 	public Route() {
@@ -109,8 +111,21 @@ public class Route {
 	public int getLength() {
 		return length;
 	}
-	
-	
+
+	/**
+	 * @return the duration in a friendly string form
+	 */
+	public String getDurationString() {
+		return Util.getFormattedDuration(duration);
+	}
+
+	/**
+	 * @param duration	the duration of the route in seconds
+	 */
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
 	/**
 	 * @param polyline the polyline to set
 	 */

@@ -1,12 +1,12 @@
 package com.codepath.travelplanner.fragments;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.activities.MainActivity;
 import com.codepath.travelplanner.apis.GooglePlacesClient;
@@ -55,17 +55,18 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	protected Marker endMarker;
 	
 	protected ArrayList<TripLocation> suggPlacesList;
-    
+
+	protected MapListener mapListener;
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mapListener = (MapListener) activity;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View mapView = super.onCreateView(inflater, container, savedInstanceState);   
-
-		View locationButton = ((View) mapView.findViewById(1).getParent()).findViewById(2);
-
-		RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-		rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-		rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-		rlp.setMargins(0, 0, 30, 30);
+		View mapView = super.onCreateView(inflater, container, savedInstanceState);
 	
 		getMap().getUiSettings().setRotateGesturesEnabled(false);
 		getMap().getUiSettings().setZoomControlsEnabled(false);
@@ -145,7 +146,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		options.strokeWidth(2);
 		options.strokeColor(Color.parseColor(MULTI_CIRCLE_COLOR));
 		options.fillColor(Color.parseColor(MULTI_CIRCLE_COLOR));
-		coordToCircles.put(center.latitude+","+center.longitude, getMap().addCircle(options));
+		coordToCircles.put(center.latitude + "," + center.longitude, getMap().addCircle(options));
 	}
 
 	/** Removes all 'multi' circles on the map */
@@ -188,7 +189,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	}
 
 	@Override
-	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments) {
+	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments, String totalDuration) {
 		if (start != null && end != null) {
 			createPolyline(mPolyOptions);
 			if(startMarker != null) {
@@ -214,6 +215,8 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	            }
 	        });
 
+			mapListener.onRouted(totalDuration);
+
 			//TODO: Jeff: store this is in the trip object later
 			MainActivity.segments = new ArrayList<Segment>(segments);
 		}
@@ -235,15 +238,14 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
 			@Override
 			public boolean onMarkerClick(Marker selected) {
-				try{
+				try {
 					// try to show confirm route dialog
 					int index = Integer.parseInt(selected.getTitle());
 					TripLocation tripLocation = suggPlacesList.get(index);
 					OnNewTripListener listener = (OnNewTripListener) getActivity();
 					listener.openConfirmDialog(tripLocation);
 					return true;
-				}
-				catch(Exception e) {
+				} catch (Exception e) {
 					// do default behavior
 					return false;
 				}
@@ -266,12 +268,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		removeAllMultiCircles();
 		getMap().setOnMarkerClickListener(null);
 		getMap().setOnMapClickListener(new OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng point) {
-            	OnNewTripListener listener = (OnNewTripListener) getActivity();
+			@Override
+			public void onMapClick(LatLng point) {
+				OnNewTripListener listener = (OnNewTripListener) getActivity();
 				listener.openAddDialog(point);
-            }
-        });
+			}
+		});
 	}
 
 	@Override
@@ -295,5 +297,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	@Override
 	public void onFailure(JSONObject failureResult) {
 		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * MapListener - Interface for listening to events related to map fragment
+	 */
+	public interface MapListener {
+		public void onRouted(String durationString);
 	}
 }

@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
@@ -17,6 +19,7 @@ import com.codepath.travelplanner.dialogs.ConfirmDestinationDialog;
 import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
+import com.codepath.travelplanner.fragments.MyMapFragment.MapListener;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
@@ -30,12 +33,15 @@ import java.util.ArrayList;
 /**
  * MainActivity - main screen
  */
-public class MainActivity extends FragmentActivity implements OnNewTripListener, IRequestListener {
+public class MainActivity extends FragmentActivity implements OnNewTripListener, IRequestListener, MapListener {
 	/** key for the segments bundle */
 	public static final String SEGMENTS = "segments";
 
-	/** details button */
-	protected Button btnDetails;
+	/** details "button" relative layout */
+	protected RelativeLayout rlDirDetails;
+
+	/** details text view */
+	protected TextView tvDirDetails;
 	
 	/** Progress bar showing while query is loading.*/
 	protected ProgressBar pbQuickFind;
@@ -58,7 +64,8 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		setContentView(R.layout.activity_main);
 		
 		map = ((MyMapFragment) getFragmentManager().findFragmentById(R.id.map));
-		btnDetails = (Button) findViewById(R.id.btnDetails);
+		rlDirDetails = (RelativeLayout) findViewById(R.id.rlDirDetails);
+		tvDirDetails = (TextView) findViewById(R.id.tvDirDetails);
 		pbQuickFind = (ProgressBar) findViewById(R.id.pbQuickFindLoad);
 		pbQuickFind.setVisibility(View.INVISIBLE);
 	}
@@ -68,7 +75,6 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		trip = updatedTrip;
 		map.exitMapSelectionMode();
 		map.newRoute(trip);
-		btnDetails.setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -133,7 +139,14 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
-	
+
+	@Override
+	public void onRouted(String durationString) {
+		tvDirDetails.setText(durationString);
+		rlDirDetails.setVisibility(View.VISIBLE);
+		rlDirDetails.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_in));
+	}
+
 	/** Display directions */
 	public void onDetails(View v) {
 		if(segments != null) {

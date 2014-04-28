@@ -1,13 +1,12 @@
 package com.codepath.travelplanner.directions;
 
+import android.os.AsyncTask;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import android.os.AsyncTask;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 public class Routing extends AsyncTask<LatLng, Void, Route> {
 	protected ArrayList<RoutingListener> _aListeners;
@@ -52,9 +51,9 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 		}
 	}
 
-	protected void dispatchOnSuccess(PolylineOptions mOptions, List<Segment> segments) {
+	protected void dispatchOnSuccess(PolylineOptions mOptions, List<Segment> segments, String totalDuration) {
 		for (RoutingListener mListener: _aListeners) {
-			mListener.onRoutingSuccess(mOptions, segments);
+			mListener.onRoutingSuccess(mOptions, segments, totalDuration);
 		}
 	}
 
@@ -122,7 +121,7 @@ public class Routing extends AsyncTask<LatLng, Void, Route> {
 			for (LatLng point : result.getPoints()) {
 				mOptions.add(point);
 			}
-			dispatchOnSuccess(mOptions, result.getSegments());
+			dispatchOnSuccess(mOptions, result.getSegments(), result.getDurationString());
 		}
 	}
 }

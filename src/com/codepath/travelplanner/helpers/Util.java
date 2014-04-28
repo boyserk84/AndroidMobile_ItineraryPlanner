@@ -6,6 +6,9 @@ import android.location.Geocoder;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,5 +32,27 @@ public class Util {
 			e.printStackTrace();
 		}
 		return new LatLng(latitude, longtitude);
+	}
+
+	/**
+	 * Gets the formatted string of a duration
+	 * @param durationSecs		duration in secs
+	 * @return the formatted time text for the matching duration
+	 */
+	public static String getFormattedDuration(int durationSecs) {
+		String formatted = "";
+		int hours   = (int)Math.floor(durationSecs / 3600);
+		int minutes = (int)Math.floor((durationSecs - (hours * 3600)) / 60);
+
+		if (hours > 0) {
+			formatted += hours + " hours";
+			if (minutes > 0) {
+				formatted += " and ";
+			}
+		}
+		if (minutes > 0) {
+			formatted += minutes + " minutes";
+		}
+		return formatted;
 	}
 }
