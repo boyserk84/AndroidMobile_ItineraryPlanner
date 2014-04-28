@@ -51,16 +51,6 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	}
 
 	@Override
-	protected void setPositiveButton(AlertDialog.Builder builder) {
-		builder.setPositiveButton(getPositiveBtnTextId(), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int id) {
-				onPositiveClick();
-			}
-		});
-	}
-
-	@Override
 	protected int getPositiveBtnTextId() {
 		return R.string.map_view;
 	};

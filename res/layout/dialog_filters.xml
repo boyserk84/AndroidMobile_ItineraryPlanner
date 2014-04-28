@@ -5,12 +5,16 @@
 
     <TextView
         android:id="@+id/tvFiltersTitle"
-        android:layout_width="wrap_content"
+		android:background="@drawable/theme_rectangle"
+		android:textColor="@android:color/white"
+		android:textStyle="bold"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+		android:padding="10dp"
         android:text="@string/filters_title"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/ivDivider"
@@ -19,7 +23,6 @@
         android:layout_below="@+id/tvFiltersTitle"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:src="@drawable/divider_gray" />
 
     <TextView
@@ -71,6 +74,13 @@
 
         <Button
             android:id="@+id/btnFood"
+			android:background="@drawable/btn_light"
+			android:padding="8dp"
+			android:minWidth="0dp"
+			android:minHeight="0dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="8dp"
+			android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRecommendButtonClick"
@@ -78,6 +88,14 @@
 
         <Button
             android:id="@+id/btnTour"
+			android:background="@drawable/btn_light"
+			android:padding="8dp"
+			android:minWidth="0dp"
+			android:minHeight="0dp"
+			android:layout_marginLeft="5dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="8dp"
+			android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRecommendButtonClick"
@@ -85,11 +103,18 @@
 
         <Button
             android:id="@+id/btnNightlife"
+			android:background="@drawable/btn_light"
+			android:padding="8dp"
+			android:minWidth="0dp"
+			android:minHeight="0dp"
+			android:layout_marginLeft="5dp"
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onRecommendButtonClick"
             android:text="@string/nightlife" />
-        
+
     </LinearLayout>
 
 </RelativeLayout>
