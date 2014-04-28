@@ -284,7 +284,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	/** replaces the temporary replacement marker with the standard marker*/
 	public void replaceReplacementMarker() {
 		if (replacementMarker != null) {
-			createMarker(replacementMarker.getPosition(), R.drawable.ic_pin, replacementMarker.getTitle(), "");
+			suggestedPlaces.add(createMarker(replacementMarker.getPosition(), R.drawable.ic_pin, replacementMarker.getTitle(), ""));
 			replacementMarker.remove();
 			replacementMarker = null;
 		}
