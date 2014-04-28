@@ -37,13 +37,13 @@
     <string name="skip">Skip</string>
     <string name="getStarted">Get Started!</string>
     
-    <string name="ftue_page_1">Page 1 Ftue Blahb Blahbfdafdsaf Lbah</string>
-    <string name="ftue_page_2">Page 2 Ftue Blahb Blahb Lbah</string>
-    <string name="ftue_page_3">Page 3 Ftue Blahb Blahb Lbah</string>
-    <string name="ftue_page_4">Page 4 Ftue Blahb Blahbfdsa Lbah</string>
-    <string name="ftue_page_5">Page 5 Ftue Blahb Blahb Lbah</string>
-    <string name="ftue_page_6">Page 6 Ftue Blahb Blahb Lbah</string>
-    <string name="ftue_page_7">Page 7 Ftue Blahb Blahbfdsaf Lbah</string>
+    <string name="ftue_page_1">Page 1 Welcome to this blabh blah app where you don\'t have to sweat in an unfamiliar city.</string>
+    <string name="ftue_page_2">Page 2 Start a new trip by tapp/bbing on plan your own trip.</string>
+    <string name="ftue_page_3">Page 3 You can customize your search or just use our quick recommednation. </string>
+    <string name="ftue_page_4">Page 4 Pick your spot.</string>
+    <string name="ftue_page_5">Page 5 Boom and get directions</string>
+    <string name="ftue_page_6">Page 6 Wanna start a quick trip to grab a bite? No problem, just tap/b this.</string>
+    <string name="ftue_page_7">Page 7 Now it\'s yo time to rock n roll.</string>
 
 	<color name="theme_color">#1EAFDA</color>
 	<color name="theme_color_darker">#126982</color>
