@@ -317,8 +317,21 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	 * MapListener - Interface for listening to events related to map fragment
 	 */
 	public interface MapListener {
+		/**
+		 * Called after a route query returns successfully
+		 * @param durationString	string to display for the duration of the route
+		 */
 		public void onRouted(String durationString);
+
+		/**
+		 * Callback for when map fragment is clicked
+		 */
 		public void onMapClick();
+
+		/**
+		 * Callback for when a marker is clicked
+		 * @param tripLocation	trip loaction of the marker
+		 */
 		public void onMarkerClick(TripLocation tripLocation);
 	}
 }
