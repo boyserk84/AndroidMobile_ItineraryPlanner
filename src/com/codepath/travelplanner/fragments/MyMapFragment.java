@@ -22,7 +22,7 @@ import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.MapFragment;
@@ -169,7 +169,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	public void newRoute(Trip trip) {
 		ArrayList<TripLocation> locations = trip.getPlaces();
 		if (locations.size() > 1) {
-			getMap().setOnMapClickListener(null);
+			getMap().setOnMapLongClickListener(null);
 			start = trip.getStart();
 			end = trip.getEnd();
 			Routing routing = new Routing(Routing.TravelMode.TRANSIT);
@@ -207,9 +207,9 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 			getMap().moveCamera(zoom);
 			getMap().moveCamera(center);
 			
-			getMap().setOnMapClickListener(new OnMapClickListener() {
+			getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
 	            @Override
-	            public void onMapClick(LatLng point) {
+	            public void onMapLongClick(LatLng point) {
 	            	OnNewTripListener listener = (OnNewTripListener) getActivity();
 					listener.openAddDialog(point);
 	            }
@@ -225,7 +225,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip) {
 		suggPlacesList = suggPlaces;
 		removeAllMultiCircles();
-		getMap().setOnMapClickListener(null);
+		getMap().setOnMapLongClickListener(null);
 		clearSuggestedPlaces();
 		for(int i = 0; i < suggPlacesList.size(); i++) {
 			TripLocation toAdd = suggPlacesList.get(i);
@@ -267,9 +267,9 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		clearSuggestedPlaces();
 		removeAllMultiCircles();
 		getMap().setOnMarkerClickListener(null);
-		getMap().setOnMapClickListener(new OnMapClickListener() {
+		getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
 			@Override
-			public void onMapClick(LatLng point) {
+			public void onMapLongClick(LatLng point) {
 				OnNewTripListener listener = (OnNewTripListener) getActivity();
 				listener.openAddDialog(point);
 			}
