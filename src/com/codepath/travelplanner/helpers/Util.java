@@ -45,13 +45,19 @@ public class Util {
 		int minutes = (int)Math.floor((durationSecs - (hours * 3600)) / 60);
 
 		if (hours > 0) {
-			formatted += hours + " hours";
+			formatted += hours + " hour";
+			if (hours > 1) {
+				formatted += "s";
+			}
 			if (minutes > 0) {
 				formatted += " and ";
 			}
 		}
 		if (minutes > 0) {
-			formatted += minutes + " minutes";
+			formatted += minutes + " minute";
+			if (minutes > 1) {
+				formatted += "s";
+			}
 		}
 		return formatted;
 	}

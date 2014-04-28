@@ -37,8 +37,10 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	/** key for the segments bundle */
 	public static final String SEGMENTS = "segments";
 
-	/** details "button" relative layout */
-	protected RelativeLayout rlDirDetails;
+	/** layout that holds a preview of the info about the route */
+	protected RelativeLayout rlDirPreview;
+	/** details text view */
+	protected TextView tvDirPreview;
 
 	/** layout containing details of the marker that was clicked */
 	protected LinearLayout llMarkerDetail;
@@ -48,9 +50,6 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	protected ImageView ivLocImg;
 	protected TextView tvDistNum;
 	protected Button btnMarkerRouteGo;
-
-	/** details text view */
-	protected TextView tvDirDetails;
 	
 	/** Progress bar showing while query is loading.*/
 	protected ProgressBar pbQuickFind;
@@ -82,8 +81,8 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		setContentView(R.layout.activity_main);
 		
 		map = ((MyMapFragment) getFragmentManager().findFragmentById(R.id.map));
-		rlDirDetails = (RelativeLayout) findViewById(R.id.rlDirDetails);
-		tvDirDetails = (TextView) findViewById(R.id.tvDirDetails);
+		rlDirPreview = (RelativeLayout) findViewById(R.id.rlDirPreview);
+		tvDirPreview = (TextView) findViewById(R.id.tvDirPreview);
 		pbQuickFind = (ProgressBar) findViewById(R.id.pbQuickFindLoad);
 		pbQuickFind.setVisibility(View.INVISIBLE);
 
@@ -173,7 +172,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	@Override
 	public void onRouted(String durationString) {
 		pbQuickFind.setVisibility(View.INVISIBLE);
-		tvDirDetails.setText(durationString);
+		tvDirPreview.setText(durationString);
 		isRouteActive = true;
 		showDirectionsPreview();
 	}
@@ -233,9 +232,9 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 
 	/** Animate the directions preview layout up */
 	private void showDirectionsPreview() {
-		if (rlDirDetails.getVisibility() == View.GONE) {
-			rlDirDetails.setVisibility(View.VISIBLE);
-			rlDirDetails.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_in));
+		if (rlDirPreview.getVisibility() == View.GONE) {
+			rlDirPreview.setVisibility(View.VISIBLE);
+			rlDirPreview.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_in));
 		}
 	}
 
@@ -243,9 +242,9 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	 * Animate the directions preview layout out
 	 */
 	private void hideDirectionsPreview() {
-		if (rlDirDetails.getVisibility() == View.VISIBLE) {
-			rlDirDetails.setVisibility(View.GONE);
-			rlDirDetails.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_out));
+		if (rlDirPreview.getVisibility() == View.VISIBLE) {
+			rlDirPreview.setVisibility(View.GONE);
+			rlDirPreview.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_out));
 		}
 	}
 
