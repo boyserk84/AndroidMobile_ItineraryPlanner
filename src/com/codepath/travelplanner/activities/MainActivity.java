@@ -53,6 +53,9 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	
 	/** Progress bar showing while query is loading.*/
 	protected ProgressBar pbQuickFind;
+
+	/** If true then there is a pathed route currently on the map. */
+	protected boolean isRouteActive = false;
 	
 	/** Flag determining if query is still loading. */
 	protected boolean isQueryLoading = false;
@@ -167,8 +170,8 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	@Override
 	public void onRouted(String durationString) {
 		tvDirDetails.setText(durationString);
-		rlDirDetails.setVisibility(View.VISIBLE);
-		rlDirDetails.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_in));
+		isRouteActive = true;
+		showDirectionsPreview();
 	}
 
 	@Override
@@ -195,6 +198,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	/** Animate the marker details layout up */
 	private void showMarkerDetails() {
 		if (llMarkerDetail.getVisibility() == View.GONE) {
+			hideDirectionsPreview();
 			llMarkerDetail.setVisibility(View.VISIBLE);
 			llMarkerDetail.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_in));
 		}
@@ -210,9 +214,30 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 			markerTripLocation = null;
 			llMarkerDetail.setVisibility(View.GONE);
 			llMarkerDetail.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_out));
+			if (isRouteActive) {
+				showDirectionsPreview();
+			}
 			return true;
 		}
 		return false;
+	}
+
+	/** Animate the directions preview layout up */
+	private void showDirectionsPreview() {
+		if (rlDirDetails.getVisibility() == View.GONE) {
+			rlDirDetails.setVisibility(View.VISIBLE);
+			rlDirDetails.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_in));
+		}
+	}
+
+	/**
+	 * Animate the directions preview layout out
+	 */
+	private void hideDirectionsPreview() {
+		if (rlDirDetails.getVisibility() == View.VISIBLE) {
+			rlDirDetails.setVisibility(View.GONE);
+			rlDirDetails.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_out));
+		}
 	}
 
 	/** Callback for when the Route button is clicked from the marker details layout */
