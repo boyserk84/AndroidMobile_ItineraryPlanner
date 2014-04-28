@@ -9,7 +9,7 @@
     <string name="next">Next</string>
     <string name="done">Go!</string>
     <string name="cancel">Cancel</string>
-    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_details">Directions</string>
     <string name="back">Back</string>
     <string name="filters_title">What would you like to do?</string>
     <string name="activity">Activity:</string>
