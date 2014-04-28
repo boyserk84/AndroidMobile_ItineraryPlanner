@@ -206,6 +206,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	 */
  	private boolean hideMarkerDetails() {
 		if (llMarkerDetail.getVisibility() == View.VISIBLE) {
+			map.replaceReplacementMarker();
 			markerTripLocation = null;
 			llMarkerDetail.setVisibility(View.GONE);
 			llMarkerDetail.startAnimation(AnimationUtils.loadAnimation(this, R.anim.bottom_out));

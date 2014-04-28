@@ -46,6 +46,9 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	protected HashMap<String, Circle> coordToCircles = new HashMap<String, Circle>();
 	protected ArrayList<Marker> suggestedPlaces = new ArrayList<Marker>();
 	protected ArrayList<Polyline> polylines = new ArrayList<Polyline>();
+
+	/** the marker replaced the marker that was clicked */
+	protected Marker replacementMarker = null;
 	
     protected ArrayList<TripLocation> currentlyRouting;
     protected int currentNode;
@@ -244,19 +247,22 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		for(int i = 0; i < suggPlacesList.size(); i++) {
 			TripLocation toAdd = suggPlacesList.get(i);
 			toAdd.setLatLng(Util.getLatLngFromAddress(toAdd.getAddress().toString(), getActivity()));
-			MarkerOptions options = new MarkerOptions();
-			options.position(suggPlacesList.get(i).getLatLng());
-			options.title(Integer.toString(i));
-			suggestedPlaces.add(getMap().addMarker(options));
+			suggestedPlaces.add(createMarker(suggPlacesList.get(i).getLatLng(), R.drawable.ic_pin, Integer.toString(i), ""));
 		}
 		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
 			@Override
 			public boolean onMarkerClick(Marker selected) {
 				try {
-					// try to show confirm route dialog
+					// try to show marker details
 					int index = Integer.parseInt(selected.getTitle());
 					TripLocation tripLocation = suggPlacesList.get(index);
 					mapListener.onMarkerClick(tripLocation);
+					// replace selected marker with a different marker icon to differentiate from other markers
+					if (replacementMarker != null) {
+						replaceReplacementMarker(); // replaces the old replacement marker
+					}
+					replacementMarker = createMarker(selected.getPosition(), R.drawable.ic_big_marker, selected.getTitle(), "");
+					selected.remove();
 					return true;
 				} catch (Exception e) {
 					// do default behavior
@@ -273,6 +279,15 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		}
 		getMap().setOnCameraChangeListener(this);
 		getMap().animateCamera(zoom);
+	}
+
+	/** replaces the temporary replacement marker with the standard marker*/
+	public void replaceReplacementMarker() {
+		if (replacementMarker != null) {
+			createMarker(replacementMarker.getPosition(), R.drawable.ic_pin, replacementMarker.getTitle(), "");
+			replacementMarker.remove();
+			replacementMarker = null;
+		}
 	}
 	
 	public void exitMapSelectionMode() {
