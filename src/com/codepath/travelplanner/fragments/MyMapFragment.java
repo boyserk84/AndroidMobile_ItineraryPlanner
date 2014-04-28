@@ -82,6 +82,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 				getMap().setOnMyLocationChangeListener(null);
 			}
 		});
+		getMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+			@Override
+			public void onMapClick(LatLng latLng) {
+				mapListener.onMapClick();
+			}
+		});
 		return mapView;
 	}
 
@@ -120,22 +126,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		options.title(title);
 		options.snippet(details);
 		return getMap().addMarker(options);
-	}
-	
-	/** Creates a circle on the map */
-	public Circle createCircle(LatLng center, double radiusInMeters) {
-		//only allow one circle on the map
-		if(circle != null) {
-			circle.remove();
-		}
-		CircleOptions options = new CircleOptions();
-		options.center(center);
-		options.radius(radiusInMeters);
-		options.strokeWidth(2);
-		options.strokeColor(Color.BLUE);
-		options.fillColor(Color.parseColor("#500084d3"));
-		circle = getMap().addCircle(options);
-		return circle;
 	}
 
 	/** Adds a circle to the map but do not remove previous circles of this type */
@@ -242,8 +232,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 					// try to show confirm route dialog
 					int index = Integer.parseInt(selected.getTitle());
 					TripLocation tripLocation = suggPlacesList.get(index);
-					OnNewTripListener listener = (OnNewTripListener) getActivity();
-					listener.openConfirmDialog(tripLocation);
+					mapListener.onMarkerClick(tripLocation);
 					return true;
 				} catch (Exception e) {
 					// do default behavior
@@ -304,5 +293,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	 */
 	public interface MapListener {
 		public void onRouted(String durationString);
+		public void onMapClick();
+		public void onMarkerClick(TripLocation tripLocation);
 	}
 }

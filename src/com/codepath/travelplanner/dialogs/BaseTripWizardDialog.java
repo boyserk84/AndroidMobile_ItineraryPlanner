@@ -1,7 +1,5 @@
 package com.codepath.travelplanner.dialogs;
 
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -9,13 +7,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * BaseTripWizardDialog - base dialog for the create-a-new-trip "wizard" dialogs
@@ -45,10 +43,31 @@ public abstract class BaseTripWizardDialog extends DialogFragment {
 	public interface OnNewTripListener {
 		/** called when we want to route the new trip */
 		public Trip trip = new Trip();
+
+		/**
+		 * Perform route using the trip's info
+		 * @param updatedTrip		trip to route
+		 */
 		public void onRouteListener(Trip updatedTrip);
+
+		/**
+		 * When entering map view
+		 * @param suggPlacesList	list of suggested places to pin
+		 * @param trip				the current trip
+		 * @param newTrip			whether or not this is a new trip or should be a waypoint
+		 */
 		public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip trip, boolean newTrip);
-		public void openConfirmDialog(TripLocation destination);
+
+		/**
+		 * Opens the add waypoint dialog
+		 * @param location	location to search around
+		 */
 		public void openAddDialog(LatLng location);
+
+		/**
+		 * Gets results around the waypoint location
+		 * @param filterRequest		filters to apply to the search
+		 */
 		public void getAddResults(YelpFilterRequest filterRequest);
 	}
 
