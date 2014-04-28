@@ -52,6 +52,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
     protected int currentNode;
 	protected TripLocation start;
 	protected TripLocation end;
+	protected int totalDuration;
 	protected ArrayList<Marker> routeMarkers = new ArrayList<Marker>();
 	
 	protected ArrayList<TripLocation> suggPlacesList;
@@ -185,7 +186,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 			clearRouteMarkers();
 			MainActivity.segments = new ArrayList<Segment>();
 			getMap().setOnMapLongClickListener(null);
-			
+			totalDuration = 0;
 			currentNode = 1;
 			nextRoute();
 		}
@@ -216,11 +217,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	}
 
 	@Override
-	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments, String totalDuration) {
+	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments, int duration) {
 		if (start != null && end != null) {
 			//TODO: Jeff: store this is in the trip object later
 			MainActivity.segments.addAll(segments);
 			createPolyline(mPolyOptions);
+			totalDuration += duration;
 			
 			routeMarkers.add(createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription()));
 			
@@ -240,7 +242,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		            }
 		        });
 	
-				mapListener.onRouted(totalDuration);
+				mapListener.onRouted(Util.getFormattedDuration(totalDuration));
 			}
 		}
 	}

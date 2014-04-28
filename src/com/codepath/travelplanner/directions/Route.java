@@ -118,6 +118,10 @@ public class Route {
 	public String getDurationString() {
 		return Util.getFormattedDuration(duration);
 	}
+	
+	public int getDuration() {
+		return duration;
+	}
 
 	/**
 	 * @param duration	the duration of the route in seconds
