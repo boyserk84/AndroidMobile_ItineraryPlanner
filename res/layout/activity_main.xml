@@ -14,12 +14,42 @@
      android:layout_alignParentLeft="true"
      android:layout_alignParentTop="true" />
 
+ <LinearLayout
+		android:id="@+id/llMarkerDetail"
+		android:orientation="vertical"
+		android:background="@drawable/white_rectangle"
+		android:visibility="gone"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true">
+	<include
+			layout="@layout/item_location"
+			android:layout_margin="5dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/rlMarkerInfo"/>
+	<Button
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/btn_theme"
+			android:onClick="onRouteClick"
+			android:textColor="@android:color/white"
+			android:textStyle="bold"
+			android:layout_marginRight="15dp"
+			android:layout_marginLeft="15dp"
+			android:layout_marginBottom="5dp"
+			android:padding="5dp"
+			android:gravity="center"
+			android:text="@string/done"
+			android:id="@+id/button"/>
+ </LinearLayout>
+
  <RelativeLayout
 		 android:id="@+id/rlDirDetails"
 		 android:background="@drawable/white_rectangle"
 		 android:layout_width="match_parent"
 		 android:layout_height="wrap_content"
-		 android:onClick="onDetails"
+		 android:onClick="onDirectionDetails"
 		 android:padding="15dp"
 		 android:visibility="gone"
 		 android:layout_centerHorizontal="true"

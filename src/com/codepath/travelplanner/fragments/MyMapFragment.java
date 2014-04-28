@@ -45,14 +45,14 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	/** map of long/lat to circle object for the multi circles */
 	protected HashMap<String, Circle> coordToCircles = new HashMap<String, Circle>();
 	protected ArrayList<Marker> suggestedPlaces = new ArrayList<Marker>();
-	protected Circle circle;
-	protected Polyline polyline;
-    
+	protected ArrayList<Polyline> polylines = new ArrayList<Polyline>();
+	
+    protected ArrayList<TripLocation> currentlyRouting;
+    protected int currentNode;
 	protected TripLocation start;
 	protected TripLocation end;
-	
-	protected Marker startMarker;
-	protected Marker endMarker;
+	protected int totalDuration;
+	protected ArrayList<Marker> routeMarkers = new ArrayList<Marker>();
 	
 	protected ArrayList<TripLocation> suggPlacesList;
 
@@ -82,6 +82,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 				getMap().setOnMyLocationChangeListener(null);
 			}
 		});
+		getMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+			@Override
+			public void onMapClick(LatLng latLng) {
+				mapListener.onMapClick();
+			}
+		});
 		return mapView;
 	}
 
@@ -101,15 +107,19 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 
 	/** Creates a polyline on the map */
 	protected void createPolyline(PolylineOptions mPolyOptions) {
-		//only allow one polyline on the map? if we use multiple polylines per a route then we will only allow one set of polylines per a map
-		if(polyline != null) {
-			polyline.remove();
-		}
 		PolylineOptions polyoptions = new PolylineOptions();
 		polyoptions.color(Color.BLUE);
 		polyoptions.width(10);
 		polyoptions.addAll(mPolyOptions.getPoints());
-		polyline = getMap().addPolyline(polyoptions);
+		polylines.add(getMap().addPolyline(polyoptions));
+	}
+	
+	/** Removes all suggested places from the map */
+	public void clearPolylines() {
+		for (Polyline pLine : polylines) {
+			pLine.remove();
+		}
+		polylines.clear();
 	}
 	
 	/** Creates a marker on the map */
@@ -120,22 +130,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		options.title(title);
 		options.snippet(details);
 		return getMap().addMarker(options);
-	}
-	
-	/** Creates a circle on the map */
-	public Circle createCircle(LatLng center, double radiusInMeters) {
-		//only allow one circle on the map
-		if(circle != null) {
-			circle.remove();
-		}
-		CircleOptions options = new CircleOptions();
-		options.center(center);
-		options.radius(radiusInMeters);
-		options.strokeWidth(2);
-		options.strokeColor(Color.BLUE);
-		options.fillColor(Color.parseColor("#500084d3"));
-		circle = getMap().addCircle(options);
-		return circle;
 	}
 
 	/** Adds a circle to the map but do not remove previous circles of this type */
@@ -165,17 +159,40 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		suggestedPlaces.clear();
 	}
 	
+	/** Removes all route markers from the map */
+	public void clearRouteMarkers() {
+		for (Marker marker : routeMarkers) {
+			marker.remove();
+		}
+		routeMarkers.clear();
+	}
+	
 	/** Generate new directions */
 	public void newRoute(Trip trip) {
-		ArrayList<TripLocation> locations = trip.getPlaces();
-		if (locations.size() > 1) {
+		currentlyRouting = trip.getPlaces();
+		if (currentlyRouting.size() > 1) {
+			clearPolylines();
+			clearRouteMarkers();
+			MainActivity.segments = new ArrayList<Segment>();
 			getMap().setOnMapLongClickListener(null);
-			start = trip.getStart();
-			end = trip.getEnd();
-			Routing routing = new Routing(Routing.TravelMode.TRANSIT);
-			routing.registerListener(this);
-			routing.execute(start.getLatLng(), end.getLatLng());
+			totalDuration = 0;
+			currentNode = 1;
+			nextRoute();
 		}
+	}
+	
+	protected boolean nextRoute() {
+		if(currentNode == currentlyRouting.size()) {
+			return false;
+		}
+		
+		start = currentlyRouting.get(currentNode - 1);
+		end = currentlyRouting.get(currentNode);
+		
+		Routing routing = new Routing(Routing.TravelMode.TRANSIT);
+		routing.registerListener(this);
+		routing.execute(start.getLatLng(), end.getLatLng());
+		return true;
 	}
 	
 	@Override
@@ -189,36 +206,33 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	}
 
 	@Override
-	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments, String totalDuration) {
+	public void onRoutingSuccess(PolylineOptions mPolyOptions, List<Segment> segments, int duration) {
 		if (start != null && end != null) {
-			createPolyline(mPolyOptions);
-			if(startMarker != null) {
-				startMarker.remove();
-			}
-			if(endMarker != null) {
-				endMarker.remove();
-			}
-			startMarker = createMarker(start.getLatLng(), R.drawable.start_blue, start.getLocationName(), start.getMarkerDescription());
-			endMarker = createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription());
-
-			CameraUpdate center = CameraUpdateFactory.newLatLng(start.getLatLng());
-			CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-
-			getMap().moveCamera(zoom);
-			getMap().moveCamera(center);
-			
-			getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
-	            @Override
-	            public void onMapLongClick(LatLng point) {
-	            	OnNewTripListener listener = (OnNewTripListener) getActivity();
-					listener.openAddDialog(point);
-	            }
-	        });
-
-			mapListener.onRouted(totalDuration);
-
 			//TODO: Jeff: store this is in the trip object later
-			MainActivity.segments = new ArrayList<Segment>(segments);
+			MainActivity.segments.addAll(segments);
+			createPolyline(mPolyOptions);
+			totalDuration += duration;
+			
+			routeMarkers.add(createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription()));
+			
+			currentNode++;
+			if(!nextRoute()) {
+				CameraUpdate center = CameraUpdateFactory.newLatLng(start.getLatLng());
+				CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+	
+				getMap().moveCamera(zoom);
+				getMap().moveCamera(center);
+				
+				getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
+		            @Override
+		            public void onMapLongClick(LatLng point) {
+		            	OnNewTripListener listener = (OnNewTripListener) getActivity();
+						listener.openAddDialog(point);
+		            }
+		        });
+	
+				mapListener.onRouted(Util.getFormattedDuration(totalDuration));
+			}
 		}
 	}
 	
@@ -242,8 +256,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 					// try to show confirm route dialog
 					int index = Integer.parseInt(selected.getTitle());
 					TripLocation tripLocation = suggPlacesList.get(index);
-					OnNewTripListener listener = (OnNewTripListener) getActivity();
-					listener.openConfirmDialog(tripLocation);
+					mapListener.onMarkerClick(tripLocation);
 					return true;
 				} catch (Exception e) {
 					// do default behavior
@@ -304,5 +317,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	 */
 	public interface MapListener {
 		public void onRouted(String durationString);
+		public void onMapClick();
+		public void onMarkerClick(TripLocation tripLocation);
 	}
 }

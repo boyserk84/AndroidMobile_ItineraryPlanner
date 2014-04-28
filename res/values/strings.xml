@@ -45,4 +45,8 @@
     <string name="ftue_page_6">Page 6 Ftue Blahb Blahb Lbah</string>
     <string name="ftue_page_7">Page 7 Ftue Blahb Blahbfdsaf Lbah</string>
 
+	<color name="theme_color">#1EAFDA</color>
+	<color name="theme_color_darker">#126982</color>
+	<color name="gray">#bdbdbd</color>
+
 </resources>
