@@ -291,6 +291,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 
 	@Override
 	public void onSuccess(JSONObject successResult) {
+		// on successful subway station query
 		try {
 			JSONArray results = successResult.getJSONArray("results");
 			for (int i = 0; i < results.length(); i++) {
