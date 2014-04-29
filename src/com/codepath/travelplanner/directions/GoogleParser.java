@@ -111,7 +111,7 @@ public class GoogleParser extends XMLParser implements Parser {
 			final String lengthAsText = step.getJSONObject("distance").getString("text");
 			segment.setLength(lengthAsText);
 			segment.setDistance(distance/1000);
-			
+
 			if(!step.isNull("html_instructions")) {
 				//Strip html from google directions and set as turn instruction
 				segment.setInstruction(step.getString("html_instructions").replaceAll("<(.*?)*>", ""));
@@ -119,11 +119,13 @@ public class GoogleParser extends XMLParser implements Parser {
 			
 			if(isFirst) {
 				segment.setIcon(R.drawable.ic_start);
-			}
-			else if(isLast) {
+			} else if(isLast) {
 				segment.setIcon(R.drawable.ic_stop);
-			}
-			else {
+			} else if (segment.getInstruction().indexOf("Turn right") == 0) {
+				segment.setIcon(R.drawable.ic_walk_right);
+			} else if (segment.getInstruction().indexOf("Turn left") == 0) {
+				segment.setIcon(R.drawable.ic_walk_left);
+			} else {
 				segment.setIcon(R.drawable.ic_walk);
 			}
 			
