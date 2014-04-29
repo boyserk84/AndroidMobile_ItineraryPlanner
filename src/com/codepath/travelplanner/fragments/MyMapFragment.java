@@ -115,7 +115,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	/** Creates a polyline on the map */
 	protected void createPolyline(PolylineOptions mPolyOptions) {
 		PolylineOptions polyoptions = new PolylineOptions();
-		polyoptions.color(Color.BLUE);
+		polyoptions.color(getResources().getColor(R.color.theme_color));
 		polyoptions.width(10);
 		polyoptions.addAll(mPolyOptions.getPoints());
 		polylines.add(getMap().addPolyline(polyoptions));
