@@ -29,7 +29,7 @@
     <!-- FTUE Theme -->
     <!--  Hide ActionBar -->
     <style name="FtueTheme" parent="AppBaseTheme">
-        <item name="android:background">#ffffff</item>
+        <item name="android:background">@color/theme_color</item>
         <item name="android:windowTitleSize">0dp</item>
         <item name="android:windowActionBar">false</item>
     </style>
