@@ -1,8 +1,21 @@
 package com.codepath.travelplanner.activities;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -11,7 +24,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
@@ -19,17 +38,12 @@ import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.codepath.travelplanner.fragments.MyMapFragment.MapListener;
+import com.codepath.travelplanner.helpers.Util;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 /**
  * MainActivity - main screen
@@ -96,6 +110,22 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		btnMarkerRouteGo = (Button) llMarkerDetail.findViewById(R.id.btnMarkerRouteGo);
 		
 		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
+		
+		
+		if(!Util.isGPSAvailable(this)) {
+			sendAlert("Your GPS seems to be disabled");
+		}
+		
+		if(!Util.isNetworkAvailable(this)) {
+			sendAlert("Can't connect to internet");
+		}
+	}
+	
+	private void sendAlert(String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(message);
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	@Override
