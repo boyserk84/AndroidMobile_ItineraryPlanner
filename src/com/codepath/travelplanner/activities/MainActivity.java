@@ -1,5 +1,6 @@
 package com.codepath.travelplanner.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -93,6 +94,8 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		ivLocImg = (ImageView) llMarkerDetail.findViewById(R.id.ivImgLocation);
 		tvDistNum = (TextView) llMarkerDetail.findViewById(R.id.tvDistNum);
 		btnMarkerRouteGo = (Button) llMarkerDetail.findViewById(R.id.btnMarkerRouteGo);
+		
+		getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME);
 	}
 
 	@Override
