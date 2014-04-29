@@ -74,7 +74,7 @@
 	android:id="@+id/pbQuickFindLoad"
 	style="?android:attr/progressBarStyleHorizontal"
 	android:indeterminateOnly="true"
-	android:background="@drawable/white_rectangle"
+	android:background="@drawable/gray_rectangle"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:layout_alignParentTop="true"/>
