@@ -95,21 +95,43 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 				mapListener.onMapClick();
 			}
 		});
+		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
+			@Override
+			public boolean onMarkerClick(Marker selected) {
+				try {
+					// try to show marker details
+					int index = Integer.parseInt(selected.getTitle());
+					TripLocation tripLocation = suggPlacesList.get(index);
+					mapListener.onMarkerClick(tripLocation);
+					// replace selected marker with a different marker icon to differentiate from other markers
+					if (replacementMarker != null) {
+						replaceReplacementMarker(); // replaces the old replacement marker
+					}
+					replacementMarker = createMarker(selected.getPosition(), R.drawable.ic_big_marker, selected.getTitle(), "");
+					selected.remove();
+					return true;
+				} catch (Exception e) {
+					// do default behavior
+					return false;
+				}
+			}
+		});
+		getMap().setOnCameraChangeListener(this);
 		return mapView;
 	}
 
 	@Override
 	public void onCameraChange(CameraPosition cameraPosition) {
 		// redo the search for subway stations around the area when camera position has changed
-		searchNearbySubwayStations(cameraPosition.target);
+		searchNearbyTransitStations(cameraPosition.target);
 	}
 
 	/**
-	 * Searches the Google Places API for the nearby subway stations at some location
+	 * Searches the Google Places API for the nearby transit stations at some location
 	 * @param location		location to perform the search
 	 */
-	protected void searchNearbySubwayStations(LatLng location) {
-		(new GooglePlacesClient()).search(GooglePlacesClient.SUBWAY_STATION_QUERY, location.latitude, location.longitude, this);
+	protected void searchNearbyTransitStations(LatLng location) {
+		(new GooglePlacesClient()).search(GooglePlacesClient.TRANSIT_STATION_QUERY, location.latitude, location.longitude, this);
 	}
 
 	/** Creates a polyline on the map */
@@ -249,7 +271,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	
 	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip) {
 		suggPlacesList = suggPlaces;
-		removeAllMultiCircles();
 		getMap().setOnMapLongClickListener(null);
 		clearSuggestedPlaces();
 		for(int i = 0; i < suggPlacesList.size(); i++) {
@@ -257,27 +278,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 			toAdd.setLatLng(Util.getLatLngFromAddress(toAdd.getAddress().toString(), getActivity()));
 			suggestedPlaces.add(createMarker(suggPlacesList.get(i).getLatLng(), R.drawable.ic_pin, Integer.toString(i), ""));
 		}
-		getMap().setOnMarkerClickListener(new OnMarkerClickListener() {
-			@Override
-			public boolean onMarkerClick(Marker selected) {
-				try {
-					// try to show marker details
-					int index = Integer.parseInt(selected.getTitle());
-					TripLocation tripLocation = suggPlacesList.get(index);
-					mapListener.onMarkerClick(tripLocation);
-					// replace selected marker with a different marker icon to differentiate from other markers
-					if (replacementMarker != null) {
-						replaceReplacementMarker(); // replaces the old replacement marker
-					}
-					replacementMarker = createMarker(selected.getPosition(), R.drawable.ic_big_marker, selected.getTitle(), "");
-					selected.remove();
-					return true;
-				} catch (Exception e) {
-					// do default behavior
-					return false;
-				}
-			}
-		});
 		
 		CameraUpdate zoom;
 		if(newTrip) {
@@ -285,7 +285,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		} else {
 			zoom = CameraUpdateFactory.zoomTo(15);
 		}
-		getMap().setOnCameraChangeListener(this);
 		getMap().animateCamera(zoom);
 	}
 
@@ -301,8 +300,6 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	public void exitMapSelectionMode() {
 		suggPlacesList = null;
 		clearSuggestedPlaces();
-		removeAllMultiCircles();
-		getMap().setOnMarkerClickListener(null);
 		getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
 			@Override
 			public void onMapLongClick(LatLng point) {
@@ -314,7 +311,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 
 	@Override
 	public void onSuccess(JSONObject successResult) {
-		// on successful subway station query
+		// on successful transit station query
 		try {
 			JSONArray results = successResult.getJSONArray("results");
 			for (int i = 0; i < results.length(); i++) {
@@ -322,8 +319,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 				if (coordToCircles.get(place.getLatitude()+","+place.getLongitude()) == null) {
 					// only add circle if it's at a new place
 					LatLng latLng = new LatLng(place.getLatitude(), place.getLongitude());
-					addMultiCircle(latLng, YelpFilterRequest.DEFAULT_ONE_MILE_RADIUS_IN_METER/4);
-					createMarker(latLng, R.drawable.ic_subway, place.getName(), "");
+					addMultiCircle(latLng, YelpFilterRequest.LOCAL_SEARCH_RADIUS_IN_METERS);
+					if (place.hasType(GooglePlace.TYPE_SUBWAY_STATION) || place.hasType(GooglePlace.TYPE_TRAIN_STATION)) {
+						createMarker(latLng, R.drawable.ic_subway, place.getName(), "Transit Station");
+					} else {
+						createMarker(latLng, R.drawable.ic_bus, place.getName(), "Bus Stop");
+					}
 				}
 			}
 		} catch (JSONException e) {
