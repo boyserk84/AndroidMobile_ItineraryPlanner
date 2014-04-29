@@ -33,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +43,9 @@ import java.util.List;
 public class MyMapFragment extends MapFragment implements RoutingListener, IRequestListener, GoogleMap.OnCameraChangeListener {
 	/** color of the multi circles */
 	private static final String MULTI_CIRCLE_COLOR = "#40E6E600";
+	/** list of markers used in the route sorted alphabetically */
+	private static final List<Integer> ORDERED_ROUTE_MARKERS = Arrays.asList(R.drawable.blue_marker_a, R.drawable.blue_marker_b, R.drawable.blue_marker_c, R.drawable.blue_marker_d,
+			R.drawable.blue_marker_e, R.drawable.blue_marker_f, R.drawable.blue_marker_g, R.drawable.blue_marker_h);
 	/** map of long/lat to circle object for the multi circles */
 	protected HashMap<String, Circle> coordToCircles = new HashMap<String, Circle>();
 	protected ArrayList<Marker> suggestedPlaces = new ArrayList<Marker>();
@@ -183,7 +187,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 			nextRoute();
 		}
 	}
-	
+
 	protected boolean nextRoute() {
 		if(currentNode == currentlyRouting.size()) {
 			return false;
@@ -215,8 +219,12 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 			MainActivity.segments.addAll(segments);
 			createPolyline(mPolyOptions);
 			totalDuration += duration;
-			
-			routeMarkers.add(createMarker(end.getLatLng(), R.drawable.end_green, end.getLocationName(), end.getMarkerDescription()));
+
+			if (currentNode == 1) {
+				// add start marker if we're on the first node
+				routeMarkers.add(createMarker(start.getLatLng(), ORDERED_ROUTE_MARKERS.get(0), "Start", ""));
+			}
+			routeMarkers.add(createMarker(end.getLatLng(), ORDERED_ROUTE_MARKERS.get(currentNode % ORDERED_ROUTE_MARKERS.size()), end.getLocationName(), end.getMarkerDescription()));
 			
 			currentNode++;
 			if(!nextRoute()) {

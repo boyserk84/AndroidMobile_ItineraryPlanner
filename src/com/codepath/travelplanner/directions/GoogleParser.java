@@ -118,10 +118,10 @@ public class GoogleParser extends XMLParser implements Parser {
 			}
 			
 			if(isFirst) {
-				segment.setIcon(R.drawable.start_blue);
+				segment.setIcon(R.drawable.ic_start);
 			}
 			else if(isLast) {
-				segment.setIcon(R.drawable.end_green);
+				segment.setIcon(R.drawable.ic_stop);
 			}
 			else {
 				segment.setIcon(R.drawable.ic_walk);
