@@ -12,16 +12,12 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" >
+            android:layout_height="wrap_content" >
 
             <ImageView
                 android:id="@+id/ivFtueSlide"
                 android:layout_width="fill_parent"
 		        android:layout_height="fill_parent"
-		        android:layout_centerHorizontal="true"
-		        android:layout_centerVertical="true"
 		        android:adjustViewBounds="true"
                 android:src="@drawable/blue_marker_a" />
         </FrameLayout>
