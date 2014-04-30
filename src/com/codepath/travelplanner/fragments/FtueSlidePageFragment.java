@@ -41,18 +41,21 @@ public class FtueSlidePageFragment extends Fragment {
 	}
 	
 	private int getImgResourceByPos(int position) {
-		int result = R.drawable.f_instruction_01;
+		int result = R.drawable.f_instruction_00;
 		
 		switch ( position ) {
 		case 1:
+			result = R.drawable.f_instruction_01;
+			break;
+		case 2:
 			result = R.drawable.f_instruction_02;
 			break;
 			
-		case 2:
+		case 3:
 			result = R.drawable.f_instruction_03;
 			break;
 			
-		case 3:
+		case 4:
 			result = R.drawable.f_instruction_04;
 			break;
 		}
