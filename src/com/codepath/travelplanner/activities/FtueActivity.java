@@ -53,7 +53,7 @@ public class FtueActivity extends FragmentActivity {
 		
 		// If already done FTUE or currently NOT in the help mode, just skip it.
 		if ( isInHelpMode == false && ftueSharePref.getBoolean( DONE_FTUE_SETTING_KEY , false) == true ) {
-			onSkipPressed( null );
+			//onSkipPressed( null );
 		}
 	}
 	

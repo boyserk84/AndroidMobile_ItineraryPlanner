@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <RelativeLayout
+    <ScrollView
+       
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:layout_height="match_parent" >
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -16,20 +18,13 @@
 
             <ImageView
                 android:id="@+id/ivFtueSlide"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:layout_centerHorizontal="true"
+		        android:layout_centerVertical="true"
+		        android:adjustViewBounds="true"
                 android:src="@drawable/blue_marker_a" />
-
-            <TextView
-                android:id="@+id/tvFtueTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Large Text fdafdsasd"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
         </FrameLayout>
+    </ScrollView>
 
-    </RelativeLayout>
-    
-
-</ScrollView>
+</RelativeLayout>

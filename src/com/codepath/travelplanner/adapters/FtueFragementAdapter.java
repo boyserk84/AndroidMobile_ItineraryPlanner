@@ -16,7 +16,7 @@ import com.codepath.travelplanner.fragments.FtueSlidePageFragment;
  */
 public class FtueFragementAdapter extends FragmentPagerAdapter {
 
-	private final int MAX_COUNT = 6;
+	private final int MAX_COUNT = 4;
 	
 	/** Default Constructor */
 	public FtueFragementAdapter(FragmentManager fm) {

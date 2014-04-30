@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.codepath.travelplanner.R;
 
@@ -41,34 +40,23 @@ public class FtueSlidePageFragment extends Fragment {
 		pageNum = getArguments().getInt(KEY_PAGE);
 	}
 	
-	/**
-	 * Helper method to get String Resource Id based on the given page position.
-	 * @param position
-	 * @return Id corresponding to string resource id.
-	 */
-	private int getStringResourceByPos(int position) {
-		int result = R.string.ftue_page_1;
+	private int getImgResourceByPos(int position) {
+		int result = R.drawable.f_instruction_01;
+		
 		switch ( position ) {
-
 		case 1:
-			result = R.string.ftue_page_2;
+			result = R.drawable.f_instruction_02;
 			break;
-
+			
 		case 2:
-			result = R.string.ftue_page_3;
+			result = R.drawable.f_instruction_03;
 			break;
-
+			
 		case 3:
-			result = R.string.ftue_page_4;
+			result = R.drawable.f_instruction_04;
 			break;
-		case 4:
-			result = R.string.ftue_page_5;
-			break;
-		case 5:
-			result = R.string.ftue_page_6;
-			break; 
-
 		}
+		
 		return result;
 	}
 
@@ -77,10 +65,8 @@ public class FtueSlidePageFragment extends Fragment {
 		View rootView = (View) inflater.inflate( R.layout.fragment_ftue_slidepage, container, false);
 		
 		if ( rootView != null ) {
-			TextView sliderText = (TextView) rootView.findViewById(R.id.tvFtueTitle );
 			ImageView ivSlidePage = (ImageView) rootView.findViewById( R.id.ivFtueSlide );
-			
-			sliderText.setText( getResources().getString( getStringResourceByPos( pageNum )  ) );
+			ivSlidePage.setImageResource( getImgResourceByPos(pageNum));
 		}
 		return rootView;
 	}
