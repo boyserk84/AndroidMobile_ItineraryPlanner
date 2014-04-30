@@ -1,6 +1,6 @@
 #Route-About App
 
-![Alt text](screenshot02.PNG  "Main App Screenshot") ![Alt text](screenshot02.PNG "Main App Screenshot")
+![Alt text](screenshot02.png  "Main App Screenshot") ![Alt text](screenshot02.png "Main App Screenshot")
 
 # Overview
 Android Mobile App for planning a trip in a city where you're unfamiliar with.
