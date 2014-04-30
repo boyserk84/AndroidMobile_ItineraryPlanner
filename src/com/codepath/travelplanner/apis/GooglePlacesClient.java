@@ -21,9 +21,9 @@ public class GooglePlacesClient extends AsyncTask<String, Void, String> {
 	private static final String REST_URL = "https://maps.googleapis.com/maps/api/place/search/json?";
 
 	/** query string for places that are subway stations */
-	public static final String SUBWAY_STATION_QUERY = "subway_station";
+	public static final String TRANSIT_STATION_QUERY = "subway_station|bus_station";
 	/** distance to search for */
-	private static final int DISTANCE_QUERY_IN_METERS = 8000;
+	private static final int DISTANCE_QUERY_IN_METERS = 6000;
 
 	/**
 	 * Array of listeners to dispatch when request is received.

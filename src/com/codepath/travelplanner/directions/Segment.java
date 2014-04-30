@@ -46,7 +46,7 @@ public class Segment implements Serializable {
 	 * @return a String of the turn instruction.
 	 */
 	public String getInstruction() {
-	return instruction;
+		return instruction;
 	}
 	
 	/**

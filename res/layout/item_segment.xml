@@ -1,32 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+	android:padding="3dp">
+
+	<ImageView
+			android:id="@+id/ivDirection"
+			android:layout_width="50dp"
+			android:layout_height="50dp"
+			android:layout_alignParentLeft="true"
+			android:layout_centerVertical="true"
+			android:src="@drawable/ic_launcher" />
 
     <TextView
         android:id="@+id/tvDirection"
+		android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+		android:layout_toRightOf="@+id/ivDirection"
         android:text="Go straight on this street"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/tvDistance"
+		android:layout_marginTop="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ivDirection"
+        android:layout_below="@id/tvDirection"
         android:layout_alignParentRight="true"
         android:text=".01 Miles"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <ImageView
-        android:id="@+id/ivDirection"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvDirection"
-        android:src="@drawable/ic_launcher" />
+
 
 </RelativeLayout>

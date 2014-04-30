@@ -1,23 +1,33 @@
 package com.codepath.travelplanner.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * GooglePlace - model containing info about a google place (obtained for the Google Places API)
  */
 public class GooglePlace {
+	/** bus station type */
+	public static final String TYPE_BUS_STATION = "bus_station";
+	/** subway station type */
+	public static final String TYPE_SUBWAY_STATION = "subway_station";
+	/** train station type */
+	public static final String TYPE_TRAIN_STATION = "train_station";
+
 	private String id;
 
 	private String icon;
 
 	private String name;
 
-	private String vicinity;
-
 	private Double latitude;
 
 	private Double longitude;
+
+	private ArrayList<String> types = new ArrayList<String>();
 
 	public String getId() {
 		return id;
@@ -59,12 +69,21 @@ public class GooglePlace {
 		this.name = name;
 	}
 
-	public String getVicinity() {
-		return vicinity;
+	public void setTypes(JSONArray types) {
+		if (types != null) {
+			for (int i = 0; i < types.length(); i++){
+				try {
+					this.types.add(types.get(i).toString());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
-	public void setVicinity(String vicinity) {
-		this.vicinity = vicinity;
+	/** @return true if the place's types contains the given type */
+	public boolean hasType(String type) {
+		return types.indexOf(type) >= 0;
 	}
 
 	public static GooglePlace fromJSONObject(JSONObject object) {
@@ -76,8 +95,8 @@ public class GooglePlace {
 			result.setLongitude((Double) location.get("lng"));
 			result.setIcon(object.getString("icon"));
 			result.setName(object.getString("name"));
-			result.setVicinity(object.getString("vicinity"));
 			result.setId(object.getString("id"));
+			result.setTypes(object.getJSONArray("types"));
 			return result;
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -1,15 +1,17 @@
 package com.codepath.travelplanner.helpers;
 
+import java.io.IOException;
+import java.util.List;
+
 import android.app.Activity;
+import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import com.google.android.gms.maps.model.LatLng;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Util - general util class
@@ -60,5 +62,18 @@ public class Util {
 			}
 		}
 		return formatted;
+	}
+	
+	/** @return true if there is network connection */
+	public static boolean isNetworkAvailable(Activity activity) {
+		ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
+	/** @return true if there is GPS available */
+	public static boolean isGPSAvailable(Activity activity) {
+		LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 	}
 }

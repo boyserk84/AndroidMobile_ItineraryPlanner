@@ -13,7 +13,7 @@
     <string name="back">Back</string>
     <string name="filters_title">WHAT DO YOU WANT TO DO?</string>
     <string name="activity">Activity:</string>
-    <string name="activity_hint">sipping tea, shopping, park</string>
+    <string name="activity_hint">shopping, brooklyn bridge, park</string>
     <string name="distance">Distance:</string>
     <string name="price">Price:</string>
     <string name="suggested_title">CHOOSE WHERE TO GO</string>

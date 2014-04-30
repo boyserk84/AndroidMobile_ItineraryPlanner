@@ -18,7 +18,7 @@
                 android:id="@+id/ivFtueSlide"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/start_blue" />
+                android:src="@drawable/blue_marker_a" />
 
             <TextView
                 android:id="@+id/tvFtueTitle"
