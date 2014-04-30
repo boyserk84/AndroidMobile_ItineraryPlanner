@@ -13,8 +13,8 @@ Android Mobile App for planning a trip in a city where you're unfamiliar with.
 - User can see a list of recommended places with rating and distance from the current starting location.
 
 # Developed by
-- [Nate Kemavaha](https://github.com/boyserk84)
-- [Nina Guo](https://github.com/nguo)
+- [Nate Kemavaha](https://github.com/boyserk84) 
+- [Nina Guo](https://github.com/nguo) 
 - [Jeffrey Good](https://github.com/jdgood)
 
 
@@ -26,5 +26,5 @@ The following libraries are used to make this possible:
 
 
 # We'd like to thank the following people:
-- [Nathan Esquenazi](https://github.com/nesquena) Codepath | Android training 
-- [Matt Luedke](https://github.com/mluedke2) Mentor for our Android project
+- [Nathan Esquenazi](https://github.com/nesquena) Codepath | providing intensive Android training class
+- [Matt Luedke](https://github.com/mluedke2) Mentor for this Android project
