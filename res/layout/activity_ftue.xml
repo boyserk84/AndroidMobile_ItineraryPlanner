@@ -9,7 +9,7 @@
         android:id="@+id/vpPager"
         android:layout_width="fill_parent"
         android:background="#ff88ff"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
     <FrameLayout
@@ -23,6 +23,10 @@
 
     <Button
         android:id="@+id/btnSkipFtue"
+        android:background="@drawable/btn_theme"
+		android:padding="8dp"
+		android:minWidth="0dp"
+		android:minHeight="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
