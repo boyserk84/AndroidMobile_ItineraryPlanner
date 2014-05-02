@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.adapters.FtueFragementAdapter;
+import com.codepath.travelplanner.interfaces.IActivityListener;
 
 
 /**
@@ -24,11 +25,10 @@ import com.codepath.travelplanner.adapters.FtueFragementAdapter;
  * 
  * Only shows for first time user.
  * 
- * TODO: Need persistent or session data to save Ftue Flag.
  * @author nkemavaha
  *
  */
-public class FtueActivity extends FragmentActivity {
+public class FtueActivity extends FragmentActivity implements IActivityListener {
 	
 	private final String SHARE_PREFERENCE_FTUE_SETTING = "hasDoneFtueSetting";
 	
@@ -39,6 +39,9 @@ public class FtueActivity extends FragmentActivity {
 	
 	/** Flag data for determining whether user has done FTUE or not.*/
 	private SharedPreferences ftueSharePref;
+	
+	/** Skip button */
+	private Button btnSkip; 
 	
 	/** Flag whether user is currently in a help mode. */
 	private boolean isInHelpMode = false;
@@ -71,6 +74,7 @@ public class FtueActivity extends FragmentActivity {
 	 */
 	private void setupViews() {
 		ViewPager pager = (ViewPager) findViewById(R.id.vpPager);
+		btnSkip = (Button) findViewById( R.id.btnSkipFtue );
 
 		adapter = new FtueFragementAdapter( getSupportFragmentManager() );
 		if ( pager != null ) {
@@ -84,22 +88,37 @@ public class FtueActivity extends FragmentActivity {
 				public void onPageScrolled(int pos, float arg1, int arg2) {
 					Fragment ftueFragment = adapter.getItem( pos );
 					
-					// If the last page, modify skip button text
-					if ( pos == (adapter.getCount() - 1) ) {
-						Button btnSkip = (Button) findViewById( R.id.btnSkipFtue );
+					// Check if run out of ftue page
+					if ( pos < adapter.getCount() -1 ) {
+
+						// If the last page, modify skip button text
+						if ( pos == (adapter.getCount() - 1) ) {				
+							btnSkip.setText(R.string.getStarted);
+						} else if ( pos == 0 ) {
+							btnSkip.setText(R.string.ftue_page_1);
+						} else {
+							btnSkip.setText(R.string.skip);
+						}
+
+						FragmentManager manager = getSupportFragmentManager();
+
+						// use appropriate transaction for backward compatibility
+						FragmentTransaction fts = manager.beginTransaction();
+
+						fts.replace( R.id.flFtueContainer , ftueFragment);
+
+						// commit and update changes to fragment
+						fts.commit();
+						
+					} else {
+						// NOTE: We have an option for user to just tap
+						// to open the main activity right away if it's taking awhile after swipe to this page.
 						btnSkip.setText(R.string.getStarted);
+						
+						// If run out of ftue page, start the main activity
+						onSkipPressed(null);
 					}
-					
-					FragmentManager manager = getSupportFragmentManager();
-					
-					// use appropriate transaction for backward compatibility
-					FragmentTransaction fts = manager.beginTransaction();
-					
-					fts.replace( R.id.flFtueContainer , ftueFragment);
-					
-					// commit and update changes to fragment
-					fts.commit();
-					
+
 				}
 				
 				@Override
@@ -138,5 +157,18 @@ public class FtueActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	/////////////////////////////
+	// Implement methods
+	/////////////////////////////
+	
+	@Override
+	public void onListenForAction() {
+		// skip FTUE
+		onSkipPressed(null);
+	}
+
+	@Override
+	public void onInvalidateData() {}
 	
 }
