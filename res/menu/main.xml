@@ -9,7 +9,7 @@
         android:title="@string/food"/>
     <item
         android:id="@+id/miQuickRecTour"
-        android:icon="@drawable/ic_quickfind_eyes"
+        android:icon="@drawable/ic_quickfind_picture"
         android:showAsAction="always"
         android:title="@string/tourist"/>
     <item

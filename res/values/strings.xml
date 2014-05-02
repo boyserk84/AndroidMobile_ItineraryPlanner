@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">TransIT</string>
+    <string name="app_name">Route About</string>
     <string name="new_trip_hint">Enter Location</string>
     <string name="new_trip_button_description">Add Itinerary</string>
     <string name="action_settings">Settings</string>
@@ -33,17 +33,10 @@
     <string name="ratingContentDescription">Rating Image</string>
     <string name="locationImgContentDescription">Location Image</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="skip">Skip</string>
-    <string name="getStarted">Get Started!</string>
+    <string name="skip">Tap to skip OR swipe to continue</string>
+    <string name="getStarted">Please tap to get started!</string>
     
-    <string name="ftue_page_1">Page 1 Welcome to this blabh blah app where you don\'t have to sweat in an unfamiliar city.</string>
-    <string name="ftue_page_2">Page 2 Start a new trip by tapp/bbing on plan your own trip.</string>
-    <string name="ftue_page_3">Page 3 You can customize your search or just use our quick recommednation. </string>
-    <string name="ftue_page_4">Page 4 Pick your spot.</string>
-    <string name="ftue_page_5">Page 5 Boom and get directions</string>
-    <string name="ftue_page_6">Page 6 Wanna start a quick trip to grab a bite? No problem, just tap/b this.</string>
-    <string name="ftue_page_7">Page 7 Now it\'s yo time to rock n roll.</string>
+    <string name="ftue_page_1">Welcome to Route About. Please swipe to continue.</string>
 
 	<color name="theme_color">#1EAFDA</color>
 	<color name="theme_color_darker">#126982</color>

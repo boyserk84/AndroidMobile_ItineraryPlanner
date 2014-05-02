@@ -24,13 +24,13 @@
     <Button
         android:id="@+id/btnSkipFtue"
         android:background="@drawable/btn_theme"
-		android:padding="8dp"
-		android:minWidth="0dp"
-		android:minHeight="0dp"
+		style="@drawable/btn_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
         android:layout_gravity="center"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
         android:onClick="onSkipPressed"
         android:text="@string/skip" />
 
