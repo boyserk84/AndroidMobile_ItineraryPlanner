@@ -32,14 +32,14 @@
     <string name="map_view">Map View</string>
     <string name="ratingContentDescription">Rating Image</string>
     <string name="locationImgContentDescription">Location Image</string>
-
     <string name="skip">Tap to skip OR swipe to continue</string>
-    <string name="getStarted">Please tap to get started!</string>
-    
+    <string name="getStarted">Tap anywhere to get started!</string>
     <string name="ftue_page_1">Please swipe to continue.</string>
 
-	<color name="theme_color">#1EAFDA</color>
-	<color name="theme_color_darker">#126982</color>
-	<color name="gray">#bdbdbd</color>
+    <color name="theme_color">#1EAFDA</color>
+    <color name="theme_color_darker">#126982</color>
+    <color name="gray">#bdbdbd</color>
+
+    <string name="help">Help and Feedback</string>
 
 </resources>

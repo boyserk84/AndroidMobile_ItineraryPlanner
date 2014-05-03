@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.travelplanner.MainActivity" >
-   
+       
     <item
         android:id="@+id/miQuickRecFood"
         android:icon="@drawable/ic_quickfind_food"
@@ -21,5 +21,10 @@
         android:id="@+id/miNewTrip"
         android:showAsAction="always"
         android:title="@string/plan_trip_menu_btn"/>
+    <item
+        android:id="@+id/miHelp"
+        android:showAsAction="collapseActionView"
+        android:icon="@drawable/ic_action_help"
+        android:title="@string/help"/>
 
 </menu>
