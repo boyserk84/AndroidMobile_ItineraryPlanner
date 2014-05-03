@@ -196,10 +196,22 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	        case R.id.miNewTrip:
 	        	onNewTrip( item );
 	            return true;
+	        case R.id.miHelp:
+	        	onHelp( item );
+	        	return true;
 	        default:
 	        	onQuickFindClick( item );
 	            return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	/** *
+	 * Callback to show a feedback page
+	 * @param item
+	 */
+	public void onHelp(MenuItem item) {
+		Intent i = new Intent(getBaseContext(), HelpActivity.class);
+		startActivity(i);
 	}
 
 	@Override
