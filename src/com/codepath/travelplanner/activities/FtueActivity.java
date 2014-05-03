@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.adapters.FtueFragementAdapter;
 import com.codepath.travelplanner.interfaces.IActivityListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 
 /**
@@ -34,6 +37,8 @@ public class FtueActivity extends FragmentActivity implements IActivityListener 
 	
 	private final String DONE_FTUE_SETTING_KEY = "doneFtue";
 	
+	private final int REQUEST_CODE_GOOGLE_SERVICE_RELATED = 1299;
+	
 	/** FTUE Adapter */
 	private FtueFragementAdapter adapter;
 	
@@ -46,17 +51,51 @@ public class FtueActivity extends FragmentActivity implements IActivityListener 
 	/** Flag whether user is currently in a help mode. */
 	private boolean isInHelpMode = false;
 	
+	/** Google Service Result code (i.e. SERVICE OUT OF DATE, SUCCESS or etc)  */
+	private int checkGoogleServiceResult;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ftue);
 		setupViews();
 		
-		ftueSharePref = getSharedPreferences(SHARE_PREFERENCE_FTUE_SETTING, 0);
+		checkGoogleServiceResult = GooglePlayServicesUtil.isGooglePlayServicesAvailable( getBaseContext() );
 		
-		// If already done FTUE or currently NOT in the help mode, just skip it.
-		if ( isInHelpMode == false && ftueSharePref.getBoolean( DONE_FTUE_SETTING_KEY , false) == true ) {
-			onSkipPressed( null );
+		// Checking for Google Service dependencies
+		if ( isGoogleServiceDependencyReady() ) {
+
+			ftueSharePref = getSharedPreferences(SHARE_PREFERENCE_FTUE_SETTING, 0);
+
+			// If already done FTUE or currently NOT in the help mode, just skip it.
+			if ( isInHelpMode == false && ftueSharePref.getBoolean( DONE_FTUE_SETTING_KEY , false) == true ) {
+				onSkipPressed( null );
+			}
+		} else {
+			// If google service is not available or out of date, showing error dialog
+			showGoogleServiceErrorDialog();
+		}
+	}
+	
+	/**
+	 * Check if Google Service dependency is ready, 
+	 * @return True if we have google service on the device and it's up-to-date.
+	 */
+	private boolean isGoogleServiceDependencyReady() {
+		return checkGoogleServiceResult == ConnectionResult.SUCCESS;
+	}
+	
+	/** Show Google service error dialog. */
+	private void showGoogleServiceErrorDialog() {
+		GooglePlayServicesUtil.getErrorDialog( checkGoogleServiceResult, this, REQUEST_CODE_GOOGLE_SERVICE_RELATED ).show();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if ( requestCode == REQUEST_CODE_GOOGLE_SERVICE_RELATED ) {
+			if ( resultCode != RESULT_OK ){
+				Log.d("DEBUG_DEVICE", "Please update your google service.");
+			}
 		}
 	}
 	
@@ -139,11 +178,15 @@ public class FtueActivity extends FragmentActivity implements IActivityListener 
 	 * @param v
 	 */
 	public void onSkipPressed(View v) {
-		finishFtue();
-		Intent i = new Intent( getBaseContext(), MainActivity.class);
-		startActivity( i );
-		overridePendingTransition(R.anim.bottom_out, R.anim.bottom_in);
-		this.finish();
+		if ( isGoogleServiceDependencyReady() ) {
+			finishFtue();
+			Intent i = new Intent( getBaseContext(), MainActivity.class);
+			startActivity( i );
+			overridePendingTransition(R.anim.bottom_out, R.anim.bottom_in);
+			this.finish();
+		} else {
+			showGoogleServiceErrorDialog();
+		}
 	}
 
 	@Override
