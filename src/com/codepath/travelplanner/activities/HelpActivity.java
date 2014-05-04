@@ -1,45 +1,54 @@
 package com.codepath.travelplanner.activities;
 
-import com.codepath.travelplanner.R;
-import com.codepath.travelplanner.R.id;
-import com.codepath.travelplanner.R.layout;
-import com.codepath.travelplanner.R.menu;
-
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.os.Build;
+
+import com.codepath.travelplanner.R;
+import com.codepath.travelplanner.fragments.HelpPageFragment;
 
 /**
  * Help Activity
  * @author nkemavaha
  *
  */
-public class HelpActivity extends Activity {
-
-	private ExpandableListView elvHelpItems;
+public class HelpActivity extends FragmentActivity {
+	
+	private HelpPageFragment helpFragment;
+	
+	private FragmentManager manager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
-		setupViews();
+		showPage( 0 );
 	}
 	
-	/** Setup views */
-	private void setupViews() {
-		elvHelpItems = (ExpandableListView) findViewById(R.id.elvHelp);
-		// TODO: Finish this
-		// Showing credits and redirect to FTUE
+	private void showPage(int page){
+		switch ( page ) {
+		case 1:
+			helpFragment = HelpPageFragment.newInstance( 1 );
+			break;
+		case 2:
+			helpFragment = HelpPageFragment.newInstance( 2 );
+			break;
+		default:
+			helpFragment = HelpPageFragment.newInstance( 0 );
+			break;
+		}
+		
+		manager = getSupportFragmentManager();
+
+		// use appropriate transaction for backward compatibility
+		FragmentTransaction fts = manager.beginTransaction();
+		
+		fts.replace( R.id.flHelpFragment, helpFragment);
+		// commit and update changes to fragment
+		fts.commit();
 	}
 
 	@Override
@@ -56,8 +65,17 @@ public class HelpActivity extends Activity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		switch (id) {
+			case R.id.miLegals:
+				showPage(2);
+				return true;
+				
+			case R.id.miCredits:
+				showPage(1);
+				return true;
+			default:
+				showPage(0);
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

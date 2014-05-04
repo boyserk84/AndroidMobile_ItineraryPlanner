@@ -8,13 +8,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.codepath.travelplanner.HelpActivity$PlaceholderFragment" >
 
-    <ExpandableListView
-        android:id="@+id/elvHelp"
-        android:layout_width="match_parent"
+    <FrameLayout
+        android:id="@+id/flHelpFragment"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true" >
-    </ExpandableListView>
+
+    </FrameLayout>
 
 </RelativeLayout>
-

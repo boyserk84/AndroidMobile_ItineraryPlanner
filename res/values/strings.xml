@@ -40,6 +40,22 @@
     <color name="theme_color_darker">#126982</color>
     <color name="gray">#bdbdbd</color>
 
-    <string name="help">Help and Feedback</string>
+    <string name="help">Help</string>
+    <string name="credits">Credits</string>
+    <string name="legals">Legals</string>
+    <string name="report">Report</string>
+    <string name="formNameText">Name:</string>
+    <string name="formEmailText">E-mail:</string>
+    <string name="formDetailsText">Let us know details</string>
+    <string name="formHeaderText">Feedback/Issue?</string>
+    <string name="formSubHeaderText">We know nothing is perfect. Let us know if there is any issue.</string>
+    <string name="submit">Submit</string>
+    <string name="developedBy">developed by</string>
+    <string name="contributor_one">Nina Guo</string>
+    <string name="contributor_two">Nate Kemavaha</string>
+    <string name="contributor_three">Jeffrey Good</string>
+    
+    <string name="legals_limit_liability_header">Limitations of Liability and Indemnification</string>
+    <string name="legals_limit_liability">THE DOWNLOADING AND/OR USE OF THE APPLICATION IS ENTIRELY AT YOUR OWN RISK AND IN NO EVENT SHALL WE (DEVELOPERS) BE LIABLE (WHETHER UNDER THE LAW OF CONTRACTS, TORTS OR OTHERWISE) FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY, PUNITIVE OR ANY OTHER MONETARY OR OTHER DAMAGES, FEES, FINES, PENALTIES OR LIABILITIES (COLLECTIVELY “DAMAGES”) WHATSOEVER ARISING OUT OF OR RELATING TO THIS APPLICATION. YOUR SOLE AND EXCLUSIVE REMEDY FOR DISSATISFACTION WITH THE APPLICATION IS TO STOP USING THE APPLICATION. YOU AGREE TO DEFEND, INDEMNIFY AND HOLD US (DEVELOPERS), AND ITS OFFICERS, DIRECTORS, EMPLOYEES, REPRESENTATIVES AND AGENTS HARMLESS FROM AND AGAINST ANY CLAIMS, ACTIONS, DEMANDS, LIABILITIES, JUDGMENTS, AND SETTLEMENTS, INCLUDING WITHOUT LIMITATION, REASONABLE LEGAL FEES RESULTING FROM OR ALLEGED TO RESULT FROM YOUR USE OF THIS APPLICATION.</string>
 
 </resources>
