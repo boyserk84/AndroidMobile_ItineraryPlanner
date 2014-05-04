@@ -1,12 +1,16 @@
 package com.codepath.travelplanner.fragments;
 
-import com.codepath.travelplanner.R;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.codepath.travelplanner.R;
 
 /**
  * HelpPageFragment
@@ -60,9 +64,35 @@ public class HelpPageFragment extends Fragment {
 		return result;
 	}
 	
+	private EditText etName;
+	private EditText etEmail;
+	private EditText etDetails;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = (View) inflater.inflate( getLayoutIdByPage(), container, false);
+		
+		if ( rootView != null && getLayoutIdByPage() == R.layout.fragment_feedback_helppage ) {
+			Button submit = (Button) rootView.findViewById(R.id.btnHelpSubmit);
+			etName = (EditText) rootView.findViewById( R.id.etNameField );
+			etEmail = (EditText)rootView.findViewById( R.id.etEmailField );
+			etDetails = (EditText) rootView.findViewById( R.id.etDetailsField );
+			
+			submit.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(Intent.ACTION_SEND);
+					intent.setType("plain/text");
+					intent.putExtra(Intent.EXTRA_EMAIL, new String[] { getString( R.string.contact_emails ) });
+					intent.putExtra(Intent.EXTRA_SUBJECT, "RouteAbout App | Feedback/Issue ");
+					intent.putExtra(Intent.EXTRA_TEXT, etDetails.getText().toString() 
+							+ "\n From " + etName.getText().toString() + "(" + etEmail.getText().toString() + ")" );
+					startActivity( Intent.createChooser(intent, "") );
+				}
+			});
+			
+		}
 		return rootView;
 	}
 }
