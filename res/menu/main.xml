@@ -26,5 +26,11 @@
         android:showAsAction="collapseActionView"
         android:icon="@drawable/ic_action_help"
         android:title="@string/help"/>
+	<item
+			android:id="@+id/miListView"
+			android:showAsAction="collapseActionView"
+			android:onClick="onListView"
+			android:icon="@drawable/ic_sugg_list"
+			android:title="@string/sugg_list"/>
 
 </menu>

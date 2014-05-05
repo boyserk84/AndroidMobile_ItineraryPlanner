@@ -298,6 +298,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	}
 	
 	public void exitMapSelectionMode() {
+		mapListener.onExitMapView();
 		suggPlacesList = null;
 		clearSuggestedPlaces();
 		getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
@@ -357,5 +358,10 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		 * @param tripLocation	trip loaction of the marker
 		 */
 		public void onMarkerClick(TripLocation tripLocation);
+
+		/**
+		 * Callback for when map clears out the suggested points
+		 */
+		public void onExitMapView();
 	}
 }

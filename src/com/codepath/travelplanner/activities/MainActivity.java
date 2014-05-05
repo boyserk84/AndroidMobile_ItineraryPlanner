@@ -3,6 +3,8 @@ package com.codepath.travelplanner.activities;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import com.codepath.travelplanner.dialogs.StandaloneSuggestedPlacesDialog;
+import com.codepath.travelplanner.dialogs.SuggestedPlacesDialog;
 import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
 
 import org.json.JSONException;
@@ -10,12 +12,8 @@ import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -34,7 +32,7 @@ import android.widget.TextView;
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
 import com.codepath.travelplanner.dialogs.BaseTripWizardDialog.OnNewTripListener;
-import com.codepath.travelplanner.dialogs.FiltersDialogTrip;
+import com.codepath.travelplanner.dialogs.FiltersDialog;
 import com.codepath.travelplanner.directions.Segment;
 import com.codepath.travelplanner.fragments.MyMapFragment;
 import com.codepath.travelplanner.fragments.MyMapFragment.MapListener;
@@ -65,6 +63,12 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	protected ImageView ivLocImg;
 	protected TextView tvDistNum;
 	protected Button btnMarkerRouteGo;
+
+	/** list of suggested places a yelp query returned */
+	protected ArrayList<TripLocation> suggestedPlaces;
+
+	/** list view menu item */
+	protected MenuItem miListView;
 	
 	/** Progress bar showing while query is loading.*/
 	protected ProgressBar pbQuickFind;
@@ -140,6 +144,10 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater menuInflater = getMenuInflater();
 		menuInflater.inflate(R.menu.main, menu);
+		if (miListView == null) {
+			miListView = menu.findItem(R.id.miListView);
+			toggleMiListView(false); // always hide list view menu item at first
+		}
 		return true;
 	}
 	
@@ -316,20 +324,27 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	public void onNewTrip(MenuItem mi) {
 		Location myLoc = map.getMap().getMyLocation();
 		if(myLoc != null) {
-			FiltersDialogTrip.newInstance("", myLoc.getLatitude(), myLoc.getLongitude(), true).show(getFragmentManager(), "filters");
+			FiltersDialog.newInstance("", myLoc.getLatitude(), myLoc.getLongitude(), true).show(getFragmentManager(), "filters");
 		}
 	}
 
 	@Override
+	public void onExitMapView() {
+		toggleMiListView(false);
+	}
+
+	@Override
 	public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip trip, boolean newTrip) {
+		suggestedPlaces = suggPlacesList;
 		this.trip = trip;
 		map.enterMapSelectionMode(suggPlacesList, newTrip);
+		toggleMiListView(true);
 	}
 	
 	@Override
 	public void openAddDialog(LatLng location) {
 		if(trip != null && trip.getPlaces() != null && trip.getPlaces().size() > 1) {
-			FiltersDialogTrip.newInstance("", location.latitude, location.longitude, false).show(getFragmentManager(), "filters");
+			FiltersDialog.newInstance("", location.latitude, location.longitude, false).show(getFragmentManager(), "filters");
 		}
 	}
 	
@@ -339,6 +354,25 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		pbQuickFind.setVisibility(View.VISIBLE);
 		newTrip = false;
 		SimpleYelpClient.getRestClient().search(filterRequest, this);
+	}
+
+	/**
+	 * Toggles the visibility of the list view menu item
+	 * @param enabled	if true, then show the menu item
+	 */
+	protected void toggleMiListView(boolean enabled) {
+		miListView.setVisible(enabled);
+		miListView.setEnabled(enabled);
+		if (enabled) {
+			miListView.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+		} else {
+			miListView.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+		}
+	}
+
+	/** callback when list view menu button is clicked */
+	public void onListView(MenuItem mi) {
+		StandaloneSuggestedPlacesDialog.newInstance(trip, suggestedPlaces).show(getFragmentManager(), "destinations");
 	}
 
 	@Override

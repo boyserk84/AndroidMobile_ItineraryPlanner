@@ -41,6 +41,7 @@
     <color name="gray">#bdbdbd</color>
 
     <string name="help">Help</string>
+	<string name="sugg_list">List View</string>
     <string name="credits">Credits</string>
     <string name="legals">Legals</string>
     <string name="report">Report</string>

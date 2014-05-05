@@ -1,21 +1,11 @@
 package com.codepath.travelplanner.dialogs;
 
-import java.util.ArrayList;
-
-import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.adapters.LocationsAdapter;
 import com.codepath.travelplanner.apis.SimpleYelpClient;
@@ -23,26 +13,31 @@ import com.codepath.travelplanner.helpers.Util;
 import com.codepath.travelplanner.models.Trip;
 import com.codepath.travelplanner.models.TripLocation;
 import com.codepath.travelplanner.models.YelpFilterRequest;
+import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
- * SuggestedPlacesDialogTrip - dialog containing the destinations results from the query
+ * SuggestedPlacesDialog - dialog containing the destinations results from the query
  */
-public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements IRequestListener {
+public class SuggestedPlacesDialog extends BaseTripWizardDialog implements IRequestListener {
 	/** list view of the suggested places */
-	private ListView lvSuggPlaces;
+	protected ListView lvSuggPlaces;
 	/** suggested places adapter */
-	private LocationsAdapter adapter;
+	protected LocationsAdapter adapter;
 	/** list of the trip locations associated with the listview */
-	private ArrayList<TripLocation> suggPlacesList = new ArrayList<TripLocation>();
+	protected ArrayList<TripLocation> suggPlacesList = new ArrayList<TripLocation>();
 	/** progress bar indicating when suggested places query is loading */
-	private ProgressBar pbSuggLoading;
+	protected ProgressBar pbSuggLoading;
 
 	/** search filter when searching for suggested places */
-	private YelpFilterRequest filter;
+	protected YelpFilterRequest filter = null;
 
 	/** static function that creates a new suggested places dialog */
-	public static SuggestedPlacesDialogTrip newInstance(Trip trip, YelpFilterRequest filter) {
-		SuggestedPlacesDialogTrip dialog = new SuggestedPlacesDialogTrip();
+	public static SuggestedPlacesDialog newInstance(Trip trip, YelpFilterRequest filter) {
+		SuggestedPlacesDialog dialog = new SuggestedPlacesDialog();
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(TRIP_EXTRA, trip);
 		bundle.putSerializable(FILTER_EXTRA, filter);
@@ -59,12 +54,16 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		trip = (Trip) getArguments().getSerializable(TRIP_EXTRA);
-		filter = (YelpFilterRequest) getArguments().getSerializable(FILTER_EXTRA);
+		if (getArguments().containsKey(FILTER_EXTRA)) {
+			filter = (YelpFilterRequest) getArguments().getSerializable(FILTER_EXTRA);
+		}
 	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		SimpleYelpClient.getRestClient().search(filter, this);
+		if (filter != null) {
+			SimpleYelpClient.getRestClient().search(filter, this);
+		}
 		return super.onCreateDialog(savedInstanceState);
 	}
 
@@ -107,7 +106,7 @@ public class SuggestedPlacesDialogTrip extends BaseTripWizardDialog implements I
 		if ( trip != null ) {
 			TripLocation loc = trip.getStart();
 			if ( loc.getLatLng() != null ) {
-				FiltersDialogTrip.newInstance("", loc.getLatLng().latitude, loc.getLatLng().longitude, true).show(getFragmentManager(), "filters");
+				FiltersDialog.newInstance("", loc.getLatLng().latitude, loc.getLatLng().longitude, true).show(getFragmentManager(), "filters");
 			}
 		}
 	}

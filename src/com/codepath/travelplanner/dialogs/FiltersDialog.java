@@ -21,9 +21,9 @@ import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * FiltersDialogTrip - dialog containing the filters (eg. activity, distance, price, etc)
+ * FiltersDialog - dialog containing the filters (eg. activity, distance, price, etc)
  */
-public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestListener{
+public class FiltersDialog extends BaseTripWizardDialog implements IRequestListener{
 	/** edit text containing the activity type user wants to search for (eg. food, museum, etc) */
 	private EditText etActivity;
 	/** spinner containing distances to filter by */
@@ -53,8 +53,8 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 	
 
 	/** static function that creates a new filters dialog */
-	public static FiltersDialogTrip newInstance(String start, double latitude, double longitude, boolean newTrip) {
-		FiltersDialogTrip dialog = new FiltersDialogTrip();
+	public static FiltersDialog newInstance(String start, double latitude, double longitude, boolean newTrip) {
+		FiltersDialog dialog = new FiltersDialog();
 		Bundle bundle = new Bundle();
 		bundle.putString(START_EXTRA, start);
 		bundle.putDouble(LATITUDE_EXTRA, latitude);
@@ -140,7 +140,7 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 				dismiss();
 				if(newTrip) {
 					updateFilterRequestWithCurrentLocation();
-					SuggestedPlacesDialogTrip.newInstance(trip, filterRequest).show(getFragmentManager(), "destinations");
+					SuggestedPlacesDialog.newInstance(trip, filterRequest).show(getFragmentManager(), "destinations");
 				}
 				else {
 					OnNewTripListener listener = (OnNewTripListener) getActivity();
@@ -162,7 +162,7 @@ public class FiltersDialogTrip extends BaseTripWizardDialog implements IRequestL
 		if(newTrip) {
 			updateFilterRequestWithCurrentLocation();
 			// TODO: add other filters
-			SuggestedPlacesDialogTrip.newInstance(trip, filterRequest).show(getFragmentManager(), "destinations");
+			SuggestedPlacesDialog.newInstance(trip, filterRequest).show(getFragmentManager(), "destinations");
 		}
 		else {		
 			OnNewTripListener listener = (OnNewTripListener) getActivity();
