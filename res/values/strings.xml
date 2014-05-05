@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">TransIT</string>
+    <string name="app_name">Route About</string>
     <string name="new_trip_hint">Enter Location</string>
     <string name="new_trip_button_description">Add Itinerary</string>
     <string name="action_settings">Settings</string>
@@ -9,7 +9,7 @@
     <string name="next">Next</string>
     <string name="done">Go!</string>
     <string name="cancel">Cancel</string>
-    <string name="title_activity_details">Directions</string>
+    <string name="title_activity_details">Here is your directions!</string>
     <string name="back">Back</string>
     <string name="filters_title">WHAT DO YOU WANT TO DO?</string>
     <string name="activity">Activity:</string>
@@ -32,21 +32,32 @@
     <string name="map_view">Map View</string>
     <string name="ratingContentDescription">Rating Image</string>
     <string name="locationImgContentDescription">Location Image</string>
+    <string name="skip">Tap to skip OR swipe to continue</string>
+    <string name="getStarted">Tap anywhere to get started!</string>
+    <string name="ftue_page_1">Please swipe to continue.</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="skip">Skip</string>
-    <string name="getStarted">Get Started!</string>
+    <color name="theme_color">#1EAFDA</color>
+    <color name="theme_color_darker">#126982</color>
+    <color name="gray">#bdbdbd</color>
+
+    <string name="help">Help</string>
+    <string name="credits">Credits</string>
+    <string name="legals">Legals</string>
+    <string name="report">Report</string>
+    <string name="formNameText">Name:</string>
+    <string name="formEmailText">E-mail:</string>
+    <string name="formDetailsText">Let us know details</string>
+    <string name="formHeaderText">Feedback/Issue?</string>
+    <string name="formSubHeaderText">We know nothing is perfect. Let us know if there is any issue.</string>
+    <string name="submit">Submit</string>
+    <string name="developedBy">developed by</string>
+    <string name="contributor_one">Nina Guo</string>
+    <string name="contributor_two">Nate Kemavaha</string>
+    <string name="contributor_three">Jeffrey Good</string>
     
-    <string name="ftue_page_1">Page 1 Welcome to this blabh blah app where you don\'t have to sweat in an unfamiliar city.</string>
-    <string name="ftue_page_2">Page 2 Start a new trip by tapp/bbing on plan your own trip.</string>
-    <string name="ftue_page_3">Page 3 You can customize your search or just use our quick recommednation. </string>
-    <string name="ftue_page_4">Page 4 Pick your spot.</string>
-    <string name="ftue_page_5">Page 5 Boom and get directions</string>
-    <string name="ftue_page_6">Page 6 Wanna start a quick trip to grab a bite? No problem, just tap/b this.</string>
-    <string name="ftue_page_7">Page 7 Now it\'s yo time to rock n roll.</string>
-
-	<color name="theme_color">#1EAFDA</color>
-	<color name="theme_color_darker">#126982</color>
-	<color name="gray">#bdbdbd</color>
+    <!-- Change your contact emails over here, separated by comma  -->
+    <string name="contact_emails">***YOUR_CONTACT_EMAIL_HERE_SEPARATE_BY_COMMA***</string>
+    <string name="legals_limit_liability_header">Limitations of Liability and Indemnification</string>
+    <string name="legals_limit_liability">THE DOWNLOADING AND/OR USE OF THE APPLICATION IS ENTIRELY AT YOUR OWN RISK AND IN NO EVENT SHALL WE (DEVELOPERS) BE LIABLE (WHETHER UNDER THE LAW OF CONTRACTS, TORTS OR OTHERWISE) FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY, PUNITIVE OR ANY OTHER MONETARY OR OTHER DAMAGES, FEES, FINES, PENALTIES OR LIABILITIES (COLLECTIVELY “DAMAGES”) WHATSOEVER ARISING OUT OF OR RELATING TO THIS APPLICATION. YOUR SOLE AND EXCLUSIVE REMEDY FOR DISSATISFACTION WITH THE APPLICATION IS TO STOP USING THE APPLICATION. YOU AGREE TO DEFEND, INDEMNIFY AND HOLD US (DEVELOPERS), AND ITS OFFICERS, DIRECTORS, EMPLOYEES, REPRESENTATIVES AND AGENTS HARMLESS FROM AND AGAINST ANY CLAIMS, ACTIONS, DEMANDS, LIABILITIES, JUDGMENTS, AND SETTLEMENTS, INCLUDING WITHOUT LIMITATION, REASONABLE LEGAL FEES RESULTING FROM OR ALLEGED TO RESULT FROM YOUR USE OF THIS APPLICATION.</string>
 
 </resources>

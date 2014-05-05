@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.codepath.travelplanner.R;
+import com.codepath.travelplanner.activities.FtueActivity;
+import com.codepath.travelplanner.interfaces.IActivityListener;
 
 /**
  * FtueSlidePageFragment
@@ -19,6 +22,9 @@ public class FtueSlidePageFragment extends Fragment {
 	private static final String KEY_PAGE = "pageNumber";
 	
 	private int pageNum;
+	
+	/** Activity listen for action in the fragment */
+	private IActivityListener listener;
 	
 	/**
 	 * Static method to create a new instance of FtueSlidePageFragment
@@ -40,6 +46,18 @@ public class FtueSlidePageFragment extends Fragment {
 		pageNum = getArguments().getInt(KEY_PAGE);
 	}
 	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		FtueActivity ftueActivity = (FtueActivity) getActivity();
+		listener = ftueActivity;
+	}
+	
+	/**
+	 * Get Image Resource Id by the given page/position
+	 * @param position
+	 * @return
+	 */
 	private int getImgResourceByPos(int position) {
 		int result = R.drawable.f_instruction_00;
 		
@@ -70,6 +88,16 @@ public class FtueSlidePageFragment extends Fragment {
 		if ( rootView != null ) {
 			ImageView ivSlidePage = (ImageView) rootView.findViewById( R.id.ivFtueSlide );
 			ivSlidePage.setImageResource( getImgResourceByPos(pageNum));
+			ivSlidePage.setOnClickListener( new OnClickListener() {
+				
+				/**
+				 * Notify FtueActivity for click event or tap event
+				 */
+				@Override
+				public void onClick(View v) {
+					listener.onListenForAction();
+				}
+			});
 		}
 		return rootView;
 	}

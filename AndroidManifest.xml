@@ -33,9 +33,9 @@
 
         <activity
             android:name="com.codepath.travelplanner.activities.FtueActivity"
-            android:theme="@style/FtueTheme"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/FtueTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -50,6 +50,11 @@
         <activity
             android:name="com.codepath.travelplanner.activities.MainActivity"
             android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.codepath.travelplanner.activities.HelpActivity"
+            android:label="@string/help"
             android:screenOrientation="portrait" >
         </activity>
     </application>
