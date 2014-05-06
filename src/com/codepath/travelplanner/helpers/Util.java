@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -75,5 +76,33 @@ public class Util {
 	public static boolean isGPSAvailable(Activity activity) {
 		LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 		return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+	}
+	
+	/**
+	 * @return Application version and its code version.
+	 */
+	public static String getApplicationVersion(Activity activity) {
+		String applicationCode = "";
+		String versionName = "versionUnknown";
+		int versionCode = 0;
+		/* Get android:versionName */
+		try {
+			versionName = activity.getPackageManager().getPackageInfo( activity.getPackageName(), 0).versionName;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		/* Get android:versionCode */
+		try {
+			versionCode = activity.getPackageManager().getPackageInfo( activity.getPackageName(), 0).versionCode;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		applicationCode = versionName + ".vc." + versionCode;
+		
+		return applicationCode;
 	}
 }

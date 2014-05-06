@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.codepath.travelplanner.R;
 import com.codepath.travelplanner.fragments.HelpPageFragment;
+import com.codepath.travelplanner.helpers.Util;
 
 /**
  * Help Activity
@@ -21,23 +22,31 @@ public class HelpActivity extends FragmentActivity {
 	
 	private FragmentManager manager;
 	
+	private String applicationVersionString = "";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
 		showPage( 0 );
+		
+		applicationVersionString = Util.getApplicationVersion( this );
 	}
 	
+	/**
+	 * Helper function to show the given page.
+	 * @param page
+	 */
 	private void showPage(int page){
 		switch ( page ) {
 		case 1:
-			helpFragment = HelpPageFragment.newInstance( 1 );
+			helpFragment = HelpPageFragment.newInstance( 1, applicationVersionString );
 			break;
 		case 2:
-			helpFragment = HelpPageFragment.newInstance( 2 );
+			helpFragment = HelpPageFragment.newInstance( 2, applicationVersionString );
 			break;
 		default:
-			helpFragment = HelpPageFragment.newInstance( 0 );
+			helpFragment = HelpPageFragment.newInstance( 0, applicationVersionString );
 			break;
 		}
 		

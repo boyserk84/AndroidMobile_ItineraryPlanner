@@ -55,6 +55,7 @@
     <string name="contributor_one">Nina Guo</string>
     <string name="contributor_two">Nate Kemavaha</string>
     <string name="contributor_three">Jeffrey Good</string>
+    <string name="appVersion">Application Version:</string>
     
     <!-- Change your contact emails over here, separated by comma  -->
     <string name="contact_emails">ninaxguo@gmail.com, routeabout@nateserkapps.com</string>
