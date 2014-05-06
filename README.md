@@ -1,19 +1,20 @@
 #Route-About App
 "Where do you want to go?"
-This app assists you in planning fast trips in a city where you're unfamiliar with. Instead of switching between apps to find places to drop by along the way to your destination, this app reduces that friction and allows you to quickly plan multiple stops in areas you choose along the way to your destination.
+This app assists you in planning fast trips in a city where you're unfamiliar with. 
+Instead of switching between apps to find places to drop by along the way to your destination, 
+this app reduces that friction and allows you to quickly plan multiple stops in areas you choose along the way to your destination.
 The routes this app gives are all transit/walking directions. There is no option for driving directions.
 
-# Overview
-Android Mobile App for assisting in planning a quick trip in a city where you're unfamiliar with.
-Instead of switching between apps to find places and good review along the way to your destination,
-this app will reduce those frictions user have experienced.
-
-![Alt text](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png "Get it on Google Play")
 
 <a href="https://play.google.com/store/apps/details?id=com.codepath.travelplanner">
   <img alt="Get it on Google Play"
        src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
 </a>
+
+# Overview
+Android Mobile App for assisting in planning a quick trip in a city where you're unfamiliar with.
+Instead of switching between apps to find places and good review along the way to your destination,
+this app will reduce those frictions user have experienced.
 
 # SmartPhone
 ![Alt text](screenshot03.png  "Main App Screenshot") ![Alt text](screenshot04.png "Main App Screenshot")
