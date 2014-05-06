@@ -13,9 +13,9 @@ package natemobiles.app.simpleyelpapiforandroid.configs;
 public class SimpleYelpClientConfig {
     public static final String REST_URL_SEARCH_API_BASE = "http://api.yelp.com/v2/search"; 
  
-    public static final String REST_CONSUMER_KEY = "3qi51t0nEkOpjxyh6Aoqdg";
-    public static final String REST_CONSUMER_SECRET = "wjUr-uxengNpTNfZYA-1BnA_vOM";
-    public static final String TOKEN = "13kez5wx3aPdsCKi3HkbPldGsQuZdpZX";
-    public static final String TOKEN_SECRET = "lA-7lk52rK1gnKJklkaaJoqBUuo";
+    public static final String REST_CONSUMER_KEY = "<CONSUMER_KEY_HERE>";
+    public static final String REST_CONSUMER_SECRET = "<CONSUMER_SECRET_KEY_HERE>";
+    public static final String TOKEN = "<TOKEN_HERE>";
+    public static final String TOKEN_SECRET = "<TOKEN_SECRET_HERE>";
     
 }
