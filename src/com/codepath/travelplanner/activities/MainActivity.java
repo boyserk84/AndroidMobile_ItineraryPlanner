@@ -337,7 +337,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip trip, boolean newTrip) {
 		suggestedPlaces = suggPlacesList;
 		this.trip = trip;
-		map.enterMapSelectionMode(suggPlacesList, newTrip);
+		map.enterMapSelectionMode(suggPlacesList, newTrip, this);
 		toggleMiListView(true);
 	}
 	
@@ -374,6 +374,13 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	public void onListView(MenuItem mi) {
 		StandaloneSuggestedPlacesDialog.newInstance(trip, suggestedPlaces).show(getFragmentManager(), "destinations");
 	}
+	
+	/** Stop showing a progress bar. */
+	private void stopShowingProgressBar() {
+		if ( isQueryLoading == false ) {
+			pbQuickFind.setVisibility( View.INVISIBLE );
+		}	
+	}
 
 	@Override
 	public void onSuccess(JSONObject successResult) {
@@ -393,15 +400,25 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			pbQuickFind.setVisibility( View.INVISIBLE );
 		}
 
-		isQueryLoading = false;
-		pbQuickFind.setVisibility( View.INVISIBLE );		
+		isQueryLoading = false;	
 	}
 
 	@Override
 	public void onFailure(JSONObject failureResult) {
-		// TODO Auto-generated method stub
-		isQueryLoading = false;
+		isQueryLoading = false;	
+		stopShowingProgressBar();
+	}
+
+	@Override
+	public void onMapLoadedComplete() {
+		stopShowingProgressBar();
+	}
+
+	@Override
+	public void onMapLoadedCancel() {
+		stopShowingProgressBar();	
 	}
 }

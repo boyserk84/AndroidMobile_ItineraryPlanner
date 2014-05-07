@@ -22,6 +22,7 @@ import com.codepath.travelplanner.models.YelpFilterRequest;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.CancelableCallback;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
@@ -269,7 +270,13 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		}
 	}
 	
-	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip) {
+	/**
+	 * Enter Map Selection mode
+	 * @param suggPlaces		Array of suggested places
+	 * @param newTrip			Whether this is a new trip
+	 * @param callback			Callback when map is done loading.
+	 */
+	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip, MapListener callback) {
 		suggPlacesList = suggPlaces;
 		getMap().setOnMapLongClickListener(null);
 		clearSuggestedPlaces();
@@ -285,7 +292,26 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		} else {
 			zoom = CameraUpdateFactory.zoomTo(15);
 		}
-		getMap().animateCamera(zoom);
+		
+		final MapListener completeCallback = callback;
+		getMap().animateCamera(zoom, new CancelableCallback() {
+			
+			// Notifying listener when map animated camera is done
+			
+			@Override
+			public void onFinish() {
+				if ( completeCallback != null ) {
+					completeCallback.onMapLoadedComplete();
+				}
+			}
+			
+			@Override
+			public void onCancel() {
+				if ( completeCallback != null ) {
+					completeCallback.onMapLoadedComplete();
+				}
+			}
+		});
 	}
 
 	/** replaces the temporary replacement marker with the standard marker*/
@@ -363,5 +389,15 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 		 * Callback for when map clears out the suggested points
 		 */
 		public void onExitMapView();
+		
+		/**
+		 * Callback for when map is completely loaded. 
+		 */
+		public void onMapLoadedComplete();
+		
+		/**
+		 * Callback for when map loading is cancelled.
+		 */
+		public void onMapLoadedCancel();
 	}
 }
