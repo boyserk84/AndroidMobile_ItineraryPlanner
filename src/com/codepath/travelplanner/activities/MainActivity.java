@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.codepath.travelplanner.dialogs.StandaloneSuggestedPlacesDialog;
-import com.codepath.travelplanner.dialogs.SuggestedPlacesDialog;
 import natemobiles.app.simpleyelpapiforandroid.interfaces.IRequestListener;
 
 import org.json.JSONException;
