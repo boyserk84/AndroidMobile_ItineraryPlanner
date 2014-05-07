@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -276,7 +277,7 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 	 * @param newTrip			Whether this is a new trip
 	 * @param callback			Callback when map is done loading.
 	 */
-	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip, MapListener callback) {
+	public void enterMapSelectionMode(ArrayList<TripLocation> suggPlaces, boolean newTrip) {
 		suggPlacesList = suggPlaces;
 		getMap().setOnMapLongClickListener(null);
 		clearSuggestedPlaces();
@@ -286,32 +287,41 @@ public class MyMapFragment extends MapFragment implements RoutingListener, IRequ
 			suggestedPlaces.add(createMarker(suggPlacesList.get(i).getLatLng(), R.drawable.ic_pin, Integer.toString(i), ""));
 		}
 		
+		boolean shouldWaitForCallback = false;
 		CameraUpdate zoom;
 		if(newTrip) {
 			zoom = CameraUpdateFactory.zoomTo(12);
+			shouldWaitForCallback = (int) getMap().getCameraPosition().zoom != 12;
 		} else {
 			zoom = CameraUpdateFactory.zoomTo(15);
+			shouldWaitForCallback = (int) getMap().getCameraPosition().zoom != 15;
 		}
 		
-		final MapListener completeCallback = callback;
+		// Caveat: this method will only be executed if zoom level value has changed.
 		getMap().animateCamera(zoom, new CancelableCallback() {
 			
 			// Notifying listener when map animated camera is done
 			
 			@Override
 			public void onFinish() {
-				if ( completeCallback != null ) {
-					completeCallback.onMapLoadedComplete();
-				}
+				mapListener.onMapLoadedComplete();
 			}
 			
 			@Override
 			public void onCancel() {
-				if ( completeCallback != null ) {
-					completeCallback.onMapLoadedComplete();
-				}
+				mapListener.onMapLoadedComplete();
+				
 			}
 		});
+		
+		// Google Map API's animateCamera would only be dispatching a callback event
+		// when zoom level value changed, otherwise, onFinish() won't be dispatched.
+		// Therefore, we need this boolean check so that we know when to wait and when to not wait for a callback
+		if ( shouldWaitForCallback == false ) {
+			// notify listener directly, no need to wait for a callback
+			mapListener.onMapLoadedComplete();
+		}
+
 	}
 
 	/** replaces the temporary replacement marker with the standard marker*/

@@ -337,8 +337,10 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	public void enterMapView(ArrayList<TripLocation> suggPlacesList, Trip trip, boolean newTrip) {
 		suggestedPlaces = suggPlacesList;
 		this.trip = trip;
-		map.enterMapSelectionMode(suggPlacesList, newTrip, this);
+		map.enterMapSelectionMode(suggPlacesList, newTrip);
 		toggleMiListView(true);
+		
+		isQueryLoading = false;	
 	}
 	
 	@Override
@@ -377,9 +379,7 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 	
 	/** Stop showing a progress bar. */
 	private void stopShowingProgressBar() {
-		if ( isQueryLoading == false ) {
-			pbQuickFind.setVisibility( View.INVISIBLE );
-		}	
+		pbQuickFind.setVisibility( View.INVISIBLE );
 	}
 
 	@Override
@@ -398,12 +398,10 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 		try {
 			this.enterMapView( TripLocation.fromJSONArray(successResult.getJSONArray("businesses")) , trip, newTrip);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			pbQuickFind.setVisibility( View.INVISIBLE );
+			isQueryLoading = false;	
+			stopShowingProgressBar();
 		}
-
-		isQueryLoading = false;	
 	}
 
 	@Override
@@ -419,6 +417,6 @@ public class MainActivity extends FragmentActivity implements OnNewTripListener,
 
 	@Override
 	public void onMapLoadedCancel() {
-		stopShowingProgressBar();	
+		stopShowingProgressBar();
 	}
 }
