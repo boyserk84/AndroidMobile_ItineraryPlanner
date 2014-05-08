@@ -28,9 +28,8 @@ public class HelpActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_help);
-		showPage( 0 );
-		
 		applicationVersionString = Util.getApplicationVersion( this );
+		showPage( 0 );
 	}
 	
 	/**

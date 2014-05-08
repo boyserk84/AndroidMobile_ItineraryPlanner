@@ -126,9 +126,10 @@ public class HelpPageFragment extends Fragment {
 					Intent intent = new Intent(Intent.ACTION_SEND);
 					intent.setType("plain/text");
 					intent.putExtra(Intent.EXTRA_EMAIL, new String[] { getString( R.string.contact_emails ) });
-					intent.putExtra(Intent.EXTRA_SUBJECT, "RouteAbout App | Feedback/Issue ");
+					intent.putExtra(Intent.EXTRA_SUBJECT, "RouteAbout App | Feedback/Issue (" + appVersion + ")");
 					intent.putExtra(Intent.EXTRA_TEXT, etDetails.getText().toString() 
-							+ "\n From " + etName.getText().toString() + "(" + etEmail.getText().toString() + ")" );
+							+ "\n From " + etName.getText().toString() + "(" + etEmail.getText().toString() + ")" 
+							+ "\n App version: " + appVersion);
 					startActivity( Intent.createChooser(intent, "") );
 					
 					// Empty all string, preventing spam click on submit
